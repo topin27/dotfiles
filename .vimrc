@@ -20,8 +20,14 @@ Plugin 'kshenoy/vim-signature'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+set nu                                                                           
+set ai                                                                           
+set hlsearch                                                                     
+set noexpandtab                                                                  
+set ts=8                                                                         
+set cc=81
+
 autocmd FileType python setlocal ts=4 sts=4
-autocmd FileType ocaml setlocal ts=2 sts=2
 noremap <tab> <c-w><c-w>
 
 let NERDTreeHighlightCursorline=1
