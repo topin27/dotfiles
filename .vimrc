@@ -15,6 +15,9 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'grep.vim'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'tpope/vim-markdown'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -22,6 +25,7 @@ filetype plugin indent on    " required
 
 
 " Basic settings
+syntax on
 set nu
 set ai
 set hlsearch
@@ -29,7 +33,15 @@ set noexpandtab
 set ts=8
 set cc=81
 autocmd FileType python setlocal ts=4 sts=4
-noremap <tab> <c-w><c-w>
+autocmd FileType ocaml setlocal ts=2 sts=2
+" noremap <tab> <c-w><c-w>
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+nmap <leader>bb :ls<CR>:buffer<Space>
 
 " For NERDTree
 let NERDTreeHighlightCursorline=1
@@ -40,7 +52,7 @@ let g:tagbar_right=1
 map <F3> :TagbarToggle<CR>
 
 " For ctrlp
-let g:ctrlp_map = '<leader>p'
+let g:ctrlp_map = '<leader>f'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
@@ -57,9 +69,23 @@ map <F4> :Rgrep<CR><CR><CR><CR>
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers=['pylint']
+let g:syntastic_mode_map = {
+    \ 'mode': 'passive', 
+    \ 'active_filetypes': [], 
+    \ 'passive_filetypes': []
+    \ }
 map <F5> :SyntasticCheck<CR>
+
+" For minibufexpl
+
+" For rust
+
+" For markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" let g:markdown_syntax_conceal = 0
