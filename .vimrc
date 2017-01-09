@@ -16,7 +16,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'grep.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'fholgado/minibufexpl.vim'
-Plugin 'rust-lang/rust.vim'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-markdown'
 
 " All of your Plugins must be added before the following line
@@ -32,7 +32,7 @@ set hlsearch
 set noexpandtab
 set ts=8
 set cc=81
-autocmd FileType python setlocal ts=4 sts=4
+autocmd FileType python setlocal ts=4 sts=4 expandtab
 autocmd FileType ocaml setlocal ts=2 sts=2
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
@@ -83,7 +83,11 @@ map <F5> :SyntasticCheck<CR>
 
 " For minibufexpl
 
-" For rust
+" For EasyMotion
+" map <Leader><Leader>j <Plug>(easymotion-j)
+map <Leader><leader>h <Plug>(easymotion-linebackward)
+map <Leader><leader>l <Plug>(easymotion-lineforward)
+map <Leader><leader>. <Plug>(easymotion-repeat)
 
 " For markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
