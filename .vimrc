@@ -15,9 +15,9 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'grep.vim'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'fholgado/minibufexpl.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-markdown'
+Plugin 'a.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -33,7 +33,6 @@ set noexpandtab
 set ts=8
 set cc=81
 autocmd FileType python setlocal ts=4 sts=4 expandtab
-autocmd FileType ocaml setlocal ts=2 sts=2
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -42,6 +41,10 @@ cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 nmap <leader>bb :ls<CR>:buffer<Space>
+nmap <leader>ln :lnext<CR>
+nmap <leader>lp :lprevious<CR>
+nmap <leader>cn :cnext<CR>
+nmap <leader>cp :cprevious<CR>
 
 " For NERDTree
 let NERDTreeHighlightCursorline=1
@@ -57,7 +60,7 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
-    \ }
+\ }
 
 " For grep.vim
 let Grep_Skip_Dirs = '.git .svn'
@@ -78,7 +81,7 @@ let g:syntastic_mode_map = {
     \ 'mode': 'passive', 
     \ 'active_filetypes': [], 
     \ 'passive_filetypes': []
-    \ }
+\ }
 map <F5> :SyntasticCheck<CR>
 
 " For minibufexpl
