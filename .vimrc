@@ -18,6 +18,7 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-markdown'
 Plugin 'a.vim'
+Plugin 'fatih/vim-go'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -33,6 +34,9 @@ set noexpandtab
 set ts=8
 set cc=81
 autocmd FileType python setlocal ts=4 sts=4 expandtab
+autocmd FileType ocaml setlocal ts=2 sts=2
+autocmd FileType c setlocal ts=2 sts=2 expandtab
+autocmd FileType cpp setlocal ts=2 sts=2 expandtab
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -53,6 +57,33 @@ map <F2> :NERDTreeToggle<CR>
 " For tagbar
 let g:tagbar_right=1
 map <F3> :TagbarToggle<CR>
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -76,15 +107,14 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
-let g:syntastic_python_checkers=['pylint']
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_go_checkers = ['golint', 'govet']
 let g:syntastic_mode_map = {
     \ 'mode': 'passive', 
     \ 'active_filetypes': [], 
-    \ 'passive_filetypes': []
+    \ 'passive_filetypes': ['go']
 \ }
 map <F5> :SyntasticCheck<CR>
-
-" For minibufexpl
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
@@ -96,3 +126,25 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 " let g:markdown_syntax_conceal = 0
+
+" For vim-go
+autocmd FileType go nmap <leader>gb <Plug>(go-build)
+autocmd FileType go nmap <leader>gr <Plug>(go-run)
+autocmd FileType go nmap <leader>gt <Plug>(go-test)
+autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <F4> <Plug>(go-referrers)
+autocmd FileType go nmap <leader>gl <Plug>(go-lint)
+autocmd FileType go nmap <leader>gv <Plug>(go-vet)
+autocmd FileType go nmap <leader>gn <Plug>(go-rename)
+autocmd FileType go nmap <leader>gi <Plug>(go-implements)
+autocmd FileType go nmap <leader>ga <Plug>(go-alternate-edit)
+autocmd FileType go nmap <leader>gf <Plug>(go-files)
+let g:go_get_update = 0
+let g:go_test_timeout = '10s'
+let g:go_fmt_autosave = 1
+let g:go_textobj_include_function_doc = 1
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_list_type = "quickfix"
+" let g:go_def_mode = 'godef'	" using guru now
