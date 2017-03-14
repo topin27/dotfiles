@@ -8,9 +8,43 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
+             '("melpa" . "http://melpa.milkbox.net/packages/"))    ;; Or "http://elpa.emacs-china.org/melpa/"
 (when (< emacs-major-version 24)
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+;; cl - Common Lisp Extension
+(require 'cl)
+
+;; Add Packages
+(defvar my/packages '(
+		      company
+		      smex
+		      monokai-theme
+		      ) "Default packages")
+
+(setq package-selected-packages my/packages)
+
+(defun my/packages-installed-p ()
+  (loop for pkg in my/packages
+	when (not (package-installed-p pkg)) do (return nil)
+	finally (return t)))
+
+(unless (my/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg my/packages)
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
+
+;; Find Executable Path on OS X
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;; 判断某个包是否已经安装，如果没有则自动从ELPA中安装它（需要联网）
 (defun require-package (package &optional min-version no-refresh)
@@ -24,12 +58,6 @@ re-downloaded in order to locate PACKAGE."
       (progn
         (package-refresh-contents)
         (require-package package min-version t)))))
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,6 +99,10 @@ re-downloaded in order to locate PACKAGE."
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(delete-selection-mode 1)
+(global-hl-line-mode 1)
+(setq initial-frame-alist (quote ((fullscreen . maximized))))
+
 (setq user-full-name "Yang Tianping")
 (setq user-mail-address "yangtianpingytp@163.com")
 
@@ -98,6 +130,24 @@ re-downloaded in order to locate PACKAGE."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; dired
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq dired-recursive-deletes 'always)
+(setq dired-recursive-copies 'alway)
+
+(put 'dired-find-alternate-file 'disabled nil)
+
+;; 主动加载 Dired Mode
+;; (require 'dired)
+;; (defined-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+
+;; 延迟加载
+(with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 补全
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -119,22 +169,9 @@ re-downloaded in order to locate PACKAGE."
 
 (require 'recentf)
 (setq recentf-mode 1)
-(setq recentf-max-saved-items 20)
+(setq recentf-max-menu-items 20)
 (add-to-list 'recentf-keep 'file-remote-p)  ;; 不要去检查远程文件
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 
 (provide 'init)
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (yasnippet smex monokai-theme company))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
