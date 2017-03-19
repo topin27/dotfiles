@@ -26,6 +26,10 @@
 		      company
 		      smex
 		      monokai-theme
+		      yasnippet
+		      ggtags
+		      clean-aindent-mode
+		      undo-tree
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -43,8 +47,8 @@
       (package-install pkg))))
 
 ;; Find Executable Path on OS X
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
+;;(when (memq window-system '(mac ns))
+;;  (exec-path-from-shell-initialize))
 
 ;; 判断某个包是否已经安装，如果没有则自动从ELPA中安装它（需要联网）
 (defun require-package (package &optional min-version no-refresh)
@@ -80,6 +84,12 @@ re-downloaded in order to locate PACKAGE."
 ;; (which-function-mode t)   ;; 实时显示当前所在的函数
 ;; (setq modelinepos-column-limit 80)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(setq-default tab-width 8)
+
+(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
 
@@ -98,9 +108,10 @@ re-downloaded in order to locate PACKAGE."
 (setq-default cursor-type 'bar)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq ibuffer-use-other-window t)
 
 (delete-selection-mode 1)
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
 
 (setq user-full-name "Yang Tianping")
@@ -120,6 +131,76 @@ re-downloaded in order to locate PACKAGE."
       scroll-conservatively 10000)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
+
+(add-hook 'diff-mode-hook (lambda ()
+                            (setq-local whitespace-style
+                                        '(face
+                                          tabs
+                                          tab-mark
+                                          spaces
+                                          space-mark
+                                          trailing
+                                          indentation::space
+                                          indentation::tab
+                                          newline
+                                          newline-mark))
+                            (whitespace-mode 1)))
+
+(defun kill-default-buffer ()
+  "Kill the currently active buffer -- set to C-x k so that users are not asked which buffer they want to kill."
+  (interactive)
+  (let (kill-buffer-query-functions) (kill-buffer)))
+(global-set-key (kbd "C-x k") 'kill-default-buffer)
+
+;; smart openline
+(defun prelude-smart-open-line (arg)
+  "Insert an empty line after the current line.
+Position the cursor at its beginning, according to the current mode.
+With a prefix ARG open line above the current line."
+  (interactive "P")
+  (if arg
+      (prelude-smart-open-line-above)
+    (progn
+      (move-end-of-line nil)
+      (newline-and-indent))))
+
+(defun prelude-smart-open-line-above ()
+  "Insert an empty line above the current line.
+Position the cursor at it's beginning, according to the current mode."
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline-and-indent)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+;; Available C style:
+;; “gnu”: The default style for GNU projects
+;; “k&r”: What Kernighan and Ritchie, the authors of C used in their book
+;; “bsd”: What BSD developers use, aka “Allman style” after Eric Allman.
+;; “whitesmith”: Popularized by the examples that came with Whitesmiths C, an early commercial C compiler.
+;; “stroustrup”: What Stroustrup, the author of C++ used in his book
+;; “ellemtel”: Popular C++ coding standards as defined by “Programming in C++, Rules and Recommendations,” Erik Nyquist and Mats Henricson, Ellemtel
+;; “linux”: What the Linux developers use for kernel development
+;; “python”: What Python developers use for extension modules
+;; “java”: The default style for java-mode (see below)
+;; “user”: When you want to define your own style
+(setq c-default-style "linux" ; set style to "linux"
+      c-basic-offset 8)
+
+(setq gdb-many-windows t        ; use gdb-many-windows by default
+      gdb-show-main t)          ; Non-nil means display source file containing the main routine at startup
+
+;; GROUP: Programming -> Tools -> Ediff
+(setq ediff-diff-options "-w"
+      ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+(global-set-key (kbd "M-o") 'prelude-smart-open-line)
+(global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -148,10 +229,10 @@ re-downloaded in order to locate PACKAGE."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 补全
+;; company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-company-mode t)
+(add-hook 'after-init-hook 'global-company-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -174,4 +255,68 @@ re-downloaded in order to locate PACKAGE."
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ggtags
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'c-mode-common-hook
+    (lambda ()
+      (when (derived-mode-p 'c-mode 'c++-mode 'asm-mode)
+	(ggtags-mode 1))))
+(add-hook 'dired-mode-hook 'ggtags-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; clean-aindent-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'clean-aindent-mode)
+(add-hook 'prog-mode-hook 'clean-aindent-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; undo-tree
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; yasnippet
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'ido)
+(setq ido-enable-prefix nil
+      ido-enable-flex-matching t
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-max-prospects 10
+      ido-default-file-method 'selected-window
+      ido-auto-merge-work-directories-length -1)
+(ido-mode +1)
+
+
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (undo-tree clean-aindent-mode ggtags company smex monokai-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
