@@ -30,6 +30,7 @@
 		      ggtags
 		      clean-aindent-mode
 		      undo-tree
+		      ;; helm
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -85,6 +86,7 @@ re-downloaded in order to locate PACKAGE."
 ;; (setq modelinepos-column-limit 80)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+;; (setq ibuffer-use-other-window t)
 (setq-default tab-width 8)
 
 (setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
@@ -108,7 +110,6 @@ re-downloaded in order to locate PACKAGE."
 (setq-default cursor-type 'bar)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
-(setq ibuffer-use-other-window t)
 
 (delete-selection-mode 1)
 ;; (global-hl-line-mode 1)
@@ -239,9 +240,9 @@ Position the cursor at it's beginning, according to the current mode."
 ;; smex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'smex)
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
+;; (require 'smex)
+;; (smex-initialize)
+;; (global-set-key (kbd "M-x") 'smex)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -294,29 +295,59 @@ Position the cursor at it's beginning, according to the current mode."
 ;; ido
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'ido)
-(setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-max-prospects 10
-      ido-default-file-method 'selected-window
-      ido-auto-merge-work-directories-length -1)
-(ido-mode +1)
+;; (require 'ido)
+;; (setq ido-enable-prefix nil
+;;       ido-enable-flex-matching t
+;;       ido-create-new-buffer 'always
+;;       ido-use-filename-at-point 'guess
+;;       ido-max-prospects 10
+;;       ido-default-file-method 'selected-window
+;;       ido-auto-merge-work-directories-length -1)
+;; (ido-mode +1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; helm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'helm)
+(require 'helm-config)
+
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t
+      helm-echo-input-in-header-line t)
+
+(setq helm-autoresize-max-height 0)
+(setq helm-autoresize-min-height 20)
+(helm-autoresize-mode 1)
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+(setq helm-M-x-fuzzy-match t)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match t)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+(setq helm-semantic-fuzzy-match t
+      helm-imenu-fuzzy-match t)
+
+(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+(global-set-key (kbd "C-c h x") 'helm-register)
+
+(helm-mode 1)
 
 
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (undo-tree clean-aindent-mode ggtags company smex monokai-theme))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
