@@ -1,6 +1,10 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -33,10 +37,12 @@ set hlsearch
 set noexpandtab
 set ts=8
 set cc=81
+set ls=2
 autocmd FileType python setlocal ts=4 sts=4 expandtab
 autocmd FileType ocaml setlocal ts=2 sts=2
-autocmd FileType c setlocal ts=2 sts=2 expandtab
-autocmd FileType cpp setlocal ts=2 sts=2 expandtab
+autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
+autocmd FileType c,cpp nmap <C-]> :cs find g <cword><CR>
+autocmd FileType c,cpp nmap <F4> :cs find c <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -95,8 +101,8 @@ let g:ctrlp_custom_ignore = {
 
 " For grep.vim
 let Grep_Skip_Dirs = '.git .svn'
-let Grep_Skip_Files = 'tags'
-map <F4> :Rgrep<CR><CR><CR><CR>
+let Grep_Skip_Files = 'tags csope*out'
+" map <F4> :Rgrep<CR><CR><CR><CR>
 
 " For synctastic
 " set statusline+=%#warningmsg#
