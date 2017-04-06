@@ -23,11 +23,11 @@ Plugin 'a.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
-Plugin 'tomasr/molokai'
+Plugin 'dyng/ctrlsf.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin on    " required
+filetype plugin indent on    " required
 
 
 " Basic settings
@@ -42,8 +42,8 @@ set ls=2
 autocmd FileType python setlocal ts=4 sts=4 expandtab
 autocmd FileType ocaml setlocal ts=2 sts=2
 " autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
-autocmd FileType c,cpp nmap <leader>fc :cs find c <cword><CR>
-autocmd FileType python nmap <leader>fc :cs find c <cword><CR>
+autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
+autocmd FileType python nmap <leader>cf :cs find c <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -60,6 +60,7 @@ map <F5>t :!ctags -R<CR><CR>
 map <F5>s :!cscope -Rbk<CR><CR>:cs reset<CR>
 
 " For NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let NERDTreeHighlightCursorline=1
 map <F2> :NERDTreeToggle<CR>
 
@@ -131,7 +132,7 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 " autocmd FileType go nmap <leader>gr <Plug>(go-run)
 " autocmd FileType go nmap <leader>gt <Plug>(go-test)
 " autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
-" autocmd FileType go nmap <F4> <Plug>(go-referrers)
+" autocmd FileType go nmap <leader>cf <Plug>(go-referrers)
 " autocmd FileType go nmap <leader>gl <Plug>(go-lint)
 " autocmd FileType go nmap <leader>gv <Plug>(go-vet)
 " autocmd FileType go nmap <leader>gn <Plug>(go-rename)
@@ -179,6 +180,12 @@ let g:jedi#usages_command = "<leader>pn"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
 
-" For theme
-let g:molokai_original = 1
-" colorscheme molokai
+" For Ctrlsf
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
