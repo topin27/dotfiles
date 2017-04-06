@@ -23,7 +23,7 @@ Plugin 'a.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
-Plugin 'dyng/ctrlsf.vim'
+Plugin 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -44,6 +44,7 @@ autocmd FileType ocaml setlocal ts=2 sts=2
 " autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
 autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
 autocmd FileType python nmap <leader>cf :cs find c <cword><CR>
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -180,12 +181,6 @@ let g:jedi#usages_command = "<leader>pn"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
 
-" For Ctrlsf
-nmap     <C-F>f <Plug>CtrlSFPrompt
-vmap     <C-F>f <Plug>CtrlSFVwordPath
-vmap     <C-F>F <Plug>CtrlSFVwordExec
-nmap     <C-F>n <Plug>CtrlSFCwordPath
-nmap     <C-F>p <Plug>CtrlSFPwordPath
-nnoremap <C-F>o :CtrlSFOpen<CR>
-nnoremap <C-F>t :CtrlSFToggle<CR>
-inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+" For molokai
+let g:molokai_original = 1
+colorscheme molokai
