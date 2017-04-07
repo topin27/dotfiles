@@ -23,6 +23,7 @@ Plugin 'a.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
+Plugin 'dyng/ctrlsf.vim'
 Plugin 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
@@ -41,10 +42,10 @@ set cc=81
 set ls=2
 autocmd FileType python setlocal ts=4 sts=4 expandtab
 autocmd FileType ocaml setlocal ts=2 sts=2
-" autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
+autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
 autocmd FileType python nmap <leader>cf :cs find c <cword><CR>
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -180,6 +181,17 @@ let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>pn"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
+
+" For Ctrlsf
+nmap     <C-X>f <Plug>CtrlSFPrompt
+vmap     <C-X>f <Plug>CtrlSFVwordPath
+vmap     <C-X>F <Plug>CtrlSFVwordExec
+nmap     <C-X>n <Plug>CtrlSFCwordPath
+nmap     <C-X>p <Plug>CtrlSFPwordPath
+nnoremap <C-X>o :CtrlSFOpen<CR>
+nnoremap <C-X>t :CtrlSFToggle<CR>
+inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
+let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 
 " For molokai
 let g:molokai_original = 1
