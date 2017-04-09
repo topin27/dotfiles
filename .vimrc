@@ -24,8 +24,9 @@ Plugin 'mileszs/ack.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
-Plugin 'tomasr/molokai'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -116,7 +117,8 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_go_checkers = ['golint', 'govet']
+let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
+" let g:syntastic_go_checkers = ['golint', 'govet']
 let g:syntastic_mode_map = {
     \ 'mode': 'passive', 
     \ 'active_filetypes': [], 
@@ -184,19 +186,15 @@ let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
 
 " For Ctrlsf
-nmap     <C-M>f <Plug>CtrlSFPrompt
-vmap     <C-M>f <Plug>CtrlSFVwordPath
-vmap     <C-M>F <Plug>CtrlSFVwordExec
-nmap     <C-M>n <Plug>CtrlSFCwordPath
-nmap     <C-M>p <Plug>CtrlSFPwordPath
-nnoremap <C-M>o :CtrlSFOpen<CR>
-nnoremap <C-M>t :CtrlSFToggle<CR>
-inoremap <C-M>t <Esc>:CtrlSFToggle<CR>
+nmap     <C-X>f <Plug>CtrlSFPrompt
+vmap     <C-X>f <Plug>CtrlSFVwordPath
+vmap     <C-X>F <Plug>CtrlSFVwordExec
+nmap     <C-X>n <Plug>CtrlSFCwordPath
+nmap     <C-X>p <Plug>CtrlSFPwordPath
+nnoremap <C-X>o :CtrlSFOpen<CR>
+nnoremap <C-X>t :CtrlSFToggle<CR>
+inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
-
-" For molokai
-let g:molokai_original = 1
-colorscheme molokai
 
 " For multiple-cursors
 let g:multi_cursor_use_default_mapping=0
@@ -205,3 +203,9 @@ let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
+
+" For ultisnips
+let g:UltiSnipsExpandTrigger="yy"
+let g:UltiSnipsListSnippets="yY"
+let g:UltiSnipsJumpForwardTrigger="YY"
+let g:UltiSnipsJumpBackwardTrigger="OO"
