@@ -27,6 +27,7 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+" Plugin 'bufexplorer.zip'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -42,11 +43,13 @@ set noexpandtab
 set ts=8
 set cc=81
 set ls=2
+set mouse=a
 autocmd FileType python setlocal ts=4 sts=4 expandtab
 autocmd FileType ocaml setlocal ts=2 sts=2
 autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
+autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType python nmap <leader>cf :cs find c <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
@@ -55,7 +58,7 @@ cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-nmap <leader>bb :ls<CR>:buffer<Space>
+" nmap <leader>bb :ls<CR>:buffer<Space>
 nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
@@ -106,6 +109,7 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
 \ }
+nmap <leader>b :CtrlPBuffer<CR>
 
 " For synctastic
 " set statusline+=%#warningmsg#
@@ -177,7 +181,7 @@ let g:jedi#popup_on_dot = 1
 let g:jedi#popup_select_first = 1
 let g:jedi#show_call_signatures = "1" 	" Set to 2 in command line
 
-let g:jedi#goto_command = "<leader>pg"
+let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>pa"
 let g:jedi#goto_definitions_command = "<leader>pd"
 let g:jedi#documentation_command = "K"
