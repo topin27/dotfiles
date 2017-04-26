@@ -25,11 +25,13 @@
 (defvar my/packages '(
 		      company
 		      smex
-		      ;; yasnippet
+		      yasnippet
 		      clean-aindent-mode
 		      undo-tree
 		      anaconda-mode
 		      company-anaconda
+		      sr-speedbar
+		      xcscope
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

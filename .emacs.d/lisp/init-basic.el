@@ -2,7 +2,7 @@
 (setq user-mail-address "yangtianpingytp@163.com")
 
 (menu-bar-mode 1)
-(tool-bar-mode 1)
+(tool-bar-mode -1)
 (scroll-bar-mode 1)
 
 (global-font-lock-mode t)  ;; 开启语法高亮
@@ -19,9 +19,9 @@
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
 
-(display-time-mode 1)
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
+;; (display-time-mode 1)
+;; (setq display-time-24hr-format t)
+;; (setq display-time-day-and-date t)
 
 (delete-selection-mode t)
 (transient-mark-mode t)  ;; 高亮显示区域选择
@@ -36,7 +36,6 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-(global-hl-line-mode 1)
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
 
 ;; (setq inhibit-splash-screen t
@@ -71,11 +70,11 @@
                                           newline-mark))
                             (whitespace-mode 1)))
 
-(defun kill-default-buffer ()
-  "Kill the currently active buffer -- set to C-x k so that users are not asked which buffer they want to kill."
-  (interactive)
-  (let (kill-buffer-query-functions) (kill-buffer)))
-(global-set-key (kbd "C-x k") 'kill-default-buffer)
+;; (defun kill-default-buffer ()
+;;   "Kill the currently active buffer -- set to C-x k so that users are not asked which buffer they want to kill."
+;;   (interactive)
+;;   (let (kill-buffer-query-functions) (kill-buffer)))
+;; (global-set-key (kbd "C-x k") 'kill-default-buffer)
 
 ;; smart openline
 (defun prelude-smart-open-line (arg)
@@ -102,6 +101,10 @@ Position the cursor at it's beginning, according to the current mode."
 
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
+
+(load-theme 'misterioso)
+
+(setq debug-on-error t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -144,6 +147,32 @@ Position the cursor at it's beginning, according to the current mode."
       ido-default-file-method 'selected-window
       ido-auto-merge-work-directories-length -1)
 (ido-mode +1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; sr-speedbar
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'sr-speedbar)  
+   
+(setq speedbar-show-unknown-files t)  
+(setq speedbar-use-images nil)  
+(setq sr-speedbar-width 20)
+(setq sr-speedbar-auto-refresh t) 
+(setq sr-speedbar-right-side nil)  
+(setq speedbar-tag-hierarchy-method nil) 
+
+(global-set-key (kbd "<f5>") (lambda()  
+                               (interactive)  
+                               (sr-speedbar-toggle)))
+
+;; (sr-speedbar-toggle)
+
+;; (defun speedbar-directories-update ()
+;;   "Make speedbar directories incremental update"
+;;   (speedbar-refresh)
+;; )
+;; (add-hook 'after-save-hook 'speedbar-directories-update)
 
 
 (provide 'init-basic)

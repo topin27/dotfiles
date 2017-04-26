@@ -17,7 +17,14 @@
 (setq gdb-many-windows t        ; use gdb-many-windows by default
       gdb-show-main t)          ; Non-nil means display source file containing the main routine at startup
 
-(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook
+	  'linum-mode
+	   'hl-line-mode)
+
+(add-hook 'prog-mode-hook
+	  '(lambda ()
+	     (local-set-key (kbd "M-*") 'pop-tag-mark)
+	     (local-set-key (kbd "M-.") 'find-tag)))
 
 (setq-default
  whitespace-line-column 81
@@ -52,8 +59,8 @@
 ;; yasnippet
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
+(require 'yasnippet)
+(yas-global-mode 1)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,7 +71,21 @@
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 
 (eval-after-load "company"
- '(add-to-list 'company-backends 'company-anaconda))
+  '(add-to-list 'company-backends 'company-anaconda))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; xcscope
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (require 'xcscope)
+	     (cscope-setup)
+	     (cscope-minor-mode t)))
+;; (add-hook 'c-mode-common-hook
+;; 	  '(lambda ()
+;; 	     (local-set-key (kbd "M-r") 'cscope-find-functions-calling-this-function)))
 
 
 (provide 'init-dev)
