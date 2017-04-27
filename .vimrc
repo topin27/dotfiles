@@ -31,7 +31,7 @@ Plugin 'honza/vim-snippets'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
+filetype plugin on    " required
 
 
 " Basic settings
@@ -39,14 +39,13 @@ syntax on
 set nu
 set ai
 set hlsearch
-set noexpandtab
+set noet
 set ts=8
 set cc=81
 set ls=2
-set mouse=a
-autocmd FileType python setlocal ts=4 sts=4 expandtab
-autocmd FileType ocaml setlocal ts=2 sts=2
-autocmd FileType c,cpp setlocal ts=2 sts=2 expandtab
+autocmd FileType python setlocal ts=4 sts=4 et
+autocmd FileType ocaml setlocal ts=2 sts=2 et
+autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>

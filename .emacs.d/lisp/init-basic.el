@@ -104,7 +104,7 @@ Position the cursor at it's beginning, according to the current mode."
 
 (load-theme 'misterioso)
 
-(setq debug-on-error t)
+(setq debug-on-error nil)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -154,17 +154,17 @@ Position the cursor at it's beginning, according to the current mode."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'sr-speedbar)  
-   
-(setq speedbar-show-unknown-files t)  
-(setq speedbar-use-images nil)  
-(setq sr-speedbar-width 20)
-(setq sr-speedbar-auto-refresh t) 
-(setq sr-speedbar-right-side nil)  
-(setq speedbar-tag-hierarchy-method nil) 
 
-(global-set-key (kbd "<f5>") (lambda()  
-                               (interactive)  
-                               (sr-speedbar-toggle)))
+;; (setq speedbar-show-unknown-files t)
+(setq speedbar-use-images nil)
+;; (setq sr-speedbar-width 20)
+;; (setq sr-speedbar-auto-refresh t)
+;; (setq sr-speedbar-right-side nil)
+;; (setq speedbar-tag-hierarchy-method nil)
+
+(global-set-key (kbd "<f5>") (lambda()
+                               (interactive)
+                               (speedbar)))
 
 ;; (sr-speedbar-toggle)
 

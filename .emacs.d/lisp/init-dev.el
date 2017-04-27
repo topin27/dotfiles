@@ -17,9 +17,8 @@
 (setq gdb-many-windows t        ; use gdb-many-windows by default
       gdb-show-main t)          ; Non-nil means display source file containing the main routine at startup
 
-(add-hook 'prog-mode-hook
-	  'linum-mode
-	   'hl-line-mode)
+(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'hl-line-mode)
 
 (add-hook 'prog-mode-hook
 	  '(lambda ()
