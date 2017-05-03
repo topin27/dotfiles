@@ -20,7 +20,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'a.vim'
-Plugin 'mileszs/ack.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
@@ -49,7 +48,6 @@ autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType python nmap <leader>cf :cs find c <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -62,8 +60,6 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
-map <F5>t :!ctags -R<CR><CR>
-map <F5>s :!cscope -Rbk<CR><CR>:cs reset<CR>
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -158,23 +154,13 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 " " let g:go_def_mode = 'godef'	" using guru now
 " let g:go_info_mode = 'guru'
 
-" For ack.vim
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-cnoreabbrev Ack Ack!
-nnoremap <Leader>agp :Ack! --python<Space>
-nnoremap <Leader>agc :Ack! --cc<Space>
-nnoremap <Leader>ago :Ack! --ocaml<Space>
-nnoremap <Leader>aga :Ack!<Space>
-
 " For jedi.vim
 let g:jedi#completions_enabled = 1
 autocmd FileType python setlocal completeopt-=preview
 
 let g:jedi#auto_initialization = 1
 let g:jedi#auto_vim_configuration = 0
-let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#use_tabs_not_buffers = 0
 " let g:jedi#use_splits_not_buffers = "left"
 let g:jedi#popup_on_dot = 1
 let g:jedi#popup_select_first = 1
@@ -182,7 +168,6 @@ let g:jedi#show_call_signatures = "1" 	" Set to 2 in command line
 
 let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>pa"
-let g:jedi#goto_definitions_command = "<leader>pd"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>pn"
 let g:jedi#completions_command = "<C-Space>"
@@ -197,7 +182,11 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
+nnoremap <leader>agp :CtrlSF -filetype python <cword><CR>
+nnoremap <leader>agc :CtrlSF -filetype cc <cword><CR>
+nnoremap <leader>ago :CtrlSF -filetype ocaml <cword><CR>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
+let g:ctrlsf_default_view_mode = 'compact'
 
 " For multiple-cursors
 let g:multi_cursor_use_default_mapping=0
