@@ -182,9 +182,9 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>agp :CtrlSF -filetype python <cword><CR>
-nnoremap <leader>agc :CtrlSF -filetype cc <cword><CR>
-nnoremap <leader>ago :CtrlSF -filetype ocaml <cword><CR>
+nnoremap <leader>agp :CtrlSF -filetype python<Space>
+nnoremap <leader>agc :CtrlSF -filetype cc<Space>
+nnoremap <leader>ago :CtrlSF -filetype ocaml<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
