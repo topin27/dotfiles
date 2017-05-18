@@ -1,16 +1,16 @@
+(add-to-list
+ 'load-path
+ (expand-file-name "lisp" "~/.emacs.d/"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package配置
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
-(add-to-list 'package-archives
-	     '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))    ;; Or "http://elpa.emacs-china.org/melpa/"
-(when (< emacs-major-version 24)
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")
+			 ("melpa-china" . "http://elpa.emacs-china.org/melpa/")
+			 ("marmalade" . "http://elpa.emacs-china.org/marmalade/")))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -24,14 +24,14 @@
 ;; Add Packages
 (defvar my/packages '(
 		      company
-		      smex
-		      yasnippet
 		      clean-aindent-mode
 		      undo-tree
 		      anaconda-mode
 		      company-anaconda
-		      sr-speedbar
-		      xcscope
+		      projectile
+		      helm
+		      ace-jump-mode
+		      autopair
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -64,11 +64,6 @@
 ;;       (progn
 ;;         (package-refresh-contents)
 ;;         (require-package package min-version t)))))
-
-
-(add-to-list
- 'load-path
- (expand-file-name "lisp" user-emacs-directory))
 
 
 (require 'init-dev)

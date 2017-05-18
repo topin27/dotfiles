@@ -1,4 +1,18 @@
-(which-function-mode t) ;; 实时显示当前所在的函数
+;; (which-function-mode t) ;; 实时显示当前所在的函数
+
+(add-hook 'prog-mode-hook 'linum-mode)
+;; (add-hook 'prog-mode-hook 'hl-line-mode)
+
+;; 从第81列开始高亮
+(setq-default
+ whitespace-line-column 81
+ whitespace-style       '(face lines-tail))
+(add-hook 'prog-mode-hook #'whitespace-mode)
+
+
+;;=============================
+;; For C dev
+;;=============================
 
 ;; Available C style:
 ;; “gnu”: The default style for GNU projects
@@ -17,18 +31,17 @@
 (setq gdb-many-windows t        ; use gdb-many-windows by default
       gdb-show-main t)          ; Non-nil means display source file containing the main routine at startup
 
-(add-hook 'prog-mode-hook 'linum-mode)
-(add-hook 'prog-mode-hook 'hl-line-mode)
+;; ;; TODO
+;; (add-hook 'c-mode-hook
+;; 	  (lambda ()
+;; 	     (local-set-key (kbd "M-*") 'pop-tag-mark)
+;; 	     (local-set-key (kbd "M-.") 'find-tag))
+;; 	  )
 
-(add-hook 'prog-mode-hook
-	  '(lambda ()
-	     (local-set-key (kbd "M-*") 'pop-tag-mark)
-	     (local-set-key (kbd "M-.") 'find-tag)))
 
-(setq-default
- whitespace-line-column 81
- whitespace-style       '(face lines-tail))
-(add-hook 'prog-mode-hook #'whitespace-mode)
+;;=============================
+;; For Python dev
+;;=============================
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -36,6 +49,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'after-init-hook 'global-company-mode)
+;; TODO
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
+							   company-dabbrev)))
+	  )
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (set (make-local-variable 'company-backends) '((company-anaconda company-dabbrev-code)
+							   company-dabbrev)))
+	  )
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -55,36 +79,19 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; yasnippet
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'yasnippet)
-(yas-global-mode 1)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; anaconda and anaconda-company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 
-(eval-after-load "company"
-  '(add-to-list 'company-backends 'company-anaconda))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; xcscope
+;; projectile
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'c-mode-common-hook
-	  '(lambda ()
-	     (require 'xcscope)
-	     (cscope-setup)
-	     (cscope-minor-mode t)))
-;; (add-hook 'c-mode-common-hook
-;; 	  '(lambda ()
-;; 	     (local-set-key (kbd "M-r") 'cscope-find-functions-calling-this-function)))
-
+(require 'projectile)
+;; (projectile-global-mode)
+(add-hook 'prog-mode-hook 'projectile-mode)
 
 (provide 'init-dev)
