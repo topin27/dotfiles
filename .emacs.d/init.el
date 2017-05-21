@@ -32,6 +32,7 @@
 		      helm
 		      ace-jump-mode
 		      autopair
+		      helm-projectile
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

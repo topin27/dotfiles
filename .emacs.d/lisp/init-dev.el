@@ -52,7 +52,7 @@
 ;; TODO
 (add-hook 'c-mode-hook
 	  (lambda ()
-	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
+	    (set (make-local-variable 'company-backends) '((company-clang company-semantic company-dabbrev-code)
 							   company-dabbrev)))
 	  )
 (add-hook 'python-mode-hook
