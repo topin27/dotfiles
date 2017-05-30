@@ -49,6 +49,7 @@ values."
      ;;        shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
+     (syntax-checking :variables syntax-checking-enable-by-default nil)
      ;; version-control
      )
    ;; List of additional packages that will be installed without being
@@ -315,7 +316,6 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (spacemacs/toggle-line-numbers-on)
   (global-company-mode)
   ;; (evil-leader/set-key "SPC" 'evil-avy-goto-subword-0)
   ;; (evil-leader/set-key "bc" 'kill-this-buffer)
