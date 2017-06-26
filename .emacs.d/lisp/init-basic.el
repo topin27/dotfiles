@@ -1,9 +1,9 @@
 (setq user-full-name "Yang Tianping")
 (setq user-mail-address "yangtianpingytp@163.com")
 
-(menu-bar-mode -1)
+(menu-bar-mode 1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+(scroll-bar-mode 1)
 
 (global-font-lock-mode t)  ;; 开启语法高亮
 (setq default-directory "~/Workspace") ;; 默认工作目录
@@ -48,8 +48,8 @@
 (when (not indicate-empty-lines)
   (toggle-indicate-empty-lines))
 
-(setq scroll-margin 3
-      scroll-conservatively 10000)
+;; (setq scroll-margin 3
+;;       scroll-conservatively 10000)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 
@@ -102,8 +102,8 @@ Position the cursor at it's beginning, according to the current mode."
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
 
-;; (load-theme 'misterioso)
-;; (set-cursor-color "#ffffff")
+(load-theme 'misterioso)
+(set-cursor-color "#ffffff")
 
 (setq debug-on-error nil)
 
@@ -220,7 +220,15 @@ Position the cursor at it's beginning, according to the current mode."
 (global-set-key (kbd "C-c h x") 'helm-register)
 (global-set-key (kbd "C-c h g") 'helm-projectile-grep)
 (global-set-key (kbd "C-c h i") 'helm-semantic-or-imenu)
-(global-set-key (kbd "C-c p d") 'helm-projectile-find-dir)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'projectile)
+;; (projectile-global-mode)
+(add-hook 'prog-mode-hook 'projectile-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

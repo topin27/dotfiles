@@ -43,6 +43,13 @@
 ;; For Python dev
 ;;=============================
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; anaconda and anaconda-company
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
@@ -77,21 +84,5 @@
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; anaconda and anaconda-company
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; projectile
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'projectile)
-;; (projectile-global-mode)
-(add-hook 'prog-mode-hook 'projectile-mode)
 
 (provide 'init-dev)
