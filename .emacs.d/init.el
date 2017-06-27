@@ -67,7 +67,8 @@
 ;;         (require-package package min-version t)))))
 
 
-(require 'init-dev)
 (require 'init-basic)
+(require 'init-proj)
+(require 'init-dev)
 
 (provide 'init)

@@ -4,10 +4,10 @@
 ;; (add-hook 'prog-mode-hook 'hl-line-mode)
 
 ;; 从第81列开始高亮
-(setq-default
- whitespace-line-column 81
- whitespace-style       '(face lines-tail))
-(add-hook 'prog-mode-hook #'whitespace-mode)
+;; (setq-default
+;;  whitespace-line-column 81
+;;  whitespace-style       '(face lines-tail))
+;; (add-hook 'prog-mode-hook #'whitespace-mode)
 
 
 ;;=============================
