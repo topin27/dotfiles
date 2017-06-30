@@ -14,6 +14,7 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-x") 'kill-region)
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (setq ibuffer-use-other-window t)
 (setq-default tab-width 8)
 
@@ -30,7 +31,7 @@
 (delete-selection-mode t)  ;; 选中区域时输入将覆盖选中区域
 (transient-mark-mode t)  ;; 高亮显示区域选择
 (setq x-select-enable-clipboard t)
-(setq fram-title-format "zhj@%b")
+;; (setq fram-title-format "zhj@%b")
 
 ;; (setq column-number-mode t)
 ;; (setq line-number-mode t)

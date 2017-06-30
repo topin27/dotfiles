@@ -12,6 +12,11 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-z") 'helm-select-action)
 
+;; (add-to-list 'grep-find-ignored-files "TAGS")
+;; (add-to-list 'grep-find-ignored-directories ".git")
+;; (add-to-list 'projectile-globally-ignored-files "TAGS")
+;; (add-to-list 'projectile-globally-ignored-directories ".git")
+
 (setq helm-split-window-in-side-p t
       helm-move-to-line-cycle-in-source t
       helm-ff-search-library-in-sexp t
@@ -36,6 +41,9 @@
 (global-set-key (kbd "C-c h x") 'helm-register)
 (global-set-key (kbd "C-c h i") 'helm-semantic-or-imenu)
 (global-set-key (kbd "s-o") 'helm-find-files)
+(global-set-key (kbd "s-O") 'find-file-other-window)
+(global-set-key (kbd "s-b") 'helm-mini)
+(global-set-key (kbd "s-B") 'ibuffer)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -53,11 +61,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'helm-projectile)
-(global-set-key (kbd "s-p") 'helm-projectile-switch-project)
-(global-set-key (kbd "s-f") 'helm-projectile-find-file)
-(global-set-key (kbd "s-b") 'helm-projectile-switch-to-buffer)
 (global-set-key (kbd "C-c h g") 'helm-projectile-grep)
 (global-set-key (kbd "C-c h f") 'helm-projectile-find-file)
+(global-set-key (kbd "s-p") 'helm-projectile-switch-project)
+(global-set-key (kbd "s-f") 'helm-projectile-find-file)
 
 
 (provide 'init-proj)

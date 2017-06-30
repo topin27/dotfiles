@@ -1,6 +1,9 @@
 ;; (which-function-mode t) ;; 实时显示当前所在的函数
 
 (add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (setq column-number-mode t)))
 ;; (add-hook 'prog-mode-hook 'hl-line-mode)
 
 ;; 从第81列开始高亮
