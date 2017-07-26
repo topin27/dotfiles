@@ -88,4 +88,14 @@
 (global-undo-tree-mode)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'projectile)
+;; (projectile-global-mode)
+(add-hook 'prog-mode-hook 'projectile-mode)
+(add-hook 'org-mode-hook 'projectile-mode)
+
+
 (provide 'init-dev)

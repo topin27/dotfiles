@@ -4,6 +4,7 @@
 (menu-bar-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode 1)
+(ido-mode 1)
 
 (global-font-lock-mode t)  ;; 开启语法高亮
 (setq default-directory "~/Workspace") ;; 默认工作目录
@@ -14,6 +15,10 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-x") 'kill-region)
+(global-set-key (kbd "s-o") 'ido-find-file)
+(global-set-key (kbd "s-O") 'find-file-other-window)
+(global-set-key (kbd "s-b") 'ido-switch-buffer)
+(global-set-key (kbd "s-B") 'ibuffer)
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (setq ibuffer-use-other-window t)
 (setq-default tab-width 8)
@@ -201,6 +206,26 @@ Position the cursor at it's beginning, according to the current mode."
 
 (require 'autopair)
 (autopair-global-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; smex
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'smex)
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido-vertical-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'ido-vertical-mode)
+(ido-vertical-mode 1)
 
 
 (provide 'init-basic)

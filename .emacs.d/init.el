@@ -29,10 +29,10 @@
 		      anaconda-mode
 		      company-anaconda
 		      projectile
-		      helm
 		      ace-jump-mode
 		      autopair
-		      helm-projectile
+		      smex
+		      ido-vertical-mode
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -68,7 +68,6 @@
 
 
 (require 'init-basic)
-(require 'init-proj)
 (require 'init-dev)
 
 (provide 'init)
