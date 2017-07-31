@@ -33,6 +33,7 @@
 		      autopair
 		      smex
 		      ido-vertical-mode
+		      flycheck
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
