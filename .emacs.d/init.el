@@ -8,8 +8,10 @@
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages")
+			 ("gnu-china" . "http://elpa.emacs-china.org/gnu/")
 			 ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("melpa-china" . "http://elpa.emacs-china.org/melpa/")
+ 			 ("marmalade-china" . "http://elpa.emacs-china.org/marmalade/")
 			 ("marmalade" . "http://elpa.emacs-china.org/marmalade/")))
 
 ;; Added by Package.el.  This must come before configurations of
@@ -34,6 +36,9 @@
 		      smex
 		      ido-vertical-mode
 		      flycheck
+		      rust-mode
+		      flycheck-rust
+		      racer
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

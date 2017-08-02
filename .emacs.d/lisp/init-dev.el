@@ -16,14 +16,18 @@
 ;; company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'after-init-hook 'global-company-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'prog-mode-hook 'company-mode)
+(setq company-idle-delay 0.3)
+(setq company-show-numbers t)
+(setq company-minimum-prefix-length 3)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flycheck
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -90,6 +94,7 @@
 							   company-dabbrev)))
 	  )
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; anaconda and anaconda-company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -97,6 +102,43 @@
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 
+
+;;=============================
+;; For Rust dev
+;;=============================
+
+(unless (getenv "RUST_SRC_PATH")
+  (setenv "RUST_SRC_PATH" (expand-file-name "/Users/yangtianping/Workspace/src/rust-master/src")))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rust-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+(autoload 'rust-mode "rust-mode" nil t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; flycheck-rust
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; racer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+
+(require 'rust-mode)
+(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+(define-key rust-mode-map (kbd "M-*") 'pop-tag-mark)
+(define-key rust-mode-map (kbd "M-?") 'racer-describe)
+(setq company-tooltip-align-annotations t)
 
 
 (provide 'init-dev)
