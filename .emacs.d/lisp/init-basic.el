@@ -19,6 +19,9 @@
 (global-set-key (kbd "s-O") 'find-file-other-window)
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
 (global-set-key (kbd "s-B") 'ibuffer)
+(cond
+ ((string-equal system-type "darwin")
+  (global-set-key (kbd "s-g") 'keyboard-quit)))
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (setq ibuffer-use-other-window t)
 (setq-default tab-width 8)
@@ -64,7 +67,6 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 (setq ediff-diff-options "-w"
-      ediff-split-window-function 'split-window-horizontally
       ediff-window-setup-function 'ediff-setup-windows-plain)
 (add-hook 'diff-mode-hook (lambda ()
                             (setq-local whitespace-style
@@ -112,8 +114,13 @@ Position the cursor at it's beginning, according to the current mode."
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
 
-(load-theme 'misterioso)
-(set-cursor-color "#ffffff")
+;; (load-theme 'misterioso)
+;; (if (not (display-graphic-p))
+;;     (xterm-mouse-mode t)
+;;   (set-cursor-color "#ffffff"))
+(load-theme 'manoj-dark)
+(if (not (display-graphic-p))
+    (xterm-mouse-mode t))
 
 (setq debug-on-error nil)
 
@@ -227,6 +234,40 @@ Position the cursor at it's beginning, according to the current mode."
 (require 'ido-vertical-mode)
 (ido-vertical-mode 1)
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; evil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'evil)
+(add-hook 'prog-mode-hook 'evil-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; multi-term
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (custom-set-variables
+;;  '(term-default-bg-color "#000000")        ;; background color (black)
+;;  '(term-default-fg-color "#dddd00"))       ;; foreground color (yellow)
+
+(setq multi-term-program "/usr/bin/zsh")
+
+(add-hook 'term-mode-hook
+	  (lambda ()
+	    (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+            (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq term-buffer-maximum-size 2048)))
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)
+            (autopair-mode -1)))
+(add-hook 'term-mode-hook
+          (lambda ()
+            (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 
 (provide 'init-basic)

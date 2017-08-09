@@ -18,7 +18,7 @@
 
 ;; (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'prog-mode-hook 'company-mode)
-(setq company-idle-delay 0.3)
+(setq company-idle-delay 0.2)
 (setq company-show-numbers t)
 (setq company-minimum-prefix-length 3)
 

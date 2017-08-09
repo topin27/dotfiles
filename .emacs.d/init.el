@@ -39,6 +39,8 @@
 		      rust-mode
 		      flycheck-rust
 		      racer
+		      evil
+		      multi-term
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
