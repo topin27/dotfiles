@@ -19,9 +19,9 @@
 (global-set-key (kbd "s-O") 'find-file-other-window)
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
 (global-set-key (kbd "s-B") 'ibuffer)
-(cond
- ((string-equal system-type "darwin")
-  (global-set-key (kbd "s-g") 'keyboard-quit)))
+;; (cond
+;;  ((string-equal system-type "darwin")
+;;   (global-set-key (kbd "s-g") 'keyboard-quit)))
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (setq ibuffer-use-other-window t)
 (setq-default tab-width 8)
@@ -112,7 +112,6 @@ Position the cursor at it's beginning, according to the current mode."
 (global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
 
 (add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'org-mode-hook 'flyspell-mode)
 
 ;; (load-theme 'misterioso)
 ;; (if (not (display-graphic-p))
@@ -147,6 +146,46 @@ Position the cursor at it's beginning, according to the current mode."
 ;;     (search-forward (string char) nil nil n))
 ;;   (setq unread-command-events (list last-input-event)))
 ;; (define-key global-map (kbd "C-c a") 'my/go-to-char)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun org-insert-src-block (src-code-type)
+  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+  (interactive
+   (let ((src-code-types
+          '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+            "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+            "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+            "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+            "scheme" "sqlite")))
+     (list (ido-completing-read "Source code type: " src-code-types))))
+  (progn
+    (newline-and-indent)
+    (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+    (newline-and-indent)
+    (insert "#+END_SRC\n")
+    (previous-line 2)
+    (org-edit-src-code)))
+
+(add-hook 'org-mode-hook '(lambda ()
+                            ;; turn on flyspell-mode by default
+                            (flyspell-mode 1)
+			    (setq truncate-lines nil)
+                            ;; C-TAB for expanding
+                            ;; (local-set-key (kbd "C-<tab>")
+                            ;;                'yas/expand-from-trigger-key)
+                            ;; keybinding for editing source code blocks
+                            (local-set-key (kbd "C-c s e")
+                                           'org-edit-src-code)
+                            ;; keybinding for inserting code blocks
+                            (local-set-key (kbd "C-c s i")
+                                           'org-insert-src-block)
+                            ))
+
+(setq org-src-fontify-natively t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -252,7 +291,7 @@ Position the cursor at it's beginning, according to the current mode."
 ;;  '(term-default-bg-color "#000000")        ;; background color (black)
 ;;  '(term-default-fg-color "#dddd00"))       ;; foreground color (yellow)
 
-(setq multi-term-program "/usr/bin/zsh")
+(setq multi-term-program "/bin/zsh")
 
 (add-hook 'term-mode-hook
 	  (lambda ()
