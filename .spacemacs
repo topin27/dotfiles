@@ -42,7 +42,7 @@ values."
      auto-completion
      ;; better-defaults
      ;; emacs-lisp
-     cscope
+     ;; cscope
      ;; git
      ;; markdown
      ;; org
@@ -321,8 +321,9 @@ you should place your code here."
   ;; (evil-leader/set-key "SPC" 'evil-avy-goto-subword-0)
   ;; (evil-leader/set-key "bc" 'kill-this-buffer)
   ;; (evil-leader/set-key-for-mode 'org-mode "ol" 'org-open-at-point)
-  (evil-leader/set-key-for-mode 'python-mode "gC" 'helm-cscope-find-calling-this-function)
-  (evil-leader/set-key-for-mode 'c-mode "gC" 'helm-cscope-find-calling-this-function)
+  (evil-leader/set-key "bo" 'helm-occur)
+  ;; (evil-leader/set-key-for-mode 'python-mode "gC" 'helm-cscope-find-calling-this-function)
+  ;; (evil-leader/set-key-for-mode 'c-mode "gC" 'helm-cscope-find-calling-this-function)
   (which-function-mode)
   )
 
