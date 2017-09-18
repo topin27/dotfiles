@@ -143,6 +143,8 @@ Position the cursor at it's beginning, according to the current mode."
 	    (setq term-buffer-maximum-size 2048)
 	    (setq show-trailing-whitespace nil)
 	    (autopair-mode -1)
+	    (line-number-mode -1)
+	    (column-number-mode -1)
 	    (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 ;; helm
@@ -170,6 +172,8 @@ Position the cursor at it's beginning, according to the current mode."
 (setq helm-apropos-fuzzy-match t)
 (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
 (global-set-key (kbd "C-c h x") 'helm-register)
+(global-unset-key (kbd "C-c h /"))
+(global-set-key (kbd "C-c h f") 'helm-find)
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
@@ -179,5 +183,15 @@ Position the cursor at it's beginning, according to the current mode."
       helm-echo-input-in-header-line t)
 (helm-autoresize-mode 1)
 (helm-mode 1)
+
+;; helm-ag
+
+(global-set-key (kbd "C-c /") 'helm-do-ag)
+(setq helm-ag-fuzzy-match t)
+(cond
+ ((string-equal system-type "darwin")
+  (custom-set-variables '(helm-ag-base-command "ack --nocolor --nogroup"))
+  )
+ )
 
 (provide 'init-basic)

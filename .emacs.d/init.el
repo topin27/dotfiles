@@ -21,6 +21,7 @@
 		      undo-tree
 		      multi-term
 		      helm
+		      helm-ag
 		      auto-complete
 		      flycheck
 		      clean-aindent-mode
