@@ -20,7 +20,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'a.vim'
-Plugin 'davidhalter/jedi-vim'
+" Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
@@ -40,14 +40,13 @@ set ai
 set hlsearch
 set noet
 set ts=8
-set cc=81
-set ls=2
+" set cc=81
+" set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
-autocmd FileType ocaml setlocal ts=2 sts=2 et
-autocmd FileType c,cpp setlocal ts=2 sts=2 et
+" autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
-autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+" autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
+" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -69,33 +68,6 @@ map <F2> :NERDTreeToggle<CR>
 " For tagbar
 let g:tagbar_right=1
 map <F3> :TagbarToggle<CR>
-let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -115,14 +87,8 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
-" let g:syntastic_go_checkers = ['golint', 'govet']
-let g:syntastic_mode_map = {
-    \ 'mode': 'passive', 
-    \ 'active_filetypes': [], 
-    \ 'passive_filetypes': ['go']
-\ }
+let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
 map <F4> :SyntasticCheck<CR>
 
 " For EasyMotion
@@ -131,47 +97,23 @@ map <Leader><leader>h <Plug>(easymotion-linebackward)
 map <Leader><leader>l <Plug>(easymotion-lineforward)
 map <Leader><leader>. <Plug>(easymotion-repeat)
 
-" " For vim-go
-" autocmd FileType go nmap <leader>gb <Plug>(go-build)
-" autocmd FileType go nmap <leader>gr <Plug>(go-run)
-" autocmd FileType go nmap <leader>gt <Plug>(go-test)
-" autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
-" autocmd FileType go nmap <leader>cf <Plug>(go-referrers)
-" autocmd FileType go nmap <leader>gl <Plug>(go-lint)
-" autocmd FileType go nmap <leader>gv <Plug>(go-vet)
-" autocmd FileType go nmap <leader>gn <Plug>(go-rename)
-" autocmd FileType go nmap <leader>gi <Plug>(go-implements)
-" autocmd FileType go nmap <leader>ga <Plug>(go-alternate-edit)
-" autocmd FileType go nmap <leader>gf <Plug>(go-files)
-" let g:go_get_update = 0
-" let g:go_test_timeout = '10s'
-" let g:go_fmt_autosave = 1
-" let g:go_textobj_include_function_doc = 1
-" let g:go_highlight_types = 1
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_list_type = "quickfix"
-" " let g:go_def_mode = 'godef'	" using guru now
-" let g:go_info_mode = 'guru'
-
-" For jedi.vim
-let g:jedi#completions_enabled = 1
-autocmd FileType python setlocal completeopt-=preview
-
-let g:jedi#auto_initialization = 1
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#use_tabs_not_buffers = 0
-" let g:jedi#use_splits_not_buffers = "left"
-let g:jedi#popup_on_dot = 1
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "1" 	" Set to 2 in command line
-
-let g:jedi#goto_command = "<leader>gd"
-let g:jedi#goto_assignments_command = "<leader>pa"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>pn"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>pr"
+" let g:jedi#completions_enabled = 1
+" autocmd FileType python setlocal completeopt-=preview
+" 
+" let g:jedi#auto_initialization = 1
+" let g:jedi#auto_vim_configuration = 0
+" let g:jedi#use_tabs_not_buffers = 0
+" " let g:jedi#use_splits_not_buffers = "left"
+" let g:jedi#popup_on_dot = 1
+" let g:jedi#popup_select_first = 1
+" let g:jedi#show_call_signatures = "1" 	" Set to 2 in command line
+" 
+" let g:jedi#goto_command = "<leader>gd"
+" let g:jedi#goto_assignments_command = "<leader>pa"
+" let g:jedi#documentation_command = "K"
+" let g:jedi#usages_command = "<leader>pn"
+" let g:jedi#completions_command = "<C-Space>"
+" let g:jedi#rename_command = "<leader>pr"
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
