@@ -20,7 +20,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'a.vim'
-" Plugin 'davidhalter/jedi-vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
@@ -88,6 +88,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_c_checkers = ['gcc', 'clang']
 " let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
 map <F4> :SyntasticCheck<CR>
 
@@ -97,23 +98,21 @@ map <Leader><leader>h <Plug>(easymotion-linebackward)
 map <Leader><leader>l <Plug>(easymotion-lineforward)
 map <Leader><leader>. <Plug>(easymotion-repeat)
 
-" let g:jedi#completions_enabled = 1
-" autocmd FileType python setlocal completeopt-=preview
-" 
+let g:jedi#completions_enabled = 1
+autocmd FileType python setlocal completeopt-=preview
 " let g:jedi#auto_initialization = 1
 " let g:jedi#auto_vim_configuration = 0
 " let g:jedi#use_tabs_not_buffers = 0
-" " let g:jedi#use_splits_not_buffers = "left"
-" let g:jedi#popup_on_dot = 1
-" let g:jedi#popup_select_first = 1
-" let g:jedi#show_call_signatures = "1" 	" Set to 2 in command line
-" 
-" let g:jedi#goto_command = "<leader>gd"
-" let g:jedi#goto_assignments_command = "<leader>pa"
-" let g:jedi#documentation_command = "K"
-" let g:jedi#usages_command = "<leader>pn"
-" let g:jedi#completions_command = "<C-Space>"
-" let g:jedi#rename_command = "<leader>pr"
+" let g:jedi#use_splits_not_buffers = "left"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
+let g:jedi#goto_command = "<leader>gd"
+let g:jedi#goto_assignments_command = "<leader>pa"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>pn"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>pr"
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
