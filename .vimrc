@@ -27,6 +27,7 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 " Plugin 'bufexplorer.zip'
+Plugin 'auto-pairs'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -41,7 +42,7 @@ set hlsearch
 set noet
 set ts=8
 " set cc=81
-" set ls=2
+set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
 " autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -63,11 +64,11 @@ nmap <leader>cp :cprevious<CR>
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let NERDTreeHighlightCursorline=1
-map <F2> :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR><C-W>h
 
 " For tagbar
 let g:tagbar_right=1
-map <F3> :TagbarToggle<CR>
+map <F3> :TagbarToggle<CR><C-W>l
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -90,7 +91,8 @@ let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_c_checkers = ['gcc', 'clang']
 " let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
-map <F4> :SyntasticCheck<CR>
+let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []}
+map <F4> :SyntasticToggleMode<CR>
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
