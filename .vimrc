@@ -26,8 +26,6 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-" Plugin 'bufexplorer.zip'
-Plugin 'auto-pairs'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -46,8 +44,8 @@ set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
 " autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-" autocmd FileType c,cpp nmap <leader>cf :cs find c <cword><CR>
-" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 " noremap <tab> <c-w><c-w>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -88,7 +86,7 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_c_checkers = ['gcc', 'clang']
 " let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
 let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []}
@@ -112,9 +110,21 @@ let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
 let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>pa"
 let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>pn"
+let g:jedi#usages_command = "<leader>gc"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
+
+" Add the virtualenv's site-packages to vim path
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, os.path.join(project_base_dir, 'lib', 'python2.7', 'site-packages'))
+EOF
+endif
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
