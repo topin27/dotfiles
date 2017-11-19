@@ -43,6 +43,7 @@ set ts=8
 set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
 " autocmd FileType c,cpp setlocal ts=2 sts=2 et
+autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
@@ -58,6 +59,23 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
+
+function! Auto_complete_string()
+	if pumvisible()
+		return "\<C-n>"
+	else
+		return "\<C-x>\<C-o>\<C-r>=Auto_complete_opened()\<CR>"
+	end
+endfunction
+inoremap <expr> <Nul> Auto_complete_string()
+
+function! Auto_complete_opened()
+	if pumvisible()
+		return "\<Down>"
+	end
+		return ""
+endfunction
+inoremap <expr> <C-Space> Auto_complete_string()
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -88,14 +106,17 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_c_checkers = ['gcc', 'clang']
-" let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
+let g:syntastic_ocaml_checkers = ['merlin']
+let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
 let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []}
 map <F4> :SyntasticToggleMode<CR>
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
-map <Leader><leader>h <Plug>(easymotion-linebackward)
-map <Leader><leader>l <Plug>(easymotion-lineforward)
+map <Space>w <Plug>(easymotion-w)
+map <Space>b <Plug>(easymotion-b)
+map <Space>j <Plug>(easymotion-j)
+map <Space>k <Plug>(easymotion-k)
 map <Leader><leader>. <Plug>(easymotion-repeat)
 
 let g:jedi#completions_enabled = 1
@@ -111,7 +132,7 @@ let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>pa"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>gc"
-let g:jedi#completions_command = "<C-Space>"
+" let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
 
 " Add the virtualenv's site-packages to vim path
@@ -143,7 +164,7 @@ let g:ctrlsf_default_view_mode = 'compact'
 
 " For multiple-cursors
 let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_key='<F6>'
+let g:multi_cursor_start_key='<F5>'
 let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
@@ -154,3 +175,9 @@ let g:UltiSnipsExpandTrigger="yy"
 let g:UltiSnipsListSnippets="yY"
 let g:UltiSnipsJumpForwardTrigger="YY"
 let g:UltiSnipsJumpBackwardTrigger="OO"
+
+" For ocaml
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
+autocmd FileType ocaml map <F3> :MerlinOutline<CR>
