@@ -1,6 +1,8 @@
 (setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
+(setenv "WORKON_HOME" (concat "~/Workspace/python/ENV"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
+;; 关闭自动备份
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
@@ -55,23 +57,23 @@ Position the cursor at it's beginning, according to the current mode."
 
 ;; org-mode
 
-(defun org-insert-src-block (src-code-type)
-  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
-  (interactive
-   (let ((src-code-types
-          '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
-            "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
-            "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
-            "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
-            "scheme" "sqlite")))
-     (list (ido-completing-read "Source code type: " src-code-types))))
-  (progn
-    (newline-and-indent)
-    (insert (format "#+BEGIN_SRC %s\n" src-code-type))
-    (newline-and-indent)
-    (insert "#+END_SRC\n")
-    (previous-line 2)
-    (org-edit-src-code)))
+;; (defun org-insert-src-block (src-code-type)
+;;   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+;;   (interactive
+;;    (let ((src-code-types
+;;           '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+;;             "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+;;             "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+;;             "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+;;             "scheme" "sqlite")))
+;;      (list (ido-completing-read "Source code type: " src-code-types))))
+;;   (progn
+;;     (newline-and-indent)
+;;     (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+;;     (newline-and-indent)
+;;     (insert "#+END_SRC\n")
+;;     (previous-line 2)
+;;     (org-edit-src-code)))
 
 (add-hook 'org-mode-hook '(lambda ()
                             (flyspell-mode 1)  ;; turn on flyspell-mode by default
@@ -84,8 +86,6 @@ Position the cursor at it's beginning, according to the current mode."
                             (local-set-key (kbd "C-c s i")
                                            'org-insert-src-block)
                             ))
-
-(setq org-src-fontify-natively t)
 
 ;; hippie-expand
 
@@ -111,11 +111,6 @@ Position the cursor at it's beginning, according to the current mode."
 (put 'dired-find-alternate-file 'disabled nil)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)) ;; lazy-load
-
-;; evil
-
-(require 'evil)
-(add-hook 'prog-mode-hook 'evil-mode)
 
 ;; ace-jump-mode
 

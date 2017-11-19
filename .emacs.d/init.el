@@ -15,16 +15,19 @@
 (require 'cl)
 
 (defvar my/packages '(
-		      evil
+		      material-theme
 		      autopair
 		      ace-jump-mode
 		      undo-tree
 		      multi-term
+		      pyvenv
 		      helm
 		      helm-ag
-		      auto-complete
+		      company
+		      company-jedi
 		      flycheck
 		      clean-aindent-mode
+		      magit
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

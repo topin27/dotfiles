@@ -21,11 +21,6 @@
 (if (not (display-graphic-p))
     (xterm-mouse-mode t))
 
-(setq-default tab-width 8)
-(add-hook 'prog-mode-hook 'linum-mode)
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (setq column-number-mode t)))
-(add-hook 'prog-mode-hook 'which-function-mode)
+(load-theme 'material t)
 
 (provide 'init-ui)
