@@ -32,7 +32,7 @@ values."
    dotspacemacs-configuration-layers
    '(
      python
-     c-c++
+     (c-c++ :variables c-c++-enable-clang-support t)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -42,9 +42,9 @@ values."
      auto-completion
      ;; better-defaults
      ;; emacs-lisp
-     ;; cscope
-     ;; git
-     ;; markdown
+     cscope
+     git
+     markdown
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -114,7 +114,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'random
+   dotspacemacs-startup-banner 'official
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -324,7 +324,7 @@ you should place your code here."
   (evil-leader/set-key "bo" 'helm-occur)
   ;; (evil-leader/set-key-for-mode 'python-mode "gC" 'helm-cscope-find-calling-this-function)
   ;; (evil-leader/set-key-for-mode 'c-mode "gC" 'helm-cscope-find-calling-this-function)
-  (which-function-mode)
+  ;; (which-function-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
