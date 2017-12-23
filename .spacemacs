@@ -32,7 +32,10 @@ values."
    dotspacemacs-configuration-layers
    '(
      python
-     (c-c++ :variables c-c++-enable-clang-support t)
+     (c-c++ :variables
+            c-c++-enable-clang-support t
+            c-c++-default-mode-for-headers 'c++-mode)
+     cscope
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -42,7 +45,6 @@ values."
      auto-completion
      ;; better-defaults
      ;; emacs-lisp
-     cscope
      git
      markdown
      ;; org
@@ -321,10 +323,12 @@ you should place your code here."
   ;; (evil-leader/set-key "SPC" 'evil-avy-goto-subword-0)
   ;; (evil-leader/set-key "bc" 'kill-this-buffer)
   ;; (evil-leader/set-key-for-mode 'org-mode "ol" 'org-open-at-point)
-  (evil-leader/set-key "bo" 'helm-occur)
+  ;; (evil-leader/set-key "bo" 'helm-occur)
+  ;; (evil-leader/set-key "te" 'flycheck-mode)
   ;; (evil-leader/set-key-for-mode 'python-mode "gC" 'helm-cscope-find-calling-this-function)
   ;; (evil-leader/set-key-for-mode 'c-mode "gC" 'helm-cscope-find-calling-this-function)
-  ;; (which-function-mode)
+  ;; (which-function-mode t)
+  (global-hl-line-mode -1)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
