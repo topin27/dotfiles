@@ -7,5 +7,21 @@ if [ -d $HOME/Library/Python/2.7/bin ]; then
 	export PATH=$HOME/Library/Python/2.7/bin:$PATH
 fi
 
-export WORKON_HOME='~/.virtualenvs'
-source ~/Library/Python/2.7/bin/virtualenvwrapper.sh
+my-workon () {
+case $1 in
+	"python")
+	export WORKON_HOME='~/.virtualenvs'
+	source ~/Library/Python/2.7/bin/virtualenvwrapper.sh
+	;;
+	"java")
+	echo "java"
+	;;
+	"scala")
+	export SCALA_HOME=~/Workspace/scala/scala-2.10.5
+	export PATH=$SCALA_HOME/bin:$PATH
+	;;
+	*)
+	echo "Usage: my-workon <java|python|scala>"
+	;;
+esac
+}

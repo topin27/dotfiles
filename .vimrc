@@ -19,11 +19,13 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'a.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -40,7 +42,7 @@ set ts=8
 " set cc=81
 set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
-autocmd FileType c,cpp setlocal ts=4 sts=4 et
+" autocmd FileType c,cpp setlocal ts=2 sts=2 et
 autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
@@ -57,6 +59,23 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
+
+function! Auto_complete_string()
+	if pumvisible()
+		return "\<C-n>"
+	else
+		return "\<C-x>\<C-o>\<C-r>=Auto_complete_opened()\<CR>"
+	end
+endfunction
+inoremap <expr> <Nul> Auto_complete_string()
+
+function! Auto_complete_opened()
+	if pumvisible()
+		return "\<Down>"
+	end
+		return ""
+endfunction
+inoremap <expr> <C-Space> Auto_complete_string()
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -100,6 +119,34 @@ map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
 map <Leader><leader>. <Plug>(easymotion-repeat)
 
+let g:jedi#completions_enabled = 1
+autocmd FileType python setlocal completeopt-=preview
+" let g:jedi#auto_initialization = 1
+" let g:jedi#auto_vim_configuration = 0
+" let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#use_splits_not_buffers = "left"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
+let g:jedi#goto_command = "<leader>gd"
+let g:jedi#goto_assignments_command = "<leader>pa"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>gc"
+" let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>pr"
+
+" Add the virtualenv's site-packages to vim path
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+	project_base_dir = os.environ['VIRTUAL_ENV']
+	sys.path.insert(0, os.path.join(project_base_dir, 'lib', 'python2.7', 'site-packages'))
+EOF
+endif
+
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
 vmap     <C-X>f <Plug>CtrlSFVwordPath
@@ -134,25 +181,3 @@ let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
 autocmd FileType ocaml map <F3> :MerlinOutline<CR>
-
-" For ycm
-let g:ycm_auto_trigger = 1
-set completeopt-=preview " Disable preview window when complete
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '>*'
-nnoremap <leader>gd :YcmCompleter GoTo<CR>
-nnoremap K :YcmCompleter GetDoc<CR><C-W>k
-nnoremap <leader>ty :let g:ycm_auto_trigger=0<CR>
-nnoremap <leader>tY :let g:ycm_auto_trigger=1<CR>
-let g:ycm_python_binary_path = 'python'
-autocmd FileType c,cpp nnoremap <F4> :YcmForceCompileAndDiagnostics<CR>
-" autocmd FileType c,cpp nnoremap <F4> :YcmDiags<CR>
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_filetype_whitelist = { 'python': 1, 'c': 1, 'cpp': 1 }
-let g:ycm_show_diagnostics_ui = 1
-let g:ycm_autoclose_preview_window_after_completion = 0
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_key_list_stop_completion = ['<C-y>']
-let g:ycm_key_detailed_diagnostics = '<leader>ed'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_use_ultisnips_completer = 0
