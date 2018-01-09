@@ -19,7 +19,6 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'a.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
@@ -29,7 +28,7 @@ Plugin 'honza/vim-snippets'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin on    " required
+filetype plugin indent on    " required
 
 
 " Basic settings
@@ -42,7 +41,7 @@ set ts=8
 " set cc=81
 set ls=2
 autocmd FileType python setlocal ts=4 sts=4 et
-" autocmd FileType c,cpp setlocal ts=2 sts=2 et
+" autocmd FileType c,cpp setlocal ts=4 sts=4 et
 autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
@@ -59,23 +58,6 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
-
-function! Auto_complete_string()
-	if pumvisible()
-		return "\<C-n>"
-	else
-		return "\<C-x>\<C-o>\<C-r>=Auto_complete_opened()\<CR>"
-	end
-endfunction
-inoremap <expr> <Nul> Auto_complete_string()
-
-function! Auto_complete_opened()
-	if pumvisible()
-		return "\<Down>"
-	end
-		return ""
-endfunction
-inoremap <expr> <C-Space> Auto_complete_string()
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -105,7 +87,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_c_checkers = ['gcc', 'clang']
+let g:syntastic_c_checkers = ['clang']
 let g:syntastic_ocaml_checkers = ['merlin']
 let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
 let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []}
@@ -132,7 +114,7 @@ let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>pa"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>gc"
-" let g:jedi#completions_command = "<C-Space>"
+let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>pr"
 
 " Add the virtualenv's site-packages to vim path
@@ -142,8 +124,10 @@ import os.path
 import sys
 import vim
 if 'VIRTUAL_ENV' in os.environ:
-	project_base_dir = os.environ['VIRTUAL_ENV']
-	sys.path.insert(0, os.path.join(project_base_dir, 'lib', 'python2.7', 'site-packages'))
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
 EOF
 endif
 
@@ -176,8 +160,8 @@ let g:UltiSnipsListSnippets="yY"
 let g:UltiSnipsJumpForwardTrigger="YY"
 let g:UltiSnipsJumpBackwardTrigger="OO"
 
-" For ocaml
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
-autocmd FileType ocaml map <F3> :MerlinOutline<CR>
+" " For ocaml
+" let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+" execute "set rtp+=" . g:opamshare . "/merlin/vim"
+" autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
+" autocmd FileType ocaml map <F3> :MerlinOutline<CR>
