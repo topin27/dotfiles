@@ -1,13 +1,27 @@
-(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
-(setenv "WORKON_HOME" (concat "~/Workspace/python/ENV"))
-(setq exec-path (append exec-path '("/usr/local/bin")))
+;; 这里放置除了界面之外的全局都需要用到的包或者配置
 
-;; 关闭自动备份
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(cond
+ ((string-equal system-type "gnu/linux")
+  (setenv "PATH" (concat "~/.local/bin" ":" (getenv "PATH")))
+  )
+ ((string-equal system-type "darwin")
+  (setenv "PATH" (concat "~/Library/Python/2.7/bin" ":" (getenv "PATH")))
+  )
+ )
+
+(setenv "WORKON_HOME" "~/.virtualenvs")
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(winner-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Key Bindings
+;; Key bindings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -52,57 +66,8 @@ Position the cursor at it's beginning, according to the current mode."
 (global-set-key (kbd "C-,") 'my/jump-back-to-point)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Basic Modes
+;; For packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; org-mode
-
-;; (defun org-insert-src-block (src-code-type)
-;;   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
-;;   (interactive
-;;    (let ((src-code-types
-;;           '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
-;;             "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
-;;             "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
-;;             "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
-;;             "scheme" "sqlite")))
-;;      (list (ido-completing-read "Source code type: " src-code-types))))
-;;   (progn
-;;     (newline-and-indent)
-;;     (insert (format "#+BEGIN_SRC %s\n" src-code-type))
-;;     (newline-and-indent)
-;;     (insert "#+END_SRC\n")
-;;     (previous-line 2)
-;;     (org-edit-src-code)))
-
-(add-hook 'org-mode-hook '(lambda ()
-                            (flyspell-mode 1)  ;; turn on flyspell-mode by default
-			    (setq truncate-lines nil)
-                            ;; C-TAB for expanding
-                            ;; (local-set-key (kbd "C-<tab>")
-                            ;;                'yas/expand-from-trigger-key)
-                            (local-set-key (kbd "C-c s e")
-                                           'org-edit-src-code)
-                            (local-set-key (kbd "C-c s i")
-                                           'org-insert-src-block)
-                            ))
-
-;; hippie-expand
-
-(global-set-key (kbd "M-/") 'hippie-expand)
-(setq hippie-expand-try-functions-list
-      '(try-expand-daabrev
-	try-expand-daabrev-visible
-	try-expand-daabrev-all-buffers
-	try-expand-daabrev-from-kill
-	try-complete-file-name-partially
-	try-complete-file-name
-	try-expand-all-abbrevs
-	try-expand-list
-	try-expand-line
-	;; try-complete-lisp-symbol-partially
-	;; try-complete-lisp-symbol
-	))
 
 ;; dired
 
@@ -119,28 +84,13 @@ Position the cursor at it's beginning, according to the current mode."
 
 ;; auto-pair
 
-(require 'autopair)
-;; (autopair-global-mode)
-(add-hook 'prog-mode-hook 'autopair-mode)
+;; (require 'autopair)
+;; (add-hook 'prog-mode-hook 'autopair-mode)
 
 ;; undo-tree
 
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-;; multi-term
-
-(setq multi-term-program "/bin/bash")
-(add-hook 'term-mode-hook
-	  (lambda ()
-	    (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
-	    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
-	    (setq term-buffer-maximum-size 2048)
-	    (setq show-trailing-whitespace nil)
-	    (autopair-mode -1)
-	    (line-number-mode -1)
-	    (column-number-mode -1)
-	    (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 ;; helm
 
@@ -179,14 +129,14 @@ Position the cursor at it's beginning, according to the current mode."
 (helm-autoresize-mode 1)
 (helm-mode 1)
 
-;; helm-ag
+;; projectile & helm-projectile
 
-(global-set-key (kbd "C-c /") 'helm-do-ag)
-(setq helm-ag-fuzzy-match t)
-(cond
- ((string-equal system-type "darwin")
-  (custom-set-variables '(helm-ag-base-command "ack --nocolor --nogroup"))
-  )
- )
+(projectile-global-mode)
+;; (require 'helm-projectile)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+;; (setq projectile-enable-caching t)
+(global-set-key (kbd "C-c p /") 'helm-projectile-grep)
+
 
 (provide 'init-basic)

@@ -15,19 +15,16 @@
 (require 'cl)
 
 (defvar my/packages '(
-		      material-theme
-		      autopair
 		      ace-jump-mode
+		      autopair
 		      undo-tree
-		      multi-term
-		      pyvenv
-		      helm
-		      helm-ag
-		      company
-		      company-jedi
-		      flycheck
 		      clean-aindent-mode
-		      magit
+		      company
+		      company-anaconda
+		      helm
+		      helm-projectile
+		      helm-cscope
+		      flycheck
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -49,6 +46,21 @@
 
 (require 'init-ui)
 (require 'init-basic)
+;; (require 'init-org)
 (require 'init-dev)
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flycheck company-anaconda helm-cscope imenu-anywhere imenu-list magit ace-jump-mode autopair undo-tree smex ido-vertical-mode))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

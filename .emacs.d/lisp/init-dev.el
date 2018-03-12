@@ -1,39 +1,73 @@
-;; basic dev settings
+;; 这里放置和编码相关的配置或者包
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq-default tab-width 8)
-(add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook
 	  (lambda ()
-	    (setq column-number-mode t)))
-(add-hook 'prog-mode-hook 'which-function-mode)
+	    (setq linum-mode 1)
+	    (setq which-function-mode 1)))
 
-;; flycheck
+(setq
+ gdb-many-windows t
+ gdb-show-main t
+ )
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Key bindings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TODO
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; For packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; clean-aindent-mode
 
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
+;; autopair
+
+(require 'autopair)
+(add-hook 'prog-mode-hook 'autopair-mode)
+
 ;; company
 
-(add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'c-mode-hook
+(add-hook 'prog-mode-hook 'global-company-mode)
+(add-hook 'c-mode-common-hook
 	  (lambda ()
 	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
 							   company-capf company-dabbrev))))
 
-;; company-jedi
+;; company-anaconda
 
-;; (setq company-backends '((company-dabbrev-code company-jedi)))
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (set (make-local-variable 'company-backends) '((company-jedi company-dabbrev-code)
+	    (set (make-local-variable 'company-backends) '((company-anaconda company-dabbrev-code)
 							   company-capf company-dabbrev))))
 
-;; magit
+;; xcscope & helm-cscope
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(add-hook 'c-mode-common-hook 'helm-cscope-mode)
+(add-hook 'helm-cscope-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-.") 'helm-cscope-find-global-definition)
+            (local-set-key (kbd "M-@") 'helm-cscope-find-calling-this-function)
+            (local-set-key (kbd "M-s") 'helm-cscope-find-this-symbol)
+	    ;; (local-set-key (kbd "M-,") 'helm-cscope-pop-mark))))
+            (local-set-key (kbd "M-*") 'helm-cscope-pop-mark))))
+
+;; flycheck
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 
 (provide 'init-dev)
