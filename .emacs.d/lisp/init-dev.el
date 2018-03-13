@@ -62,12 +62,12 @@
             (local-set-key (kbd "M-.") 'helm-cscope-find-global-definition)
             (local-set-key (kbd "M-@") 'helm-cscope-find-calling-this-function)
             (local-set-key (kbd "M-s") 'helm-cscope-find-this-symbol)
-	    ;; (local-set-key (kbd "M-,") 'helm-cscope-pop-mark))))
-            (local-set-key (kbd "M-*") 'helm-cscope-pop-mark))))
+	    ;; (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
+            (local-set-key (kbd "M-*") 'helm-cscope-pop-mark)))
 
 ;; flycheck
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
 
 (provide 'init-dev)

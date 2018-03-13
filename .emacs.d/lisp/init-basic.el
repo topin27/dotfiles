@@ -49,21 +49,21 @@ Position the cursor at it's beginning, according to the current mode."
   (indent-according-to-mode))
 (global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
 
-(defun my/set-point-to-register()
-  "临时设置记号点，由my/jump-back-to-point跳回"
-  (interactive)
-  (setq zmacs-region-stays t)
-  (point-to-register 8))
-(global-set-key (kbd "C-.") 'my/set-point-to-register)
+;; (defun my/set-point-to-register()
+;;   "临时设置记号点，由my/jump-back-to-point跳回"
+;;   (interactive)
+;;   (setq zmacs-region-stays t)
+;;   (point-to-register 8))
+;; (global-set-key (kbd "C-.") 'my/set-point-to-register)
 
-(defun my/jump-back-to-point()
-  "跳回由my/set-point-to-register设置的记号点"
-  (interactive)
-  (setq zmacs-region-stays t)
-  (let ((tmp (point-marker)))
-    (jump-to-register 8)
-    (set-register 8 tmp)))
-(global-set-key (kbd "C-,") 'my/jump-back-to-point)
+;; (defun my/jump-back-to-point()
+;;   "跳回由my/set-point-to-register设置的记号点"
+;;   (interactive)
+;;   (setq zmacs-region-stays t)
+;;   (let ((tmp (point-marker)))
+;;     (jump-to-register 8)
+;;     (set-register 8 tmp)))
+;; (global-set-key (kbd "C-,") 'my/jump-back-to-point)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; For packages

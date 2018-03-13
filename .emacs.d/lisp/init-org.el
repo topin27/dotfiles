@@ -11,3 +11,5 @@
                             (local-set-key (kbd "C-c s i")
                                            'org-insert-src-block)
                             ))
+
+(setq org-html-postamble nil)
