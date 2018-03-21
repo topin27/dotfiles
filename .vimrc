@@ -17,7 +17,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
@@ -25,6 +24,7 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'topin27/vimwiki'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -34,30 +34,40 @@ filetype plugin indent on    " required
 " Basic settings
 syntax on
 set nu
+set ruler
 set ai
 set hlsearch
 set noet
 set ts=8
+set mouse=a
 " set cc=81
 set ls=2
+
 autocmd FileType python setlocal ts=4 sts=4 et
 " autocmd FileType c,cpp setlocal ts=4 sts=4 et
-autocmd FileType ocaml setlocal ts=2 sts=2 et
+" autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-" noremap <tab> <c-w><c-w>
+
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-" nmap <leader>bb :ls<CR>:buffer<Space>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-d> <S-Right><Delete>
+cnoremap <C-g> <C-c>
 nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
+" nmap <C-j> <C-W>j
+" nmap <C-k> <C-W>k
+" nmap <C-h> <C-W>h
+" nmap <C-l> <C-W>l
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -77,29 +87,13 @@ let g:ctrlp_custom_ignore = {
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
 
-" For synctastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_check_on_w = 0
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_c_checkers = ['clang']
-let g:syntastic_ocaml_checkers = ['merlin']
-let g:syntastic_python_pylint_args='--disable=C0111,R0903,C0301'
-let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []}
-map <F4> :SyntasticToggleMode<CR>
-
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
 map <Space>w <Plug>(easymotion-w)
 map <Space>b <Plug>(easymotion-b)
 map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
-map <Leader><leader>. <Plug>(easymotion-repeat)
+map <Space>. <Plug>(easymotion-repeat)
 
 let g:jedi#completions_enabled = 1
 autocmd FileType python setlocal completeopt-=preview
@@ -142,6 +136,7 @@ nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
 nnoremap <leader>agp :CtrlSF -filetype python<Space>
 nnoremap <leader>agc :CtrlSF -filetype cc<Space>
+nnoremap <leader>agz :CtrlSF -filetype cpp<Space>
 nnoremap <leader>ago :CtrlSF -filetype ocaml<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
@@ -165,3 +160,9 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 " execute "set rtp+=" . g:opamshare . "/merlin/vim"
 " autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
 " autocmd FileType ocaml map <F3> :MerlinOutline<CR>
+
+" For vimwiki
+let g:vimwiki_list = [{'path': '~/Workspace/src/personal-wiki/',
+	\    'path_html': '~/Workspace/src/topin27.github.io/'}]
+let g:vimwiki_html_header_numbering = 1
+let g:vimwiki_toc_header = 'Table of Contents'
