@@ -92,51 +92,33 @@ Position the cursor at it's beginning, according to the current mode."
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-;; helm
+;; ido & ido-vertical-mode
 
-(require 'helm)
-(require 'helm-config)
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-everywhere t)          
+(ido-mode 1)
 
-(global-unset-key (kbd "C-x c"))
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-(global-set-key (kbd "M-x") 'helm-M-x)
-(setq helm-M-x-fuzzy-match t)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
-(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-(setq helm-locate-fuzzy-match t)
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(setq helm-apropos-fuzzy-match t)
-(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
-(global-set-key (kbd "C-c h x") 'helm-register)
-(global-unset-key (kbd "C-c h /"))
-(global-set-key (kbd "C-c h f") 'helm-find)
+(require 'ido-vertical-mode)
+(ido-vertical-mode 1)
+; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(setq ido-vertical-show-count t)
 
-(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-echo-input-in-header-line t)
-(helm-autoresize-mode 1)
-(helm-mode 1)
+;; smex
 
-;; projectile & helm-projectile
+(require 'smex) ; Not needed if you use package.el
+; (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+;                   ; when Smex is auto-initialized on its first run.
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+;; projectile
+
+(require 'projectile)
 (projectile-global-mode)
-;; (require 'helm-projectile)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-;; (setq projectile-enable-caching t)
-(global-set-key (kbd "C-c p /") 'helm-projectile-grep)
-
+(setq projectile-enable-caching t)
 
 (provide 'init-basic)

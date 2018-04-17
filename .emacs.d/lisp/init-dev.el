@@ -8,6 +8,7 @@
 (add-hook 'prog-mode-hook
 	  (lambda ()
 	    (setq linum-mode 1)
+	    (setq semantic-mode 1)
 	    (setq which-function-mode 1)))
 
 (setq
@@ -54,20 +55,18 @@
 	    (set (make-local-variable 'company-backends) '((company-anaconda company-dabbrev-code)
 							   company-capf company-dabbrev))))
 
-;; xcscope & helm-cscope
+;; xcscope
 
-(add-hook 'c-mode-common-hook 'helm-cscope-mode)
-(add-hook 'helm-cscope-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-.") 'helm-cscope-find-global-definition)
-            (local-set-key (kbd "M-@") 'helm-cscope-find-calling-this-function)
-            (local-set-key (kbd "M-s") 'helm-cscope-find-this-symbol)
-	    ;; (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
-            (local-set-key (kbd "M-*") 'helm-cscope-pop-mark)))
+(require 'xcscope)
+(cscope-setup)
 
 ;; flycheck
 
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; imenu-list
+
+(global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
 
 
 (provide 'init-dev)
