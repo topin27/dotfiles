@@ -25,4 +25,9 @@
 (if (not (display-graphic-p))
     (xterm-mouse-mode t))
 
+(eval-after-load "projectile" '(diminish 'projectile-mode))
+(eval-after-load "company" '(diminish 'company-mode))
+(eval-after-load "autopair" '(diminish 'autopair-mode))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+
 (provide 'init-ui)

@@ -9,7 +9,9 @@
 	  (lambda ()
 	    (setq linum-mode 1)
 	    (setq semantic-mode 1)
-	    (setq which-function-mode 1)))
+	    (setq which-function-mode 1)
+	    (local-set-key (kbd "C-c C-j") 'imenu)
+	    ))
 
 (setq
  gdb-many-windows t
@@ -67,11 +69,6 @@
 ;; imenu-list
 
 (global-set-key (kbd "C-\\") #'imenu-list-smart-toggle)
-
-;; idomenu
-
-(global-unset-key (kbd "C-c C-j"))
-(global-set-key (kbd "C-c C-j") 'idomenu)
 
 
 (provide 'init-dev)
