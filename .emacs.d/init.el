@@ -27,6 +27,7 @@
 		      xcscope
 		      flycheck
 		      imenu-list
+		      idomenu
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

@@ -66,7 +66,12 @@
 
 ;; imenu-list
 
-(global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
+(global-set-key (kbd "C-\\") #'imenu-list-smart-toggle)
+
+;; idomenu
+
+(global-unset-key (kbd "C-c C-j"))
+(global-set-key (kbd "C-c C-j") 'idomenu)
 
 
 (provide 'init-dev)
