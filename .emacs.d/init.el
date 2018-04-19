@@ -28,6 +28,8 @@
 		      flycheck
 		      imenu-list
 		      diminish
+		      ztree
+		      magit
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

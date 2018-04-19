@@ -8,6 +8,7 @@
 (add-hook 'prog-mode-hook
 	  (lambda ()
 	    (setq linum-mode 1)
+	    (setq line-number-mode 1)
 	    (setq semantic-mode 1)
 	    (setq which-function-mode 1)
 	    (local-set-key (kbd "C-c C-j") 'imenu)
