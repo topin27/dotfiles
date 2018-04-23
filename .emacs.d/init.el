@@ -30,6 +30,7 @@
 		      diminish
 		      ztree
 		      magit
+		      idomenu
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -51,7 +52,7 @@
 
 (require 'init-ui)
 (require 'init-basic)
-;; (require 'init-org)
+(require 'init-org)
 (require 'init-dev)
 
 (provide 'init)

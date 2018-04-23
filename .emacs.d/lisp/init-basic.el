@@ -82,11 +82,6 @@ Position the cursor at it's beginning, according to the current mode."
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
-;; auto-pair
-
-;; (require 'autopair)
-;; (add-hook 'prog-mode-hook 'autopair-mode)
-
 ;; undo-tree
 
 (require 'undo-tree)

@@ -7,11 +7,8 @@
 (setq-default tab-width 8)
 (add-hook 'prog-mode-hook
 	  (lambda ()
-	    (setq linum-mode 1)
-	    (setq line-number-mode 1)
 	    (setq semantic-mode 1)
-	    (setq which-function-mode 1)
-	    (local-set-key (kbd "C-c C-j") 'imenu)
+	    (local-set-key (kbd "C-c C-j") 'idomenu)
 	    ))
 
 (setq
@@ -70,6 +67,10 @@
 ;; imenu-list
 
 (global-set-key (kbd "C-\\") #'imenu-list-smart-toggle)
+
+;; jdee
+
+(custom-set-variables '(jdee-server-dir "~/.emacs.d/jdee-server"))
 
 
 (provide 'init-dev)
