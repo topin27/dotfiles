@@ -6,6 +6,7 @@
 	    (linum-mode t)
 	    (line-number-mode t)
 	    (column-number-mode t)
+	    (which-function-mode -1)
 	    ;; C-TAB for expanding
 	    ;; (local-set-key (kbd "C-<tab>")
 	    ;;                'yas/expand-from-trigger-key)
@@ -15,5 +16,11 @@
 			   'org-insert-src-block)))
 
 (setq org-html-postamble nil)
+
+(global-set-key (kbd "C-c o c") 'org-capture)
+(global-set-key (kbd "C-c o a") 'org-agenda)
+(global-set-key (kbd "C-c o l") 'org-store-link)
+
+;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 
 (provide 'init-org)

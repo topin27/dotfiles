@@ -31,6 +31,8 @@
 		      ztree
 		      magit
 		      idomenu
+		      evil
+		      pyvenv
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)

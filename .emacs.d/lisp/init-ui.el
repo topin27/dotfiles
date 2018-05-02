@@ -27,11 +27,13 @@
     (line-number-mode -1)
     (column-number-mode -1)))
 
+(which-function-mode -1)
+(linum-mode -1)
+
 (eval-after-load "projectile" '(diminish 'projectile-mode))
 (eval-after-load "company" '(diminish 'company-mode))
 (eval-after-load "autopair" '(diminish 'autopair-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
-(eval-after-load "meghanada" '(diminish 'meghanada-mode))
 
 (add-hook 'prog-mode-hook
 	  (lambda ()

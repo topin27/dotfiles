@@ -41,10 +41,13 @@
 ;; company
 
 (add-hook 'prog-mode-hook 'global-company-mode)
-(add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
-							   company-capf company-dabbrev))))
+;; (add-hook 'c-mode-common-hook
+;; 	  (lambda ()
+;; 	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
+;; 							   company-capf company-dabbrev))))
+;; (add-hook 'c-mode-common-hook
+;; 	  (lambda ()
+;; 	    (add-to-list 'company-backends 'company-semantic)))
 
 ;; company-anaconda
 
@@ -52,8 +55,9 @@
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (set (make-local-variable 'company-backends) '((company-anaconda company-dabbrev-code)
-							   company-capf company-dabbrev))))
+	    (add-to-list 'company-backends 'company-anaconda)
+	    (local-set-key (kbd "<f5>") 'anaconda-mode-find-definitions)
+	    (local-set-key (kbd "<f6>") 'anaconda-mode-go-back)))
 
 ;; xcscope
 

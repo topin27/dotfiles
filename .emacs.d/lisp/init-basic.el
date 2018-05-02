@@ -13,8 +13,6 @@
   )
  )
 
-(setenv "WORKON_HOME" "~/.virtualenvs")
-
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
@@ -27,27 +25,27 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-(defun prelude-smart-open-line (arg)
-  "Insert an empty line after the current line.
-Position the cursor at its beginning, according to the current mode.
-With a prefix ARG open line above the current line."
-  (interactive "P")
-  (if arg
-      (prelude-smart-open-line-above)
-    (progn
-      (move-end-of-line nil)
-      (newline-and-indent))))
-(global-set-key (kbd "M-o") 'prelude-smart-open-line)
+;; (defun prelude-smart-open-line (arg)
+;;   "Insert an empty line after the current line.
+;; Position the cursor at its beginning, according to the current mode.
+;; With a prefix ARG open line above the current line."
+;;   (interactive "P")
+;;   (if arg
+;;       (prelude-smart-open-line-above)
+;;     (progn
+;;       (move-end-of-line nil)
+;;       (newline-and-indent))))
+;; (global-set-key (kbd "M-o") 'prelude-smart-open-line)
 
-(defun prelude-smart-open-line-above ()
-  "Insert an empty line above the current line.
-Position the cursor at it's beginning, according to the current mode."
-  (interactive)
-  (move-beginning-of-line nil)
-  (newline-and-indent)
-  (forward-line -1)
-  (indent-according-to-mode))
-(global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
+;; (defun prelude-smart-open-line-above ()
+;;   "Insert an empty line above the current line.
+;; Position the cursor at it's beginning, according to the current mode."
+;;   (interactive)
+;;   (move-beginning-of-line nil)
+;;   (newline-and-indent)
+;;   (forward-line -1)
+;;   (indent-according-to-mode))
+;; (global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
 
 ;; (defun my/set-point-to-register()
 ;;   "临时设置记号点，由my/jump-back-to-point跳回"
@@ -115,5 +113,12 @@ Position the cursor at it's beginning, according to the current mode."
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+
+;; evil
+(require 'evil)
+(evil-mode t)
+(add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+;; (add-hook 'term-mode-hook (lambda () (evil-mode -1)))
+;; (add-hook 'org-mode-hook (lambda () (evil-mode -1)))
 
 (provide 'init-basic)
