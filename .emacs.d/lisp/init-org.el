@@ -22,5 +22,7 @@
 (global-set-key (kbd "C-c o l") 'org-store-link)
 
 ;; (setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)")))
 
 (provide 'init-org)

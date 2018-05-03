@@ -74,6 +74,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)) ;; lazy-load
+(setq dired-dwim-target t)
 
 ;; ace-jump-mode
 
@@ -115,10 +116,20 @@
 (setq projectile-enable-caching t)
 
 ;; evil
+
 (require 'evil)
 (evil-mode t)
-(add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+(add-hook 'prog-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
 ;; (add-hook 'term-mode-hook (lambda () (evil-mode -1)))
 ;; (add-hook 'org-mode-hook (lambda () (evil-mode -1)))
+
+;; evil-leader
+
+(global-evil-leader-mode)
+(evil-leader/set-key
+ "f" 'find-file
+ "b" 'ido-switch-buffer
+ "k" 'kill-buffer
+ "w" 'ace-jump-mode)
 
 (provide 'init-basic)

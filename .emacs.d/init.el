@@ -32,7 +32,9 @@
 		      magit
 		      idomenu
 		      evil
+		      evil-leader
 		      pyvenv
+		      realgud
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
