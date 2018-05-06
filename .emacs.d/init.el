@@ -26,11 +26,11 @@
 		      projectile
 		      xcscope
 		      flycheck
-		      imenu-list
 		      diminish
 		      ztree
 		      magit
 		      idomenu
+		      sr-speedbar
 		      evil
 		      evil-leader
 		      pyvenv

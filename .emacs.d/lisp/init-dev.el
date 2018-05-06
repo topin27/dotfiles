@@ -55,9 +55,11 @@
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (add-to-list 'company-backends 'company-anaconda)
+	    ;; (add-to-list 'company-backends 'company-anaconda)
+	    (push 'company-anaconda company-backends)
 	    (local-set-key (kbd "<f5>") 'anaconda-mode-find-definitions)
 	    (local-set-key (kbd "<f6>") 'anaconda-mode-go-back)))
+(global-set-key (kbd "C-c y") 'company-yasnippet)
 
 ;; xcscope
 
@@ -66,15 +68,10 @@
 
 ;; flycheck
 
-;; (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; imenu-list
 
-(global-set-key (kbd "C-\\") #'imenu-list-smart-toggle)
-
-;; jdee
-
-(custom-set-variables '(jdee-server-dir "~/.emacs.d/jdee-server"))
-
+(global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
 
 (provide 'init-dev)

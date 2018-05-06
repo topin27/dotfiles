@@ -91,8 +91,9 @@
 (require 'ido)
 (setq ido-enable-flex-matching t)
 (setq ido-use-filename-at-point 'guess)
-(setq ido-everywhere t)          
+(setq ido-everywhere t)
 (ido-mode 1)
+(setq ido-auto-merge-work-directories-length -1) ;; 禁用ido的自动查找功能（在创建新文件时特烦）
 
 (require 'ido-vertical-mode)
 (ido-vertical-mode 1)
@@ -126,10 +127,12 @@
 ;; evil-leader
 
 (global-evil-leader-mode)
+(evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
- "f" 'find-file
- "b" 'ido-switch-buffer
- "k" 'kill-buffer
+ "f f" 'find-file
+ "j i" 'idomenu
+ "b b" 'ido-switch-buffer
+ "b k" 'kill-buffer
  "w" 'ace-jump-mode)
 
 (provide 'init-basic)
