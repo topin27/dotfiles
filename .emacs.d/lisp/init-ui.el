@@ -34,10 +34,10 @@
 (eval-after-load "company" '(diminish 'company-mode))
 (eval-after-load "autopair" '(diminish 'autopair-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+(eval-after-load "anaconda" '(diminish 'anaconda-mode))
 
 (add-hook 'prog-mode-hook
 	  (lambda ()
-	    (linum-mode t)
-	    (which-function-mode t)))
+	    (linum-mode t)))
 
 (provide 'init-ui)

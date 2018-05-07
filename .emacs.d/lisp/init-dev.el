@@ -16,6 +16,8 @@
  gdb-show-main t
  )
 
+(electric-indent-mode -1)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Key bindings
@@ -70,7 +72,7 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; imenu-list
+;; sr-speedbar
 
 (global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
 
