@@ -7,7 +7,7 @@
 	    (line-number-mode t)
 	    (column-number-mode t)
 	    (which-function-mode -1)
-	    (toggle-truncate-lines t)
+	    (toggle-truncate-lines -1)
 	    ;; C-TAB for expanding
 	    ;; (local-set-key (kbd "C-<tab>")
 	    ;;                'yas/expand-from-trigger-key)

@@ -119,8 +119,8 @@
 ;; evil
 
 (require 'evil)
+(evil-mode t)
 (add-hook 'prog-mode-hook (lambda ()
-			    (evil-mode t)
 			    (modify-syntax-entry ?_ "w")))
 ;; (add-hook 'term-mode-hook (lambda () (evil-mode -1)))
 ;; (add-hook 'org-mode-hook (lambda () (evil-mode -1)))

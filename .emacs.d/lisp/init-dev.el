@@ -42,14 +42,11 @@
 
 ;; company
 
+(require 'company)
 (add-hook 'prog-mode-hook 'global-company-mode)
-;; (add-hook 'c-mode-common-hook
-;; 	  (lambda ()
-;; 	    (set (make-local-variable 'company-backends) '((company-semantic company-dabbrev-code)
-;; 							   company-capf company-dabbrev))))
-;; (add-hook 'c-mode-common-hook
-;; 	  (lambda ()
-;; 	    (add-to-list 'company-backends 'company-semantic)))
+(setq company-dabbrev-downcase 0)
+;; (setq company-idle-delay 0)  # waste of CPU
+(define-key company-active-map (kbd "TAB") 'company-complete)
 
 ;; company-anaconda
 
@@ -57,8 +54,8 @@
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    ;; (add-to-list 'company-backends 'company-anaconda)
-	    (push 'company-anaconda company-backends)
+	    (add-to-list 'company-backends 'company-anaconda)
+	    ;; (push 'company-anaconda company-backends)
 	    (local-set-key (kbd "<f5>") 'anaconda-mode-find-definitions)
 	    (local-set-key (kbd "<f6>") 'anaconda-mode-go-back)))
 (global-set-key (kbd "C-c y") 'company-yasnippet)
