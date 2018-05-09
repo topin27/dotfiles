@@ -116,24 +116,4 @@
 (projectile-global-mode)
 (setq projectile-enable-caching t)
 
-;; evil
-
-(require 'evil)
-(evil-mode t)
-(add-hook 'prog-mode-hook (lambda ()
-			    (modify-syntax-entry ?_ "w")))
-;; (add-hook 'term-mode-hook (lambda () (evil-mode -1)))
-;; (add-hook 'org-mode-hook (lambda () (evil-mode -1)))
-
-;; evil-leader
-
-(global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
-(evil-leader/set-key
- "f f" 'find-file
- "j i" 'idomenu
- "b b" 'ido-switch-buffer
- "b k" 'kill-buffer
- "w" 'ace-jump-mode)
-
 (provide 'init-basic)

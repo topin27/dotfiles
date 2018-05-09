@@ -25,7 +25,6 @@
 
 ;; TODO
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; For packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,17 +39,33 @@
 (require 'autopair)
 (add-hook 'prog-mode-hook 'autopair-mode)
 
+;; xcscope
+
+(require 'xcscope)
+(cscope-setup)
+
 ;; company
 
 (require 'company)
-(add-hook 'prog-mode-hook 'global-company-mode)
-(setq company-dabbrev-downcase 0)
-;; (setq company-idle-delay 0)  # waste of CPU
-(define-key company-active-map (kbd "TAB") 'company-complete)
 
-;; company-anaconda
+;; (setq company-dabbrev-downcase 0)
+;; ;; (setq company-idle-delay 0)  # waste of CPU
+;; (define-key company-mode-map (kbd "TAB") 'company-complete)
+(add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load "company"
+  '(setq company-backends '((company-dabbrev company-dabbrev-code company-yasnippet company-capf) company-files)))
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (add-to-list 'company-backends '(company-semantic company-clang))
+	    (local-set-key (kbd "<f5>") 'cscope-find-global-definition)
+	    (local-set-key (kbd "<f6>") 'cscope-pop-mark)))
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (add-to-list 'company-backends '(company-elisp company-etags))))
 
-(add-hook 'python-mode-hook 'anaconda-mode)
+;; anaconda
+
+;; (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 (add-hook 'python-mode-hook
 	  (lambda ()
@@ -58,12 +73,6 @@
 	    ;; (push 'company-anaconda company-backends)
 	    (local-set-key (kbd "<f5>") 'anaconda-mode-find-definitions)
 	    (local-set-key (kbd "<f6>") 'anaconda-mode-go-back)))
-(global-set-key (kbd "C-c y") 'company-yasnippet)
-
-;; xcscope
-
-(require 'xcscope)
-(cscope-setup)
 
 ;; flycheck
 

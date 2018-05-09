@@ -31,10 +31,9 @@
 		      magit
 		      idomenu
 		      sr-speedbar
-		      evil
-		      evil-leader
 		      pyvenv
 		      realgud
+		      yasnippet
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
