@@ -116,4 +116,11 @@
 (projectile-global-mode)
 (setq projectile-enable-caching t)
 
+;; shell
+
+(setq shell-file-name "/bin/bash")
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on t)
+(global-set-key (kbd "<f10>") 'rename-buffer)
+
 (provide 'init-basic)

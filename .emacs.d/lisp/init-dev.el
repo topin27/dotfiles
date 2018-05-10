@@ -44,6 +44,12 @@
 (require 'xcscope)
 (cscope-setup)
 
+;; yasnippet
+
+(require 'yasnippet)
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
 ;; company
 
 (require 'company)
@@ -53,15 +59,8 @@
 ;; (define-key company-mode-map (kbd "TAB") 'company-complete)
 (add-hook 'after-init-hook 'global-company-mode)
 (eval-after-load "company"
-  '(setq company-backends '((company-dabbrev company-dabbrev-code company-yasnippet company-capf) company-files)))
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (add-to-list 'company-backends '(company-semantic company-clang))
-	    (local-set-key (kbd "<f5>") 'cscope-find-global-definition)
-	    (local-set-key (kbd "<f6>") 'cscope-pop-mark)))
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (add-to-list 'company-backends '(company-elisp company-etags))))
+  '(setq company-backends (delete 'company-eclim (delete 'company-xcode company-backends))))
+(global-set-key (kbd "C-c y") 'company-yasnippet)
 
 ;; anaconda
 
