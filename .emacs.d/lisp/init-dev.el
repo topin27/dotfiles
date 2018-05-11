@@ -54,12 +54,11 @@
 
 (require 'company)
 
-;; (setq company-dabbrev-downcase 0)
-;; ;; (setq company-idle-delay 0)  # waste of CPU
-;; (define-key company-mode-map (kbd "TAB") 'company-complete)
 (add-hook 'after-init-hook 'global-company-mode)
 (eval-after-load "company"
   '(setq company-backends (delete 'company-eclim (delete 'company-xcode company-backends))))
+(setq company-show-numbers t
+      company-idle-delay 0.2)
 (global-set-key (kbd "C-c y") 'company-yasnippet)
 
 ;; anaconda
