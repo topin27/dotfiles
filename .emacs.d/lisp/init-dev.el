@@ -80,4 +80,8 @@
 
 (global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
 
+;; rainbow-delimiters
+
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
 (provide 'init-dev)

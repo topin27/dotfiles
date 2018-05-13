@@ -25,43 +25,27 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;; (defun prelude-smart-open-line (arg)
-;;   "Insert an empty line after the current line.
-;; Position the cursor at its beginning, according to the current mode.
-;; With a prefix ARG open line above the current line."
-;;   (interactive "P")
-;;   (if arg
-;;       (prelude-smart-open-line-above)
-;;     (progn
-;;       (move-end-of-line nil)
-;;       (newline-and-indent))))
-;; (global-set-key (kbd "M-o") 'prelude-smart-open-line)
+(defun prelude-smart-open-line (arg)
+  "Insert an empty line after the current line.
+Position the cursor at its beginning, according to the current mode.
+With a prefix ARG open line above the current line."
+  (interactive "P")
+  (if arg
+      (prelude-smart-open-line-above)
+    (progn
+      (move-end-of-line nil)
+      (newline-and-indent))))
+(global-set-key (kbd "M-o") 'prelude-smart-open-line)
 
-;; (defun prelude-smart-open-line-above ()
-;;   "Insert an empty line above the current line.
-;; Position the cursor at it's beginning, according to the current mode."
-;;   (interactive)
-;;   (move-beginning-of-line nil)
-;;   (newline-and-indent)
-;;   (forward-line -1)
-;;   (indent-according-to-mode))
-;; (global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
-
-;; (defun my/set-point-to-register()
-;;   "临时设置记号点，由my/jump-back-to-point跳回"
-;;   (interactive)
-;;   (setq zmacs-region-stays t)
-;;   (point-to-register 8))
-;; (global-set-key (kbd "C-.") 'my/set-point-to-register)
-
-;; (defun my/jump-back-to-point()
-;;   "跳回由my/set-point-to-register设置的记号点"
-;;   (interactive)
-;;   (setq zmacs-region-stays t)
-;;   (let ((tmp (point-marker)))
-;;     (jump-to-register 8)
-;;     (set-register 8 tmp)))
-;; (global-set-key (kbd "C-,") 'my/jump-back-to-point)
+(defun prelude-smart-open-line-above ()
+  "Insert an empty line above the current line.
+Position the cursor at it's beginning, according to the current mode."
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline-and-indent)
+  (forward-line -1)
+  (indent-according-to-mode))
+(global-set-key (kbd "M-O") 'prelude-smart-open-line-above)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; For packages
@@ -69,6 +53,7 @@
 
 ;; dired
 
+(require 'dired)
 (setq dired-recursive-deletes 'always)
 (setq dired-recursive-copies 'alway)
 (put 'dired-find-alternate-file 'disabled nil)

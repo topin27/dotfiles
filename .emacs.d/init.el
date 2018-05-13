@@ -34,6 +34,7 @@
 		      pyvenv
 		      realgud
 		      yasnippet
+		      rainbow-delimiters
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
