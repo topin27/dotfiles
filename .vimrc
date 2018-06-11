@@ -24,7 +24,6 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'topin27/vimwiki'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -64,10 +63,10 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
-" nmap <C-j> <C-W>j
-" nmap <C-k> <C-W>k
-" nmap <C-h> <C-W>h
-" nmap <C-l> <C-W>l
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
 
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
@@ -160,9 +159,3 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 " execute "set rtp+=" . g:opamshare . "/merlin/vim"
 " autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
 " autocmd FileType ocaml map <F3> :MerlinOutline<CR>
-
-" For vimwiki
-let g:vimwiki_list = [{'path': '~/Workspace/src/personal-wiki/',
-	\    'path_html': '~/Workspace/src/topin27.github.io/'}]
-let g:vimwiki_html_header_numbering = 1
-let g:vimwiki_toc_header = 'Table of Contents'
