@@ -74,6 +74,13 @@ map <F2> :NERDTreeToggle<CR><C-W>h
 
 " For tagbar
 let g:tagbar_right=1
+let g:tagbar_type_markdown = {
+        \ 'ctagstype' : 'markdown',
+        \ 'kinds' : [
+                \ 'h:headings',
+        \ ],
+    \ 'sort' : 0
+\ }
 map <F3> :TagbarToggle<CR><C-W>l
 
 " For ctrlp
