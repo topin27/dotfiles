@@ -24,6 +24,9 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'mhinz/vim-startify'
+Plugin 'Yggdroot/indentLine'
+Plugin 'tpope/vim-surround'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -62,6 +65,8 @@ nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
+inoremap <C-E> <End>
+inoremap <C-A> <Home>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -94,9 +99,9 @@ nmap <leader>b :CtrlPBuffer<CR>
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
-map <Space>w <Plug>(easymotion-w)
+map <Space>w <Plug>(easymotion-f)
 map ,w <Plug>(easymotion-w)
-map <Space>b <Plug>(easymotion-b)
+map <Space>b <Plug>(easymotion-F)
 map ,b <Plug>(easymotion-b)
 map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
@@ -132,6 +137,10 @@ let g:UltiSnipsListSnippets="yY"
 let g:UltiSnipsJumpForwardTrigger="YY"
 let g:UltiSnipsJumpBackwardTrigger="OO"
 
+" For indentLine
+let g:indentLine_char = '┆'
+let g:indentLine_enable = 1
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -149,7 +158,7 @@ autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 " Python
 " ------
 
-autocmd FileType python setlocal ts=4 sts=4 et
+autocmd FileType python setlocal ts=4 sts=4 cc=101 et
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
