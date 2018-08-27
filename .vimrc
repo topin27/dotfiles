@@ -27,6 +27,9 @@ Plugin 'honza/vim-snippets'
 Plugin 'mhinz/vim-startify'
 Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -45,7 +48,7 @@ set noet
 set ts=8
 set mouse=a
 " set cc=81
-set ls=2
+set ls=1
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -206,3 +209,5 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_folding_style_pythonic = 0
