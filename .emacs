@@ -97,6 +97,9 @@
 
 (global-set-key (kbd "<f10>") 'rename-buffer)
 
+(setq default-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
 (line-number-mode t)
 (column-number-mode t)
 
