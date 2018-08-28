@@ -30,6 +30,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'vim-voom/VOoM'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -82,13 +83,6 @@ map <F2> :NERDTreeToggle<CR><C-W>h
 
 " For tagbar
 let g:tagbar_right=1
-let g:tagbar_type_markdown = {
-        \ 'ctagstype' : 'markdown',
-        \ 'kinds' : [
-                \ 'h:headings',
-        \ ],
-    \ 'sort' : 0
-\ }
 map <F3> :TagbarToggle<CR><C-W>l
 
 " For ctrlp
@@ -99,6 +93,10 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
+
+" For supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
@@ -144,6 +142,10 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 let g:indentLine_char = '┆'
 let g:indentLine_enable = 1
 
+" For VOoM
+let g:voom_tree_placement = "right"
+autocmd FileType markdown map <F3> :VoomToggle markdown<CR><C-W>l
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -161,7 +163,7 @@ autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 " Python
 " ------
 
-autocmd FileType python setlocal ts=4 sts=4 cc=101 et
+autocmd FileType python setlocal ts=4 sts=4 et
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -209,5 +211,7 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" For vim-markdown
 let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_folding_style_pythonic = 0
+" let g:vim_markdown_folding_style_pythonic = 0
