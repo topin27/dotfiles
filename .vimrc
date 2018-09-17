@@ -30,7 +30,6 @@ Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'vim-voom/VOoM'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -50,6 +49,7 @@ set ts=8
 set mouse=a
 " set cc=81
 set ls=1
+set conceallevel=2
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -71,6 +71,8 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
+nmap <leader>cp :set conceallevel=2<CR>
+nmap <leader>co :set conceallevel=0<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -83,6 +85,13 @@ map <F2> :NERDTreeToggle<CR><C-W>h
 
 " For tagbar
 let g:tagbar_right=1
+let g:tagbar_type_markdown = {
+        \ 'ctagstype' : 'markdown',
+        \ 'kinds' : [
+                \ 'h:headings',
+        \ ],
+    \ 'sort' : 0
+\ }
 map <F3> :TagbarToggle<CR><C-W>l
 
 " For ctrlp
@@ -121,6 +130,7 @@ nnoremap <leader>agp :CtrlSF -filetype python<Space>
 nnoremap <leader>agc :CtrlSF -filetype cc<Space>
 nnoremap <leader>agz :CtrlSF -filetype cpp<Space>
 nnoremap <leader>ago :CtrlSF -filetype ocaml<Space>
+nnoremap <leader>agm :CtrlSF -filetype markdown<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -141,10 +151,6 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 " For indentLine
 let g:indentLine_char = '┆'
 let g:indentLine_enable = 1
-
-" For VOoM
-let g:voom_tree_placement = "right"
-autocmd FileType markdown map <F3> :VoomToggle markdown<CR><C-W>l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
@@ -213,5 +219,6 @@ let g:jedi#rename_command = "<leader>pr"
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " For vim-markdown
-let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_folding_disabled = 0
 " let g:vim_markdown_folding_style_pythonic = 0
+" let g:vim_markdown_conceal = 0
