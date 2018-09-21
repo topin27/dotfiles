@@ -109,13 +109,13 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
-map <Space>w <Plug>(easymotion-f)
 map ,w <Plug>(easymotion-w)
-map <Space>b <Plug>(easymotion-F)
 map ,b <Plug>(easymotion-b)
-map <Space>j <Plug>(easymotion-j)
-map <Space>k <Plug>(easymotion-k)
-map <Space>. <Plug>(easymotion-repeat)
+map ,j <Plug>(easymotion-j)
+map ,k <Plug>(easymotion-k)
+map ,. <Plug>(easymotion-repeat)
+map <Space>w <Plug>(easymotion-f)
+map <Space>b <Plug>(easymotion-F)
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
@@ -219,6 +219,6 @@ let g:jedi#rename_command = "<leader>pr"
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " For vim-markdown
-let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
-" let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal = 0
