@@ -48,7 +48,7 @@ set noet
 set ts=8
 set mouse=a
 " set cc=81
-set ls=1
+set ls=2
 set conceallevel=2
 
 cnoremap <C-A> <Home>
@@ -222,3 +222,4 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
 " let g:vim_markdown_conceal = 0
+let g:vim_markdown_toc_autofit = 1
