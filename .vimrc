@@ -217,9 +217,10 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set noimdisable " Switch input method
 
 " For vim-markdown
 let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
-" let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
