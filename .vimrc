@@ -24,7 +24,6 @@ Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'mhinz/vim-startify'
 Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
@@ -71,8 +70,11 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
-nmap <leader>cp :set conceallevel=2<CR>
-nmap <leader>co :set conceallevel=0<CR>
+
+" 解决输入法切换问题
+set noimdisable
+autocmd! InsertLeave * set imdisable|set iminsert=0
+autocmd! InsertEnter * set noimdisable|set iminsert=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -104,8 +106,8 @@ let g:ctrlp_custom_ignore = {
 nmap <leader>b :CtrlPBuffer<CR>
 
 " For supertab
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
+" let g:SuperTabDefaultCompletionType = "<c-n>"
+" let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
