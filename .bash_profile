@@ -9,6 +9,12 @@ alias ping='ping -c 5'
 alias www='python -m SimpleHTTPServer 8000'
 alias ipe='curl ipinfo.io/ip'
 alias ipi='ipconfig getifaddr en0'
+alias gits='git status'
+alias gitc='git commit -c'
+alias gitp='git push'
+alias gitf='git pull'
+alias gitd='git diff'
+alias gita='git add'
 
 # if [ -d $HOME/Library/Python/2.7/bin ]; then
 # 	export PATH=$HOME/Library/Python/2.7/bin:$PATH
