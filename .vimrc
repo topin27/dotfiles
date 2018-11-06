@@ -29,6 +29,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'amix/open_file_under_cursor.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -61,6 +62,7 @@ cnoremap <M-b> <S-Left>
 cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
+cnoremap <C-K> <C-U>
 nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
@@ -71,6 +73,7 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
+map <leader>pp :setlocal paste!<cr>
 
 " 解决输入法切换问题
 set noimdisable
@@ -116,9 +119,12 @@ map ,w <Plug>(easymotion-w)
 map ,b <Plug>(easymotion-b)
 map ,j <Plug>(easymotion-j)
 map ,k <Plug>(easymotion-k)
+map ,h <Plug>(easymotion-linebackward)
+map ,l <Plug>(easymotion-lineforward)
 map ,. <Plug>(easymotion-repeat)
-map <Space>w <Plug>(easymotion-f)
-map <Space>b <Plug>(easymotion-F)
+" map <Space>w <Plug>(easymotion-f)
+" map <Space>b <Plug>(easymotion-F)
+map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
@@ -226,3 +232,27 @@ let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
+
+" function! MarkdownLevel()
+"     if getline(v:lnum) =~ '^# .*$'
+"         return ">1"
+"     endif
+"     if getline(v:lnum) =~ '^## .*$'
+"         return ">2"
+"     endif
+"     if getline(v:lnum) =~ '^### .*$'
+"         return ">3"
+"     endif
+"     if getline(v:lnum) =~ '^#### .*$'
+"         return ">4"
+"     endif
+"     if getline(v:lnum) =~ '^##### .*$'
+"         return ">5"
+"     endif
+"     if getline(v:lnum) =~ '^###### .*$'
+"         return ">6"
+"     endif
+"     return "=" 
+" endfunction
+" au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
+" au BufEnter *.md setlocal foldmethod=expr   
