@@ -66,6 +66,7 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
+nmap <leader>tp :!tmux send-keys -t .+ C-p C-m<CR>
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -123,7 +124,7 @@ map ,l <Plug>(easymotion-lineforward)
 map ,. <Plug>(easymotion-repeat)
 " map <Space>w <Plug>(easymotion-f)
 " map <Space>b <Plug>(easymotion-F)
-map <Space> <Plug>(easymotion-bd-f)
+" map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt
@@ -231,6 +232,7 @@ let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
+autocmd FileType markdown nmap <leader>ol :Toch<CR>
 
 " function! MarkdownLevel()
 "     if getline(v:lnum) =~ '^# .*$'
