@@ -29,6 +29,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'amix/open_file_under_cursor.vim'
+Plugin 'jiangmiao/auto-pairs'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -48,7 +49,7 @@ set ts=8
 set mouse=a
 " set cc=81
 set ls=2
-set conceallevel=2
+set conceallevel=0
 set wildmenu
 
 cnoremap <C-A> <Home>
@@ -66,14 +67,14 @@ nmap <leader>ln :lnext<CR>
 nmap <leader>lp :lprevious<CR>
 nmap <leader>cn :cnext<CR>
 nmap <leader>cp :cprevious<CR>
-nmap <leader>tp :!tmux send-keys -t .+ C-p C-m<CR>
+nmap <leader>pc :!tmux send-keys -t .+ C-p C-m<CR>
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
-map <leader>pp :setlocal paste!<cr>
+map <leader>tp :setlocal paste!<cr>
 
 " 解决输入法切换问题
 set noimdisable
@@ -105,7 +106,7 @@ let g:ctrlp_map = '<leader>f'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb)$',
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
 
@@ -257,3 +258,6 @@ autocmd FileType markdown nmap <leader>ol :Toch<CR>
 " endfunction
 " au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
 " au BufEnter *.md setlocal foldmethod=expr   
+
+" For auto-pairs
+let g:AutoPairsShortcutToggle = '<leader>ta'

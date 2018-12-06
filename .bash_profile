@@ -21,16 +21,16 @@ alias gita='git add'
 # fi
 
 my-workon () {
-    case $1 in
-	      "python")
-		  export PATH=$HOME/Library/Python/2.7/bin:$PATH
-	          ;;
-	      "java")
-	          ;;
-	  "scala")
-		  ;;
-	      *)
-	          echo "Usage: my-workon <java|python|scala>"
-	          ;;
-    esac
+	case $1 in
+		"python")
+			export PATH=$HOME/Library/Python/2.7/bin:$PATH
+			;;
+		"java")
+			;;
+		"scala")
+			;;
+		*)
+			echo "Usage: my-workon <java|python|scala>"
+			;;
+	esac
 }
