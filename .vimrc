@@ -30,6 +30,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'amix/open_file_under_cursor.vim'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'jceb/vim-orgmode'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -49,7 +50,7 @@ set ts=8
 set mouse=a
 " set cc=81
 set ls=2
-set conceallevel=0
+" set conceallevel=0
 set wildmenu
 
 cnoremap <C-A> <Home>
@@ -234,30 +235,6 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
 autocmd FileType markdown nmap <leader>ol :Toch<CR>
-
-" function! MarkdownLevel()
-"     if getline(v:lnum) =~ '^# .*$'
-"         return ">1"
-"     endif
-"     if getline(v:lnum) =~ '^## .*$'
-"         return ">2"
-"     endif
-"     if getline(v:lnum) =~ '^### .*$'
-"         return ">3"
-"     endif
-"     if getline(v:lnum) =~ '^#### .*$'
-"         return ">4"
-"     endif
-"     if getline(v:lnum) =~ '^##### .*$'
-"         return ">5"
-"     endif
-"     if getline(v:lnum) =~ '^###### .*$'
-"         return ">6"
-"     endif
-"     return "=" 
-" endfunction
-" au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
-" au BufEnter *.md setlocal foldmethod=expr   
 
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>ta'
