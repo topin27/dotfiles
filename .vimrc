@@ -50,7 +50,7 @@ set ts=8
 set mouse=a
 " set cc=81
 set ls=2
-set conceallevel=0
+" set conceallevel=0
 set wildmenu
 
 cnoremap <C-A> <Home>
