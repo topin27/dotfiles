@@ -30,6 +30,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'amix/open_file_under_cursor.vim'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'derekwyatt/vim-scala'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -63,11 +64,11 @@ cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
 cnoremap <C-K> <C-U>
-nmap <leader>ln :lnext<CR>
-nmap <leader>lp :lprevious<CR>
-nmap <leader>cn :cnext<CR>
-nmap <leader>cp :cprevious<CR>
-nmap <leader>pc :!tmux send-keys -t .+ C-p C-m<CR>
+" nmap <leader>ln :lnext<CR>
+" nmap <leader>lp :lprevious<CR>
+" nmap <leader>cn :cnext<CR>
+" nmap <leader>cp :cprevious<CR>
+nmap <leader>pc :!tmux send-keys -t .+ C-p C-m<CR><CR>
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -75,6 +76,8 @@ nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 map <leader>tp :setlocal paste!<cr>
+nnoremap <C-g> <C-]>
+vnoremap <C-g> <C-]>
 
 " 解决输入法切换问题
 set noimdisable
@@ -109,6 +112,7 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb)$',
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
+nmap <leader>t :CtrlPTag<CR>
 
 " For supertab
 " let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -128,7 +132,7 @@ map ,. <Plug>(easymotion-repeat)
 " map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
-nmap     <C-X>f <Plug>CtrlSFPrompt
+nmap     <C-X>f <Plug>CtrlSFPrompt<C-R><C-W>
 vmap     <C-X>f <Plug>CtrlSFVwordPath
 vmap     <C-X>F <Plug>CtrlSFVwordExec
 nmap     <C-X>n <Plug>CtrlSFCwordPath
@@ -136,11 +140,11 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>sp :CtrlSF -filetype python<Space>
-nnoremap <leader>sc :CtrlSF -filetype cc<Space>
-nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
-nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
-nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
+nnoremap <leader>sp :CtrlSF -filetype python<Space><C-R><C-W>
+nnoremap <leader>sc :CtrlSF -filetype cc<Space><C-R><C-W>
+nnoremap <leader>sz :CtrlSF -filetype cpp<Space><C-R><C-W>
+nnoremap <leader>so :CtrlSF -filetype ocaml<Space><C-R><C-W>
+nnoremap <leader>sm :CtrlSF -filetype markdown<Space><C-R><C-W>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -234,30 +238,6 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
 autocmd FileType markdown nmap <leader>ol :Toch<CR>
-
-" function! MarkdownLevel()
-"     if getline(v:lnum) =~ '^# .*$'
-"         return ">1"
-"     endif
-"     if getline(v:lnum) =~ '^## .*$'
-"         return ">2"
-"     endif
-"     if getline(v:lnum) =~ '^### .*$'
-"         return ">3"
-"     endif
-"     if getline(v:lnum) =~ '^#### .*$'
-"         return ">4"
-"     endif
-"     if getline(v:lnum) =~ '^##### .*$'
-"         return ">5"
-"     endif
-"     if getline(v:lnum) =~ '^###### .*$'
-"         return ">6"
-"     endif
-"     return "=" 
-" endfunction
-" au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
-" au BufEnter *.md setlocal foldmethod=expr   
 
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>ta'
