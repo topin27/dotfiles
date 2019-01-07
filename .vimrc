@@ -145,6 +145,8 @@ nnoremap <leader>sc :CtrlSF -filetype cc<Space><C-R><C-W>
 nnoremap <leader>sz :CtrlSF -filetype cpp<Space><C-R><C-W>
 nnoremap <leader>so :CtrlSF -filetype ocaml<Space><C-R><C-W>
 nnoremap <leader>sm :CtrlSF -filetype markdown<Space><C-R><C-W>
+nnoremap <leader>sj :CtrlSF -filetype java<Space><C-R><C-W>
+nnoremap <leader>ss :CtrlSF -filetype scala<Space><C-R><C-W>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -178,6 +180,13 @@ let g:indentLine_enable = 1
 " autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+
+" ------------
+" Java & Scala
+" ------------
+
+autocmd FileType java setlocal ts=4 sts=4 et
+autocmd FileType scala setlocal ts=2 sts=2 et
 
 " ------
 " Python
