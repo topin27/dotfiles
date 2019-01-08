@@ -76,13 +76,6 @@ nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 map <leader>tp :setlocal paste!<cr>
-nnoremap <C-g> <C-]>
-vnoremap <C-g> <C-]>
-
-" 解决输入法切换问题
-set noimdisable
-autocmd! InsertLeave * set imdisable|set iminsert=0
-autocmd! InsertEnter * set noimdisable|set iminsert=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -168,6 +161,9 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 let g:indentLine_char = '┆'
 let g:indentLine_enable = 1
 
+" For auto-pairs
+let g:AutoPairsShortcutToggle = '<leader>ta'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -244,9 +240,20 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " For vim-markdown
 let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
-let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal = 1
 let g:vim_markdown_toc_autofit = 1
-autocmd FileType markdown nmap <leader>ol :Toch<CR>
+let g:vim_markdown_frontmatter = 1
 
-" For auto-pairs
-let g:AutoPairsShortcutToggle = '<leader>ta'
+let g:vim_markdown_toc_is_open = 0
+function! MarkdownTocToggle()
+	if g:vim_markdown_toc_is_open
+		lclose
+		let g:vim_markdown_toc_is_open = 0
+	else
+		Toc
+		let g:vim_markdown_toc_is_open = 1
+	endif
+endfunction
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
+
+autocmd FileType markdown nmap <leader>ol :Toch<CR>
