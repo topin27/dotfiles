@@ -125,7 +125,7 @@ map ,. <Plug>(easymotion-repeat)
 " map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
-nmap     <C-X>f <Plug>CtrlSFPrompt<C-R><C-W>
+nmap     <C-X>f <Plug>CtrlSFPrompt<Space>
 vmap     <C-X>f <Plug>CtrlSFVwordPath
 vmap     <C-X>F <Plug>CtrlSFVwordExec
 nmap     <C-X>n <Plug>CtrlSFCwordPath
@@ -133,13 +133,13 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>sp :CtrlSF -filetype python<Space><C-R><C-W>
-nnoremap <leader>sc :CtrlSF -filetype cc<Space><C-R><C-W>
-nnoremap <leader>sz :CtrlSF -filetype cpp<Space><C-R><C-W>
-nnoremap <leader>so :CtrlSF -filetype ocaml<Space><C-R><C-W>
-nnoremap <leader>sm :CtrlSF -filetype markdown<Space><C-R><C-W>
-nnoremap <leader>sj :CtrlSF -filetype java<Space><C-R><C-W>
-nnoremap <leader>ss :CtrlSF -filetype scala<Space><C-R><C-W>
+nnoremap <leader>sp :CtrlSF -filetype python<Space>
+nnoremap <leader>sc :CtrlSF -filetype cc<Space>
+nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
+nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
+nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
+nnoremap <leader>sj :CtrlSF -filetype java<Space>
+nnoremap <leader>ss :CtrlSF -filetype scala<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -240,10 +240,10 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " For vim-markdown
 let g:vim_markdown_folding_disabled = 1
 " let g:vim_markdown_folding_style_pythonic = 0
-let g:vim_markdown_conceal = 1
+let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_frontmatter = 1
-
+let g:vim_markdown_emphasis_multiline = 1
 let g:vim_markdown_toc_is_open = 0
 function! MarkdownTocToggle()
 	if g:vim_markdown_toc_is_open
@@ -255,5 +255,3 @@ function! MarkdownTocToggle()
 	endif
 endfunction
 autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
-
-autocmd FileType markdown nmap <leader>ol :Toch<CR>
