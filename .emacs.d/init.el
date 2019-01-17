@@ -37,10 +37,12 @@
 		      rainbow-delimiters
 		      clean-aindent-mode
 		      yasnippet
-		      company
+		      yasnippet-snippets
+		      auto-complete
 		      cython-mode
 		      scala-mode
 		      markdown-mode
+		      magit
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -108,7 +110,6 @@
 (eval-after-load "projectile" '(diminish 'projectile-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-(eval-after-load "company" '(diminish 'company-mode))
 (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
 ;; (diminish 'projectile-mode)
 
@@ -161,9 +162,10 @@
 (require 'projectile)
 (projectile-mode +1)
 (setq projectile-enable-caching t)
-;; (add-to-list 'projectile-globally-ignored-directories "venv")
-;; (add-to-list 'projectile-globally-ignored-files ".pyc")
-(setq projectile-globally-ignored-files (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
+(setq-default projectile-globally-ignored-files
+	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
+(setq-default projectile-globally-ignored-directories
+	      (append '("__pycache__") projectile-globally-ignored-directories))
 
 (require 'smex) ; Not needed if you use package.el
 (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
@@ -181,6 +183,9 @@
 (ido-vertical-mode 1)
 ; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 (setq ido-vertical-show-count t)
+;; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+;; (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 
 (require 'idomenu)
 
@@ -196,7 +201,7 @@
 (modify-syntax-entry ?_ "w")
 (loop for (mode . state) in '((org-mode . normal)
 			      (prog-mode . normal)
-			      (shell-mode . emacs)
+			      (shell-mode . normal)
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
@@ -230,36 +235,32 @@
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'yasnippet)
-(setq yas-snippet-dirs
-      '(;; "~/.emacs.d/snippets"                 ;; personal snippets
-        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-	"~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
-        ))
+;; (setq yas-snippet-dirs
+;;       '(;; "~/.emacs.d/snippets"                 ;; personal snippets
+;;         ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+;; 	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
+;;         ))
 (yas-global-mode 1)
-(yas-minor-mode-on)
+;; (yas-reload-all)
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "C-c y") 'yas-expand)
 
-(require 'company)
-(setq company-show-numbers t
-      company-idle-delay 0.1)
-(eval-after-load "company"
-  '(setq company-backends (delete 'company-eclim (delete 'company-xcode company-backends))))
-;; (eval-after-load "company"
-(add-hook 'after-init-hook 'global-company-mode)
-;;   '(setq company-backends
-;; 	 '(company-dabbrev
-;; 	    company-dabbrev-code)
-;; 	   (company-files
-;; 	    company-keywords
-;; 	    company-capf
-;; 	    company-etags))))
-(require 'company-yasnippet)
+(require 'auto-complete-config)
+(setq ac-use-menu-map t)
+(setq ac-use-quick-help nil)
+(ac-config-default)
+;; (add-to-list 'ac-sources 'ac-source-yasnippet)
+;; (add-hook 'c++-mode (lambda () (add-to-list 'ac-sources 'ac-source-semantic)))
 
 (require 'cython-mode)
 (setq auto-mode-alist
       (cons '(".pyx" . cython-mode) auto-mode-alist))
 
 (require 'scala-mode)
+
+(require 'magit)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -301,8 +302,7 @@
  "o c" 'org-capture
  "o a" 'org-agenda
  "o l" 'org-store-link
- "C-c M-x" 'execute-extended-command  ;; old M-x
- "y" 'company-yasnippet)
+ "C-c M-x" 'execute-extended-command)  ;; old M-x
 
 (general-define-key
  "M-x" 'smex
@@ -310,13 +310,14 @@
  "M-/" 'hippie-expand
  "C-x C-b" 'ibuffer
  "<f10>" 'rename-buffer
+ "<f12>" 'other-window
  "<escape>" 'keyboard-escape-quit
  "C-x C-r" 'recentf-open-files
  "C-\\" 'imenu-list-smart-toggle)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Keymap
+;; Writing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (autoload 'markdown-mode "markdown-mode"
@@ -336,7 +337,7 @@
 (setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)"))
       org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))))
 (setq org-src-fontify-natively t)
-(setq org-agenda-files '("~/notes"))
+;; (setq org-agenda-files '("~/notes"))
 
 ;; (require 'ox-publish)
 ;; (setq org-publish-project-alist
