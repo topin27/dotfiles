@@ -70,9 +70,6 @@
 (global-font-lock-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(column-number-mode t)
-(line-number-mode t)
-
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
 
@@ -92,7 +89,7 @@
       ;; (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
-    (load-theme 'deeper-blue)
+    ;; (load-theme 'deeper-blue)
     ;; (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
@@ -104,7 +101,25 @@
       scroll-preserve-screen-position 1)
 
 (which-function-mode -1)
-(add-hook 'prog-mode-hook 'linum-mode)
+(linum-mode -1)
+(column-number-mode -1)
+(line-number-mode -1)
+
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (linum-mode t)
+	    (column-number-mode t)
+	    (line-number-mode t)))
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (linum-mode t)
+	    (column-number-mode t)
+	    (line-number-mode t)))
+(add-hook 'markdown-mode-hook
+	  (lambda ()
+	    (linum-mode t)
+	    (column-number-mode t)
+	    (line-number-mode t)))
 
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))
@@ -123,6 +138,9 @@
 ;;   (setenv "PATH" (concat "~/.local/bin" ":" (getenv "PATH"))))
 ;;  ((string-equal system-type "darwin")
 ;;   (setenv "PATH" (concat "~/Library/Python/2.7/bin" ":" "/usr/local/bin" ":" (getenv "PATH")))))
+(if (string-equal system-type "darwin")
+    (if (display-graphic-p)
+	(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))))
 
 ;; (cond
 ;;  ((string-equal system-type "gnu/linux")
@@ -136,63 +154,13 @@
 
 (winner-mode 1)
 
+(windmove-default-keybindings)
+
 ;; (setq default-buffer-file-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
 (global-auto-revert-mode 1)
-
-(require 'dired)
-(setq dired-recursive-deletes 'always)
-(setq dired-recursive-copies 'alway)
-(put 'dired-find-alternate-file 'disabled nil)
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)) ;; lazy-load
-(setq dired-dwim-target t)
-
-(autoload
-  'ace-jump-mode
-  "ace-jump-mode"
-  "Emacs quick move minor mode"
-  t)
-
-(require 'undo-tree)
-(global-undo-tree-mode)
-
-(require 'projectile)
-(projectile-mode +1)
-(setq projectile-enable-caching t)
-(setq-default projectile-globally-ignored-files
-	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
-(setq-default projectile-globally-ignored-directories
-	      (append '("__pycache__") projectile-globally-ignored-directories))
-
-(require 'smex) ; Not needed if you use package.el
-(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
-                  ; when Smex is auto-initialized on its first run.
-(setq smex-save-file (expand-file-name "smex-items" user-emacs-directory))
-
-(require 'ido)
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-everywhere t)
-;; (setq ido-auto-merge-work-directories-length -1)
-
-(require 'ido-vertical-mode)
-(ido-vertical-mode 1)
-; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-(setq ido-vertical-show-count t)
-;; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
-;; (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-
-(require 'idomenu)
-
-(require 'ztree)
-
-(require 'imenu-list)
-(setq imenu-list-auto-resize t)
 
 (setq evil-want-C-i-jump nil)
 (require 'evil)
@@ -209,6 +177,98 @@
 (require 'evil-surround)
 (global-evil-surround-mode 1)
 
+(require 'general)
+(general-create-definer my-leader-def :prefix "\\")
+(general-create-definer my-local-leader-def :prefix ",")
+(my-leader-def
+  'normal
+  "f" 'find-file
+  "g g" 'xref-find-definitions
+  "g b" 'xref-pop-marker-stack
+  "g c" 'xref-find-references
+  "g o" 'xref-find-definitions-other-window)
+(general-define-key
+ "M-/" 'hippie-expand
+ "C-x C-b" 'ibuffer
+ "<f10>" 'rename-buffer
+ "<f12>" 'other-window
+ "<escape>" 'keyboard-escape-quit)
+
+(require 'dired)
+(setq dired-recursive-deletes 'always)
+(setq dired-recursive-copies 'alway)
+(put 'dired-find-alternate-file 'disabled nil)
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)) ;; lazy-load
+(setq dired-dwim-target t)
+
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+(require 'projectile)
+(projectile-mode +1)
+(setq projectile-enable-caching t)
+(setq-default projectile-globally-ignored-files
+	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
+(setq-default projectile-globally-ignored-directories
+	      (append '("__pycache__") projectile-globally-ignored-directories))
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(my-leader-def
+  'normal
+  "p" 'projectile-switch-project)
+(my-local-leader-def
+  'normal
+  "f" 'projectile-find-file
+  "o" 'projectile-find-file-other-window
+  "b" 'projectile-switch-to-buffer
+  "p" 'projectile-switch-open-project
+  "k" 'projectile-kill-buffers)
+
+(require 'smex) ; Not needed if you use package.el
+(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                  ; when Smex is auto-initialized on its first run.
+(setq smex-save-file (expand-file-name "smex-items" user-emacs-directory))
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(require 'ido)
+(ido-mode 1)
+(setq ido-enable-flex-matching t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-everywhere t)
+;; (setq ido-auto-merge-work-directories-length -1)
+(my-leader-def
+  'normal
+  "b" 'ido-switch-buffer
+  "d" 'ido-dired
+  "k" 'ido-kill-buffer)
+
+(require 'ido-vertical-mode)
+(ido-vertical-mode 1)
+(setq ido-vertical-show-count t)
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+
+(require 'idomenu)
+(global-set-key (kbd "C-c j i") 'idomenu)
+(my-local-leader-def
+  'normal
+  "j i" 'idomenu)
+
+(require 'ztree)
+
+(require 'imenu-list)
+(setq imenu-list-auto-resize t)
+(global-set-key (kbd "C-\\") 'imenu-list-smart-toggle)
+
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
@@ -218,6 +278,10 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-item 10)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
+(my-leader-def
+  'normal
+  "r" 'recentf-open-files)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -227,6 +291,10 @@
 (require 'electric)
 (electric-pair-mode t)
 (electric-indent-mode t)
+(my-leader-def
+  'normal
+  "t p" 'electric-pair-mode
+  "t i" 'electric-indent-mode)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -245,7 +313,7 @@
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
 (define-key yas-minor-mode-map (kbd "<tab>") nil)
 (define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "C-c y") 'yas-expand)
+(define-key yas-minor-mode-map (kbd "C-<tab>") 'yas-expand)
 
 (require 'auto-complete-config)
 (setq ac-use-menu-map t)
@@ -261,59 +329,7 @@
 (require 'scala-mode)
 
 (require 'magit)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Keymap
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(windmove-default-keybindings)
-
-(require 'general)
-(general-create-definer my-leader-def
-			:prefix "\\")
-(my-leader-def 'normal
-	       "f" 'find-file
-	       "b" 'ido-switch-buffer
-	       "d" 'ido-dired
-	       "k" 'ido-kill-buffer
-	       "r" 'recentf-open-files
-	       "p" 'projectile-switch-project
-	       "o" 'find-file-other-window
-	       "g g" 'xref-find-definitions
-	       "g b" 'xref-pop-marker-stack
-	       "g c" 'xref-find-references)
-
-(general-create-definer my-local-leader-def
-			;; :prefix my-local-leader
-			  :prefix ",")
-(my-local-leader-def 'normal
-		     "f" 'projectile-find-file
-		     "b" 'projectile-switch-to-buffer
-		     "p" 'projectile-switch-open-project
-		     "o" 'projectile-find-file-other-window
-		     "k" 'projectile-kill-buffers
-		     "j i" 'idomenu)
-(general-define-key
- :prefix "C-c"
- "SPC" 'ace-jump-mode
- "p" 'projectile-command-map
- "j i" 'idomenu
- "o c" 'org-capture
- "o a" 'org-agenda
- "o l" 'org-store-link
- "C-c M-x" 'execute-extended-command)  ;; old M-x
-
-(general-define-key
- "M-x" 'smex
- "M-X" 'smex-major-mode-commands
- "M-/" 'hippie-expand
- "C-x C-b" 'ibuffer
- "<f10>" 'rename-buffer
- "<f12>" 'other-window
- "<escape>" 'keyboard-escape-quit
- "C-x C-r" 'recentf-open-files
- "C-\\" 'imenu-list-smart-toggle)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -333,10 +349,12 @@
       (flyspell-mode -1)
       (toggle-truncate-lines -1)))
 (setq org-html-postamble nil)
-;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)"))
       org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))))
 (setq org-src-fontify-natively t)
+(setq org-directory "~/Workspace/notes/")
+(setq org-agenda-files (list org-directory))
+(setq org-default-notes-file (concat org-directory "/notes.org"))
 ;; (setq org-agenda-files '("~/notes"))
 
 ;; (require 'ox-publish)
@@ -363,3 +381,5 @@
 ;; 	))
 
 (provide 'init)
+
+;;; Auto-generated code below
