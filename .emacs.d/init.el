@@ -349,13 +349,21 @@
       (flyspell-mode -1)
       (toggle-truncate-lines -1)))
 (setq org-html-postamble nil)
+(setq org-startup-indented t)
 (setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)"))
       org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))))
 (setq org-src-fontify-natively t)
 (setq org-directory "~/Workspace/notes/")
 (setq org-agenda-files (list org-directory))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-;; (setq org-agenda-files '("~/notes"))
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
+	 "* TODO %?\n %i\n")
+	("l" "Link" plain (file (concat org-directory "/links.org"))
+	 "- %?\n %x\n")))
+(global-set-key (kbd "C-c o a") 'org-agenda)
+(global-set-key (kbd "C-c o c") 'org-capture)
+(global-set-key (kbd "C-c o s") 'org-store-link)
 
 ;; (require 'ox-publish)
 ;; (setq org-publish-project-alist
