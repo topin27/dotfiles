@@ -31,6 +31,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'amix/open_file_under_cursor.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'AutoComplPop'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -108,8 +109,8 @@ nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :CtrlPTag<CR>
 
 " For supertab
-" let g:SuperTabDefaultCompletionType = "<c-n>"
-" let g:SuperTabContextDefaultCompletionType = "<c-n>"
+" let g:SuperTabDefaultCompletionType = "<c-p>"
+" let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
 " For EasyMotion
 " map <Leader><Leader>j <Plug>(easymotion-j)
@@ -164,6 +165,12 @@ let g:indentLine_enable = 1
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>ta'
 
+" For AutoComplPop
+let g:acp_ignorecaseOption = 0
+let g:acp_behaviorKeywordCommand = "\<C-p>"
+let g:acp_behaviorKeywordLength = 3
+inoremap <expr> <Tab> pumvisible() ? "\<C-p>" : "\<C-g>u\<Tab>"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,6 +183,7 @@ let g:AutoPairsShortcutToggle = '<leader>ta'
 " autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
 " Java & Scala
@@ -183,12 +191,14 @@ autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et
 autocmd FileType scala setlocal ts=2 sts=2 et
+autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
 " Python
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et
+autocmd FileType python map <F3> :TagbarToggle<CR>
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
