@@ -31,7 +31,6 @@
 		      imenu-list
 		      evil
 		      evil-surround
-		      general
 		      wgrep
 		      hungry-delete
 		      rainbow-delimiters
@@ -177,23 +176,12 @@
 (require 'evil-surround)
 (global-evil-surround-mode 1)
 
-(require 'general)
-(general-create-definer my-leader-def :prefix "\\")
-(general-create-definer my-local-leader-def :prefix ",")
-(my-leader-def
-  'normal
-  "f f" 'find-file
-  "f o" 'find-file-other-window
-  "g g" 'xref-find-definitions
-  "g b" 'xref-pop-marker-stack
-  "g c" 'xref-find-references
-  "g o" 'xref-find-definitions-other-window)
-(general-define-key
- "M-/" 'hippie-expand
- "C-x C-b" 'ibuffer
- "<f10>" 'rename-buffer
- "<f12>" 'other-window
- "<escape>" 'keyboard-escape-quit)
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "<f10>") 'rename-buffer)
+(global-set-key (kbd "<f12>") 'other-window)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
 
 (require 'dired)
 (setq dired-recursive-deletes 'always)
@@ -221,17 +209,6 @@
 (setq-default projectile-globally-ignored-directories
 	      (append '("__pycache__") projectile-globally-ignored-directories))
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(my-leader-def
-  'normal
-  "p" 'projectile-switch-project)
-(my-local-leader-def
-  'normal
-  "f f" 'projectile-find-file
-  "f o" 'projectile-find-file-other-window
-  "b b" 'projectile-switch-to-buffer
-  "b o" 'projectile-switch-to-buffer-other-window
-  "p" 'projectile-switch-open-project
-  "k" 'projectile-kill-buffers)
 
 (require 'smex) ; Not needed if you use package.el
 (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
@@ -248,12 +225,6 @@
 (setq ido-use-filename-at-point 'guess)
 (setq ido-everywhere t)
 ;; (setq ido-auto-merge-work-directories-length -1)
-(my-leader-def
-  'normal
-  "b b" 'ido-switch-buffer
-  "b o" 'ido-switch-buffer-other-window
-  "d d" 'ido-dired
-  "k" 'ido-kill-buffer)
 
 (require 'ido-vertical-mode)
 (ido-vertical-mode 1)
@@ -262,9 +233,6 @@
 
 (require 'idomenu)
 (global-set-key (kbd "C-c j i") 'idomenu)
-(my-local-leader-def
-  'normal
-  "j i" 'idomenu)
 
 (require 'ztree)
 
@@ -282,9 +250,6 @@
 (recentf-mode 1)
 (setq recentf-max-menu-item 10)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
-(my-leader-def
-  'normal
-  "f r" 'recentf-open-files)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -294,10 +259,6 @@
 (require 'electric)
 (electric-pair-mode t)
 (electric-indent-mode t)
-(my-leader-def
-  'normal
-  "t p" 'electric-pair-mode
-  "t i" 'electric-indent-mode)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
