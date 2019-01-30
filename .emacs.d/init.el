@@ -182,7 +182,8 @@
 (general-create-definer my-local-leader-def :prefix ",")
 (my-leader-def
   'normal
-  "f" 'find-file
+  "f f" 'find-file
+  "f o" 'find-file-other-window
   "g g" 'xref-find-definitions
   "g b" 'xref-pop-marker-stack
   "g c" 'xref-find-references
@@ -225,9 +226,10 @@
   "p" 'projectile-switch-project)
 (my-local-leader-def
   'normal
-  "f" 'projectile-find-file
-  "o" 'projectile-find-file-other-window
-  "b" 'projectile-switch-to-buffer
+  "f f" 'projectile-find-file
+  "f o" 'projectile-find-file-other-window
+  "b b" 'projectile-switch-to-buffer
+  "b o" 'projectile-switch-to-buffer-other-window
   "p" 'projectile-switch-open-project
   "k" 'projectile-kill-buffers)
 
@@ -248,8 +250,9 @@
 ;; (setq ido-auto-merge-work-directories-length -1)
 (my-leader-def
   'normal
-  "b" 'ido-switch-buffer
-  "d" 'ido-dired
+  "b b" 'ido-switch-buffer
+  "b o" 'ido-switch-buffer-other-window
+  "d d" 'ido-dired
   "k" 'ido-kill-buffer)
 
 (require 'ido-vertical-mode)
@@ -281,7 +284,7 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (my-leader-def
   'normal
-  "r" 'recentf-open-files)
+  "f r" 'recentf-open-files)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -359,6 +362,8 @@
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
 	 "* TODO %?\n %i\n")
+	("n" "Note" plain (file (concat org-directory "/notes.org"))
+	 "* %?\n %x\n")
 	("l" "Link" plain (file (concat org-directory "/links.org"))
 	 "- %?\n %x\n")))
 (global-set-key (kbd "C-c o a") 'org-agenda)
