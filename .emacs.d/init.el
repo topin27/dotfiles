@@ -313,7 +313,7 @@
       (flyspell-mode -1)
       (toggle-truncate-lines -1)))
 (setq org-html-postamble nil)
-(setq org-startup-indented t)
+;; (setq org-startup-indented t)
 (setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)"))
       org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))))
 (setq org-src-fontify-natively t)
