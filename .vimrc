@@ -103,7 +103,7 @@ let g:ctrlp_map = '<leader>f'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class)$',
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :CtrlPTag<CR>
@@ -113,14 +113,15 @@ nmap <leader>t :CtrlPTag<CR>
 " let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
 " For EasyMotion
+map , <Plug>(easymotion-s)
 " map <Leader><Leader>j <Plug>(easymotion-j)
-map ,w <Plug>(easymotion-w)
-map ,b <Plug>(easymotion-b)
-map ,j <Plug>(easymotion-j)
-map ,k <Plug>(easymotion-k)
-map ,h <Plug>(easymotion-linebackward)
-map ,l <Plug>(easymotion-lineforward)
-map ,. <Plug>(easymotion-repeat)
+" map ,w <Plug>(easymotion-w)
+" map ,b <Plug>(easymotion-b)
+" map ,j <Plug>(easymotion-j)
+" map ,k <Plug>(easymotion-k)
+" map ,h <Plug>(easymotion-linebackward)
+" map ,l <Plug>(easymotion-lineforward)
+" map ,. <Plug>(easymotion-repeat)
 " map <Space>w <Plug>(easymotion-f)
 " map <Space>b <Plug>(easymotion-F)
 " map <Space> <Plug>(easymotion-bd-f)
@@ -181,9 +182,10 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-p>" : "\<C-g>u\<Tab>"
 
 " autocmd FileType c,cpp setlocal ts=4 sts=4 et
 " autocmd FileType ocaml setlocal ts=2 sts=2 et
+autocmd FileType cpp setlocal ts=4 sts=4 et
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-W>l
 
 " ------------
 " Java & Scala
@@ -191,14 +193,14 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et
 autocmd FileType scala setlocal ts=2 sts=2 et
-autocmd FileType java,scala map <F3> :TagbarToggle<CR>
+autocmd FileType java,scala map <F3> :TagbarToggle<CR><C-W>l
 
 " ------
 " Python
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et
-autocmd FileType python map <F3> :TagbarToggle<CR>
+autocmd FileType python map <F3> :TagbarToggle<CR><C-W>l
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -264,4 +266,4 @@ function! MarkdownTocToggle()
 		let g:vim_markdown_toc_is_open = 1
 	endif
 endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR><C-W>l
