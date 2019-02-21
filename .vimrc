@@ -18,7 +18,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
@@ -27,7 +26,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-surround'
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plugin 'gonzaloserrano/vim-markdown-todo'
 Plugin 'amix/open_file_under_cursor.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'derekwyatt/vim-scala'
@@ -36,6 +35,7 @@ Plugin 'AutoComplPop'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC SETTINGS
@@ -69,7 +69,6 @@ cnoremap <C-K> <C-U>
 " nmap <leader>lp :lprevious<CR>
 " nmap <leader>cn :cnext<CR>
 " nmap <leader>cp :cprevious<CR>
-nmap <leader>pc :!tmux send-keys -t .+ C-p C-m<CR><CR>
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -182,7 +181,7 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-p>" : "\<C-g>u\<Tab>"
 
 " autocmd FileType c,cpp setlocal ts=4 sts=4 et
 " autocmd FileType ocaml setlocal ts=2 sts=2 et
-autocmd FileType cpp setlocal ts=4 sts=4 et
+autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-W>l
@@ -191,15 +190,17 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-W>l
 " Java & Scala
 " ------------
 
-autocmd FileType java setlocal ts=4 sts=4 et
-autocmd FileType scala setlocal ts=2 sts=2 et
+autocmd FileType java setlocal ts=4 sts=4 et sw=4
+autocmd FileType scala setlocal ts=2 sts=2 et sw=2
+autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java,scala map <F3> :TagbarToggle<CR><C-W>l
 
 " ------
 " Python
 " ------
 
-autocmd FileType python setlocal ts=4 sts=4 et
+autocmd FileType python setlocal ts=4 sts=4 et sw=4
 autocmd FileType python map <F3> :TagbarToggle<CR><C-W>l
 
 " Add the virtualenv's site-packages to vim path
@@ -216,23 +217,6 @@ if 'VIRTUAL_ENV' in os.environ:
 EOF
 endif
 
-" For jedi
-let g:jedi#completions_enabled = 1
-autocmd FileType python setlocal completeopt-=preview
-" let g:jedi#auto_initialization = 1
-" let g:jedi#auto_vim_configuration = 0
-" let g:jedi#use_tabs_not_buffers = 0
-" let g:jedi#use_splits_not_buffers = "left"
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
-let g:jedi#goto_command = "<leader>gd"
-let g:jedi#goto_assignments_command = "<leader>pa"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>gc"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>pr"
-
 " -----
 " OCaml
 " -----
@@ -248,22 +232,3 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" For vim-markdown
-let g:vim_markdown_folding_disabled = 1
-" let g:vim_markdown_folding_style_pythonic = 0
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_toc_autofit = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_emphasis_multiline = 1
-let g:vim_markdown_toc_is_open = 0
-function! MarkdownTocToggle()
-	if g:vim_markdown_toc_is_open
-		lclose
-		let g:vim_markdown_toc_is_open = 0
-	else
-		Toc
-		let g:vim_markdown_toc_is_open = 1
-	endif
-endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR><C-W>l

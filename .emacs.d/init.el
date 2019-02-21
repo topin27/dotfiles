@@ -39,7 +39,7 @@
 		      markdown-mode
 		      magit
 		      helm
-		      helm-gtags
+		      ggtags
 		      helm-projectile
 		      sr-speedbar
 		      ) "Default packages")
@@ -168,6 +168,7 @@
 (modify-syntax-entry ?_ "w")
 (loop for (mode . state) in '((org-mode . normal)
 			      (prog-mode . normal)
+			      (xref--xref-buffer-mode . emacs)
 			      (shell-mode . normal)
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
@@ -314,29 +315,19 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(require 'helm-gtags)
-(setq
- helm-gtags-ignore-case t
- helm-gtags-auto-update t
- helm-gtags-use-input-at-cursor t
- helm-gtags-pulse-at-cursor t
- helm-gtags-prefix-key "\C-cg"
- helm-gtags-suggested-key-mapping t)
-;; Enable helm-gtags-mode
-(add-hook 'dired-mode-hook 'helm-gtags-mode)
-(add-hook 'eshell-mode-hook 'helm-gtags-mode)
-(add-hook 'c-mode-hook 'helm-gtags-mode)
-(add-hook 'c++-mode-hook 'helm-gtags-mode)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
-(define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
-(define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
-(define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-(define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
-(define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-(define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
-
 (require 'sr-speedbar)
 (global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
+
+(require 'ggtags)
+(setq ggtags-executable-directory "~/bins/global/bin/")
+(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+(setq-local hippie-expand-try-functions-list
+	    (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
+(setq ggtags-completing-read-function nil)
+(add-hook 'c-mode-common-hook
+	  (lambda ()
+	    (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+	      (ggtags-mode 1))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
