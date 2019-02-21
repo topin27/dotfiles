@@ -17,8 +17,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'ervandew/supertab'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'SirVer/ultisnips'
@@ -26,7 +26,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-surround'
 Plugin 'godlygeek/tabular'
-Plugin 'gonzaloserrano/vim-markdown-todo'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'amix/open_file_under_cursor.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'derekwyatt/vim-scala'
@@ -84,7 +84,7 @@ map <leader>tp :setlocal paste!<cr>
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let NERDTreeHighlightCursorline=1
-map <F2> :NERDTreeToggle<CR><C-W>h
+map <F2> :NERDTreeToggle %<CR>
 
 " For tagbar
 let g:tagbar_right=1
@@ -95,7 +95,7 @@ let g:tagbar_type_markdown = {
         \ ],
     \ 'sort' : 0
 \ }
-map <F3> :TagbarToggle<CR><C-W>l
+map <F3> :TagbarToggle<CR>
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -126,7 +126,7 @@ map , <Plug>(easymotion-s)
 " map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
-nmap     <C-X>f <Plug>CtrlSFPrompt<Space>
+nmap     <C-X>f <Plug>CtrlSFPrompt<Space><cword>
 vmap     <C-X>f <Plug>CtrlSFVwordPath
 vmap     <C-X>F <Plug>CtrlSFVwordExec
 nmap     <C-X>n <Plug>CtrlSFCwordPath
@@ -134,13 +134,13 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>sp :CtrlSF -filetype python<Space>
-nnoremap <leader>sc :CtrlSF -filetype cc<Space>
-nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
-nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
-nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
-nnoremap <leader>sj :CtrlSF -filetype java<Space>
-nnoremap <leader>ss :CtrlSF -filetype scala<Space>
+nnoremap <leader>sp :CtrlSF -filetype python<Space><cword>
+nnoremap <leader>sc :CtrlSF -filetype cc<Space><cword>
+nnoremap <leader>sz :CtrlSF -filetype cpp<Space><cword>
+nnoremap <leader>so :CtrlSF -filetype ocaml<Space><cword>
+nnoremap <leader>sm :CtrlSF -filetype markdown<Space><cword>
+nnoremap <leader>sj :CtrlSF -filetype java<Space><cword>
+nnoremap <leader>ss :CtrlSF -filetype scala<Space><cword>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -184,7 +184,7 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-p>" : "\<C-g>u\<Tab>"
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-W>l
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
 " Java & Scala
@@ -194,14 +194,14 @@ autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType scala setlocal ts=2 sts=2 et sw=2
 autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType java,scala map <F3> :TagbarToggle<CR><C-W>l
+autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
 " Python
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
-autocmd FileType python map <F3> :TagbarToggle<CR><C-W>l
+autocmd FileType python map <F3> :TagbarToggle<CR>
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -216,6 +216,23 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 endif
+
+" For jedi
+let g:jedi#completions_enabled = 1
+autocmd FileType python setlocal completeopt-=preview
+" let g:jedi#auto_initialization = 1
+" let g:jedi#auto_vim_configuration = 0
+" let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#use_splits_not_buffers = "left"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
+let g:jedi#goto_command = "<leader>gd"
+let g:jedi#goto_assignments_command = "<leader>pa"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>gc"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>pr"
 
 " -----
 " OCaml
@@ -232,3 +249,22 @@ endif
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" For vim-markdown
+let g:vim_markdown_folding_disabled = 1
+" let g:vim_markdown_folding_style_pythonic = 0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_toc_autofit = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_emphasis_multiline = 1
+let g:vim_markdown_toc_is_open = 0
+function! MarkdownTocToggle()
+	if g:vim_markdown_toc_is_open
+		lclose
+		let g:vim_markdown_toc_is_open = 0
+	else
+		Toc
+		let g:vim_markdown_toc_is_open = 1
+	endif
+endfunction
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>

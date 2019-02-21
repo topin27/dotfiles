@@ -39,8 +39,8 @@
 		      markdown-mode
 		      magit
 		      helm
-		      ggtags
 		      helm-projectile
+		      helm-cscope
 		      sr-speedbar
 		      ) "Default packages")
 
@@ -125,6 +125,7 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
+(eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
 ;; (diminish 'projectile-mode)
 
 
@@ -147,6 +148,9 @@
 ;;  ((string-equal system-type "darwin")
 ;;   (add-to-list 'exec-path "~/Library/Python/2.7/bin/")
 ;;   (add-to-list 'exec-path "/usr/local/bin/")))
+(if (string-equal system-type "darwin")
+    (if (display-graphic-p)
+	(add-to-list 'exec-path "/usr/local/bin/")))
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
@@ -259,6 +263,9 @@
 (global-set-key (kbd "C-c h m") 'helm-man-woman)
 (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
+(set-face-attribute 'helm-selection nil 
+                    :background "purple"
+                    :foreground "black")
 
 (require 'projectile)
 (projectile-mode +1)
@@ -318,16 +325,13 @@
 (require 'sr-speedbar)
 (global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
 
-(require 'ggtags)
-(setq ggtags-executable-directory "~/bins/global/bin/")
-(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
-(setq-local hippie-expand-try-functions-list
-	    (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
-(setq ggtags-completing-read-function nil)
-(add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-	      (ggtags-mode 1))))
+(require 'helm-cscope)
+(add-hook 'c-mode-common-hook 'helm-cscope-mode)
+(add-hook 'helm-cscope-mode-hook
+          (lambda ()
+	    (define-key evil-normal-state-map (kbd "M-.") 'helm-cscope-find-global-definition)
+            (local-set-key (kbd "M-?") 'helm-cscope-find-calling-this-function)
+            (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
