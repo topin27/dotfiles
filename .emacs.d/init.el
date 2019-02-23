@@ -8,11 +8,8 @@
 ;; (add-to-list 'load-path (expand-file-name "lisp" "~/.emacs.d/"))
 
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages")
-			 ("gnu-china" . "http://elpa.emacs-china.org/gnu/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")
+(setq package-archives '(("gnu-china" . "http://elpa.emacs-china.org/gnu/")
 			 ("melpa-china" . "http://elpa.emacs-china.org/melpa/")
- 			 ("marmalade-china" . "http://elpa.emacs-china.org/marmalade/")
 			 ("marmalade" . "http://elpa.emacs-china.org/marmalade/")))
 
 (package-initialize)
@@ -26,6 +23,7 @@
 		      projectile
 		      ztree
 		      evil
+		      evil-leader
 		      evil-surround
 		      wgrep
 		      hungry-delete
@@ -125,6 +123,8 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
+(eval-after-load "auto-complete" '(diminish 'auto-complete-mode))
+(eval-after-load "helm" '(diminish 'helm-mode))
 (eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
 ;; (diminish 'projectile-mode)
 
@@ -167,7 +167,7 @@
 
 (setq evil-want-C-i-jump nil)
 (require 'evil)
-(setq evil-default-state 'normal)
+(setq evil-default-state 'emacs)
 (evil-mode 1)
 (modify-syntax-entry ?_ "w")
 (loop for (mode . state) in '((org-mode . normal)
@@ -177,6 +177,9 @@
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+
+(require 'evil-leader)
+(global-evil-leader-mode)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -327,11 +330,23 @@
 
 (require 'helm-cscope)
 (add-hook 'c-mode-common-hook 'helm-cscope-mode)
-(add-hook 'helm-cscope-mode-hook
-          (lambda ()
-	    (define-key evil-normal-state-map (kbd "M-.") 'helm-cscope-find-global-definition)
-            (local-set-key (kbd "M-?") 'helm-cscope-find-calling-this-function)
-            (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
+
+
+(defun my/custom-c-common-mode ()
+  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition)
+  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
+  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
+(add-hook 'c-mode-common-hook 'my/custom-c-common-mode)
+
+(defun my/custom-c-mode ()
+  (setq indent-tabs-mode t)
+  (setq tab-width 8))
+(add-hook 'c-mode-hook 'my/custom-c-mode)
+
+(defun my/custom-java-mode ()
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4))
+(add-hook 'java-mode-hook 'my/custom-java-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
