@@ -1,40 +1,23 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'Yggdroot/indentLine'
-Plugin 'tpope/vim-surround'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'amix/open_file_under_cursor.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'AutoComplPop'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#begin('~/.vim/plugged')
+Plug 'ervandew/supertab'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'dyng/ctrlsf.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'jiangmiao/auto-pairs'
+Plug 'derekwyatt/vim-scala'
+Plug 'amix/open_file_under_cursor.vim'
+Plug 'mhinz/vim-startify'
+Plug 'Valloric/YouCompleteMe'
+call plug#end()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -51,8 +34,9 @@ set ts=8
 set mouse=a
 " set cc=81
 set ls=2
-" set conceallevel=0
+set conceallevel=0
 set wildmenu
+set completeopt-=preview
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -76,6 +60,7 @@ nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 map <leader>tp :setlocal paste!<cr>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -108,25 +93,14 @@ nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :CtrlPTag<CR>
 
 " For supertab
-" let g:SuperTabDefaultCompletionType = "<c-p>"
-" let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
+let g:SuperTabDefaultCompletionType = "<c-p>"
+let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
 " For EasyMotion
 map , <Plug>(easymotion-s)
-" map <Leader><Leader>j <Plug>(easymotion-j)
-" map ,w <Plug>(easymotion-w)
-" map ,b <Plug>(easymotion-b)
-" map ,j <Plug>(easymotion-j)
-" map ,k <Plug>(easymotion-k)
-" map ,h <Plug>(easymotion-linebackward)
-" map ,l <Plug>(easymotion-lineforward)
-" map ,. <Plug>(easymotion-repeat)
-" map <Space>w <Plug>(easymotion-f)
-" map <Space>b <Plug>(easymotion-F)
-" map <Space> <Plug>(easymotion-bd-f)
 
 " For Ctrlsf
-nmap     <C-X>f <Plug>CtrlSFPrompt<Space><cword>
+nmap     <C-X>f <Plug>CtrlSFPrompt<Space>
 vmap     <C-X>f <Plug>CtrlSFVwordPath
 vmap     <C-X>F <Plug>CtrlSFVwordExec
 nmap     <C-X>n <Plug>CtrlSFCwordPath
@@ -134,13 +108,13 @@ nmap     <C-X>p <Plug>CtrlSFPwordPath
 nnoremap <C-X>o :CtrlSFOpen<CR>
 nnoremap <C-X>t :CtrlSFToggle<CR>
 inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>sp :CtrlSF -filetype python<Space><cword>
-nnoremap <leader>sc :CtrlSF -filetype cc<Space><cword>
-nnoremap <leader>sz :CtrlSF -filetype cpp<Space><cword>
-nnoremap <leader>so :CtrlSF -filetype ocaml<Space><cword>
-nnoremap <leader>sm :CtrlSF -filetype markdown<Space><cword>
-nnoremap <leader>sj :CtrlSF -filetype java<Space><cword>
-nnoremap <leader>ss :CtrlSF -filetype scala<Space><cword>
+nnoremap <leader>sp :CtrlSF -filetype python<Space>
+nnoremap <leader>sc :CtrlSF -filetype cc<Space>
+nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
+nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
+nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
+nnoremap <leader>sj :CtrlSF -filetype java<Space>
+nnoremap <leader>ss :CtrlSF -filetype scala<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -165,25 +139,29 @@ let g:indentLine_enable = 1
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>ta'
 
-" For AutoComplPop
-let g:acp_ignorecaseOption = 0
-let g:acp_behaviorKeywordCommand = "\<C-p>"
-let g:acp_behaviorKeywordLength = 3
-inoremap <expr> <Tab> pumvisible() ? "\<C-p>" : "\<C-g>u\<Tab>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" --------------
+"  YouCompleteMe
+" --------------
+
+autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
+autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
+autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
+let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_add_preview_to_completeopt = 0
+
 " -------
 " C & C++
 " -------
 
-" autocmd FileType c,cpp setlocal ts=4 sts=4 et
-" autocmd FileType ocaml setlocal ts=2 sts=2 et
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
-autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+" autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
+" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
@@ -192,8 +170,8 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType scala setlocal ts=2 sts=2 et sw=2
-autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
+" autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
+" autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
@@ -202,37 +180,6 @@ autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
 autocmd FileType python map <F3> :TagbarToggle<CR>
-
-" Add the virtualenv's site-packages to vim path
-if has('python')
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-endif
-
-" For jedi
-let g:jedi#completions_enabled = 1
-autocmd FileType python setlocal completeopt-=preview
-" let g:jedi#auto_initialization = 1
-" let g:jedi#auto_vim_configuration = 0
-" let g:jedi#use_tabs_not_buffers = 0
-" let g:jedi#use_splits_not_buffers = "left"
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
-let g:jedi#goto_command = "<leader>gd"
-let g:jedi#goto_assignments_command = "<leader>pa"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>gc"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>pr"
 
 " -----
 " OCaml
