@@ -16,7 +16,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'derekwyatt/vim-scala'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
-Plug 'Valloric/YouCompleteMe'
+Plug 'davidhalter/jedi-vim'
+" Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
 
@@ -59,7 +60,7 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
-map <leader>tp :setlocal paste!<cr>
+nmap <leader>tp :setlocal paste!<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -148,20 +149,20 @@ let g:AutoPairsShortcutToggle = '<leader>ta'
 "  YouCompleteMe
 " --------------
 
-autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
-autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
-autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_add_preview_to_completeopt = 0
+" autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
+" autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
+" autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
+" let g:ycm_min_num_of_chars_for_completion = 3
+" let g:ycm_add_preview_to_completeopt = 0
 
 " -------
 " C & C++
 " -------
 
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
-" autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
-" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
@@ -170,8 +171,8 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType scala setlocal ts=2 sts=2 et sw=2
-" autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
-" autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
@@ -180,6 +181,37 @@ autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
 autocmd FileType python map <F3> :TagbarToggle<CR>
+
+" Add the virtualenv's site-packages to vim path
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
+
+" For jedi
+let g:jedi#completions_enabled = 1
+autocmd FileType python setlocal completeopt-=preview
+" let g:jedi#auto_initialization = 1
+" let g:jedi#auto_vim_configuration = 0
+" let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#use_splits_not_buffers = "left"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
+let g:jedi#goto_command = "<leader>gd"
+let g:jedi#goto_assignments_command = "<leader>pa"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>gc"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>pr"
 
 " -----
 " OCaml
