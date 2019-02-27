@@ -12,7 +12,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'derekwyatt/vim-scala'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
@@ -138,7 +138,7 @@ let g:indentLine_char = '┆'
 let g:indentLine_enable = 1
 
 " For auto-pairs
-let g:AutoPairsShortcutToggle = '<leader>ta'
+" let g:AutoPairsShortcutToggle = '<leader>ta'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

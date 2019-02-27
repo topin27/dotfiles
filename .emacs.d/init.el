@@ -39,7 +39,6 @@
 		      helm
 		      helm-projectile
 		      helm-cscope
-		      sr-speedbar
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -101,22 +100,6 @@
 (linum-mode -1)
 (column-number-mode -1)
 (line-number-mode -1)
-
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (linum-mode t)
-	    (column-number-mode t)
-	    (line-number-mode t)))
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (linum-mode t)
-	    (column-number-mode t)
-	    (line-number-mode t)))
-(add-hook 'markdown-mode-hook
-	  (lambda ()
-	    (linum-mode t)
-	    (column-number-mode t)
-	    (line-number-mode t)))
 
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))
@@ -289,6 +272,11 @@
 (require 'electric)
 (electric-pair-mode t)
 (electric-indent-mode t)
+(defun my/toggle-paste ()
+  (interactive)
+  (setq electric-pair-mode (if (eq electric-pair-mode t) nil t))
+  (setq electric-indent-mode (if (eq electric-indent-mode t) nil t)))
+(global-set-key (kbd "C-c t p") 'my/toggle-paste)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -325,28 +313,31 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(require 'sr-speedbar)
-(global-set-key (kbd "C-\\") 'sr-speedbar-toggle)
-
 (require 'helm-cscope)
 (add-hook 'c-mode-common-hook 'helm-cscope-mode)
 
 
-(defun my/custom-c-common-mode ()
+(defun my/prog-mode ()
+  (linum-mode t)
+  (column-number-mode t)
+  (line-number-mode t))
+(add-hook 'prog-mode-hook 'my/prog-mode)
+
+(defun my/c-common-mode ()
   (evil-leader/set-key "g g" 'helm-cscope-find-global-definition)
   (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
   (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
-(add-hook 'c-mode-common-hook 'my/custom-c-common-mode)
+(add-hook 'c-mode-common-hook 'my/c-common-mode)
 
-(defun my/custom-c-mode ()
+(defun my/c-mode ()
   (setq indent-tabs-mode t)
   (setq tab-width 8))
-(add-hook 'c-mode-hook 'my/custom-c-mode)
+(add-hook 'c-mode-hook 'my/c-mode)
 
-(defun my/custom-java-mode ()
+(defun my/java-mode ()
   (setq indent-tabs-mode nil)
   (setq tab-width 4))
-(add-hook 'java-mode-hook 'my/custom-java-mode)
+(add-hook 'java-mode-hook 'my/java-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -406,6 +397,18 @@
 ;;          )
 ;;         ("org" :components ("org-notes" "org-static"))
 ;; 	))
+
+(defun my/org-mode ()
+  (linum-mode t)
+  (column-number-mode t)
+  (line-number-mode t))
+(add-hook 'org-mode-hook 'my/org-mode)
+
+(defun my/markdown-mode ()
+  (linum-mode t)
+  (column-number-mode t)
+  (line-number-mode t))
+(add-hook 'markdown-mode-hook 'my/markdown-mode)
 
 (provide 'init)
 
