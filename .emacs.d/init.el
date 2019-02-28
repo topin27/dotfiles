@@ -22,6 +22,10 @@
 		      undo-tree
 		      projectile
 		      ztree
+		      smex
+		      ido-vertical-mode
+		      idomenu
+		      imenu-list
 		      evil
 		      evil-leader
 		      evil-surround
@@ -31,14 +35,11 @@
 		      clean-aindent-mode
 		      yasnippet
 		      yasnippet-snippets
-		      auto-complete
 		      cython-mode
 		      scala-mode
 		      markdown-mode
 		      magit
-		      helm
-		      helm-projectile
-		      helm-cscope
+		      company
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -107,8 +108,8 @@
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
 (eval-after-load "auto-complete" '(diminish 'auto-complete-mode))
-(eval-after-load "helm" '(diminish 'helm-mode))
 (eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
+(diminish 'helm-mode "")
 ;; (diminish 'projectile-mode)
 
 
@@ -154,6 +155,7 @@
 (evil-mode 1)
 (modify-syntax-entry ?_ "w")
 (loop for (mode . state) in '((org-mode . normal)
+			      (markdown-mode . normal)
 			      (prog-mode . normal)
 			      (xref--xref-buffer-mode . emacs)
 			      (shell-mode . normal)
@@ -192,67 +194,6 @@
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-(require 'ztree)
-
-(require 'wgrep)
-(setq wgrep-auto-save-buffer t)
-
-(require 'hungry-delete)
-(global-hungry-delete-mode)
-
-(require 'helm)
-(require 'helm-config)
-(helm-mode 1)
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source    -1 ; move to end or beginning of source when reaching top or bottom of source.
-      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-echo-input-in-header-line t)
-(defun my/helm-hide-minibuffer-maybe ()
-  "Hide minibuffer in Helm session if we use the header line as input field."
-  (when (with-helm-buffer helm-echo-input-in-header-line)
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'face
-                   (let ((bg-color (face-background 'default nil)))
-                     `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
-(add-hook 'helm-minibuffer-set-up-hook
-          'my/helm-hide-minibuffer-maybe)
-;; (setq helm-autoresize-max-height 0)
-;; (setq helm-autoresize-min-height 20)
-;; (helm-autoresize-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-c h i") 'helm-semantic-or-imenu)
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(global-set-key (kbd "C-c h b") 'helm-resume)
-(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
-(global-set-key (kbd "C-c h x") 'helm-register)
-(global-set-key (kbd "C-c h /") 'helm-find)
-(global-set-key (kbd "C-c h m") 'helm-man-woman)
-(define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
-(global-set-key (kbd "C-x C-r") 'helm-recentf)
-(set-face-attribute 'helm-selection nil 
-                    :background "purple"
-                    :foreground "black")
-
 (require 'projectile)
 (projectile-mode +1)
 (setq projectile-enable-caching t)
@@ -261,8 +202,47 @@
 (setq-default projectile-globally-ignored-directories
 	      (append '("__pycache__") projectile-globally-ignored-directories))
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
+
+(require 'smex) ; Not needed if you use package.el
+(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                  ; when Smex is auto-initialized on its first run.
+(setq smex-save-file (expand-file-name "smex-items" user-emacs-directory))
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(require 'ido)
+(ido-mode 1)
+(setq ido-enable-flex-matching t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-everywhere t)
+;; (setq ido-auto-merge-work-directories-length -1)
+
+(require 'ido-vertical-mode)
+(ido-vertical-mode 1)
+(setq ido-vertical-show-count t)
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+
+(require 'idomenu)
+(global-set-key (kbd "C-c j i") 'idomenu)
+
+(require 'ztree)
+
+(require 'imenu-list)
+(setq imenu-list-auto-resize t)
+(global-set-key (kbd "C-\\") 'imenu-list-smart-toggle)
+
+(require 'wgrep)
+(setq wgrep-auto-save-buffer t)
+
+(require 'hungry-delete)
+(global-hungry-delete-mode)
+
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-item 10)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -297,12 +277,8 @@
 (define-key yas-minor-mode-map (kbd "TAB") nil)
 (define-key yas-minor-mode-map (kbd "C-<tab>") 'yas-expand)
 
-(require 'auto-complete-config)
-(setq ac-use-menu-map t)
-(setq ac-use-quick-help nil)
-(ac-config-default)
-;; (add-to-list 'ac-sources 'ac-source-yasnippet)
-;; (add-hook 'c++-mode (lambda () (add-to-list 'ac-sources 'ac-source-semantic)))
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
 
 (require 'cython-mode)
 (setq auto-mode-alist
@@ -313,21 +289,12 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(require 'helm-cscope)
-(add-hook 'c-mode-common-hook 'helm-cscope-mode)
-
 
 (defun my/prog-mode ()
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t))
 (add-hook 'prog-mode-hook 'my/prog-mode)
-
-(defun my/c-common-mode ()
-  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition)
-  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
-  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
-(add-hook 'c-mode-common-hook 'my/c-common-mode)
 
 (defun my/c-mode ()
   (setq indent-tabs-mode t)
