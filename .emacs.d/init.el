@@ -40,6 +40,7 @@
 		      markdown-mode
 		      magit
 		      company
+		      neotree
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -244,6 +245,9 @@
 (setq recentf-max-menu-item 10)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
+(require 'neotree)
+(global-set-key (kbd "C-c t n") 'neotree-toggle)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dev
@@ -279,6 +283,23 @@
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0.2)
+(global-set-key (kbd "C-c y") 'company-yasnippet)
+(custom-set-faces
+ '(company-preview
+   ((t (:foreground "darkgray" :underline t))))
+ '(company-preview-common
+   ((t (:inherit company-preview))))
+ '(company-tooltip
+   ((t (:background "lightgray" :foreground "black"))))
+ '(company-tooltip-selection
+   ((t (:background "steelblue" :foreground "white"))))
+ '(company-tooltip-common
+   ((((type x)) (:inherit company-tooltip :weight bold))
+    (t (:inherit company-tooltip))))
+ '(company-tooltip-common-selection
+   ((((type x)) (:inherit company-tooltip-selection :weight bold))
+    (t (:inherit company-tooltip-selection)))))
 
 (require 'cython-mode)
 (setq auto-mode-alist
