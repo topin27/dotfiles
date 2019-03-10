@@ -12,12 +12,12 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-" Plug 'jiangmiao/auto-pairs'
 Plug 'derekwyatt/vim-scala'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'davidhalter/jedi-vim'
-" Plug 'Valloric/YouCompleteMe'
+Plug 'jiangmiao/auto-pairs'
+Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
 
@@ -50,10 +50,6 @@ cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
 cnoremap <C-K> <C-U>
-" nmap <leader>ln :lnext<CR>
-" nmap <leader>lp :lprevious<CR>
-" nmap <leader>cn :cnext<CR>
-" nmap <leader>cp :cprevious<CR>
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -70,7 +66,7 @@ nmap <leader>tp :setlocal paste!<cr>
 " For NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let NERDTreeHighlightCursorline=1
-map <F2> :NERDTreeToggle %<CR>
+map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
 let g:tagbar_right=1
@@ -138,7 +134,7 @@ let g:indentLine_char = '┆'
 let g:indentLine_enable = 1
 
 " For auto-pairs
-" let g:AutoPairsShortcutToggle = '<leader>ta'
+let g:AutoPairsShortcutToggle = '<leader>ta'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -149,20 +145,20 @@ let g:indentLine_enable = 1
 "  YouCompleteMe
 " --------------
 
-" autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
-" autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
-" autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
-" autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
-" let g:ycm_min_num_of_chars_for_completion = 3
-" let g:ycm_add_preview_to_completeopt = 0
+autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
+autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
+autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
+let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_add_preview_to_completeopt = 0
 
 " -------
 " C & C++
 " -------
 
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
-autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+" autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
+" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
@@ -171,8 +167,8 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType scala setlocal ts=2 sts=2 et sw=2
-autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
+" autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
+" autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
@@ -228,6 +224,7 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd FileType markdown setlocal ts=4 sts=4 et sw=4
 
 " For vim-markdown
 let g:vim_markdown_folding_disabled = 1
