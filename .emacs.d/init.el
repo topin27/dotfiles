@@ -38,7 +38,7 @@
 		      cython-mode
 		      scala-mode
 		      markdown-mode
-		      magit
+		      ;; magit
 		      company
 		      neotree
 		      ) "Default packages")
@@ -108,9 +108,7 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
-(eval-after-load "auto-complete" '(diminish 'auto-complete-mode))
-(eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
-(diminish 'helm-mode "")
+(eval-after-load "company" '(diminish 'company-mode))
 ;; (diminish 'projectile-mode)
 
 
@@ -286,20 +284,16 @@
 (setq company-idle-delay 0.2)
 (global-set-key (kbd "C-c y") 'company-yasnippet)
 (custom-set-faces
- '(company-preview
-   ((t (:foreground "darkgray" :underline t))))
- '(company-preview-common
-   ((t (:inherit company-preview))))
- '(company-tooltip
-   ((t (:background "lightgray" :foreground "black"))))
- '(company-tooltip-selection
-   ((t (:background "steelblue" :foreground "white"))))
- '(company-tooltip-common
-   ((((type x)) (:inherit company-tooltip :weight bold))
-    (t (:inherit company-tooltip))))
- '(company-tooltip-common-selection
-   ((((type x)) (:inherit company-tooltip-selection :weight bold))
-    (t (:inherit company-tooltip-selection)))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-preview ((t (:foreground "darkgray" :underline t))))
+ '(company-preview-common ((t (:inherit company-preview))))
+ '(company-tooltip ((t (:background "lightgray" :foreground "black"))))
+ '(company-tooltip-common ((((type x)) (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
+ '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
+ '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
 
 (require 'cython-mode)
 (setq auto-mode-alist
@@ -307,14 +301,17 @@
 
 (require 'scala-mode)
 
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
+;; (require 'magit)
+;; (global-set-key (kbd "C-x g") 'magit-status)
 
 
 (defun my/prog-mode ()
   (linum-mode t)
   (column-number-mode t)
-  (line-number-mode t))
+  (line-number-mode t)
+  (evil-leader/set-key "g g" 'xref-find-definitions)
+  (evil-leader/set-key "g b" 'xref-pop-marker-stack)
+  (evil-leader/set-key "g c" 'xref-find-references))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
 (defun my/c-mode ()
@@ -326,6 +323,14 @@
   (setq indent-tabs-mode nil)
   (setq tab-width 4))
 (add-hook 'java-mode-hook 'my/java-mode)
+
+(defun my/python-mode ()
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (evil-leader/set-key "g g" 'xref-find-definitions)
+  (evil-leader/set-key "g b" 'xref-pop-marker-stack)
+  (evil-leader/set-key "g c" 'xref-find-references))
+(add-hook 'python-mode-hook 'my/python-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -346,8 +351,9 @@
       (toggle-truncate-lines -1)))
 (setq org-html-postamble nil)
 ;; (setq org-startup-indented t)
-(setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)"))
-      org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))))
+(setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)" "CANCELLED(c)"))
+      org-todo-keyword-faces '(("DOING" . (:foreground "cyan" :weight bold))
+			       ("CANCELLED" . (:foreground "yellow" :weight bold))))
 (setq org-src-fontify-natively t)
 (setq org-directory "~/Workspace/notes/")
 (setq org-agenda-files (list org-directory))
@@ -389,10 +395,12 @@
 (defun my/org-mode ()
   (linum-mode t)
   (column-number-mode t)
-  (line-number-mode t))
+  (line-number-mode t)
+  (define-key evil-motion-state-map (kbd "C-i") 'org-cycle))
 (add-hook 'org-mode-hook 'my/org-mode)
 
 (defun my/markdown-mode ()
+  (markdown-toggle-math)
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t))
