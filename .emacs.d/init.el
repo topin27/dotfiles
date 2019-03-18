@@ -38,7 +38,7 @@
 		      cython-mode
 		      scala-mode
 		      markdown-mode
-		      ;; magit
+		      magit
 		      company
 		      neotree
 		      ) "Default packages")
@@ -102,6 +102,8 @@
 (linum-mode -1)
 (column-number-mode -1)
 (line-number-mode -1)
+
+(set-face-foreground 'linum "#362E2E")
 
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))
@@ -301,8 +303,8 @@
 
 (require 'scala-mode)
 
-;; (require 'magit)
-;; (global-set-key (kbd "C-x g") 'magit-status)
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 
 (defun my/prog-mode ()
