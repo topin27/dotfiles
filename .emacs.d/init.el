@@ -103,6 +103,8 @@
 (column-number-mode -1)
 (line-number-mode -1)
 
+(set-face-foreground 'linum "#362E2E")
+
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
@@ -299,8 +301,11 @@
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
+<<<<<<< HEAD
 
 (require 'xcscope)
+=======
+>>>>>>> 93ef9e07998a9b2060a01714ae9900783102eca8
 
 
 (defun my/prog-mode ()

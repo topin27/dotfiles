@@ -128,6 +128,8 @@ let g:UltiSnipsExpandTrigger="yy"
 let g:UltiSnipsListSnippets="yY"
 let g:UltiSnipsJumpForwardTrigger="YY"
 let g:UltiSnipsJumpBackwardTrigger="OO"
+let g:UltiSnipsSnippetDirectories = ['~/.vim/snippets/']
+let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 
 " For indentLine
 let g:indentLine_char = '┆'
@@ -157,8 +159,8 @@ let g:ycm_add_preview_to_completeopt = 0
 " -------
 
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
-" autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
-" autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ------------
@@ -167,8 +169,8 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType scala setlocal ts=2 sts=2 et sw=2
-" autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
-" autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
+autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
+autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java,scala map <F3> :TagbarToggle<CR>
 
 " ------
