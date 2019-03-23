@@ -30,7 +30,6 @@
 		      evil-leader
 		      evil-surround
 		      wgrep
-		      hungry-delete
 		      rainbow-delimiters
 		      clean-aindent-mode
 		      yasnippet
@@ -38,9 +37,10 @@
 		      cython-mode
 		      scala-mode
 		      markdown-mode
-		      ;; magit
+		      magit
 		      company
 		      neotree
+		      xcscope
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -107,7 +107,6 @@
 (eval-after-load "projectile" '(diminish 'projectile-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-(eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
 (eval-after-load "company" '(diminish 'company-mode))
 ;; (diminish 'projectile-mode)
 
@@ -235,9 +234,6 @@
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
-(require 'hungry-delete)
-(global-hungry-delete-mode)
-
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-item 10)
@@ -267,11 +263,11 @@
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'yasnippet)
-;; (setq yas-snippet-dirs
-;;       '(;; "~/.emacs.d/snippets"                 ;; personal snippets
-;;         ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-;; 	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
-;;         ))
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"                 ;; personal snippets
+        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
+        ))
 (yas-global-mode 1)
 ;; (yas-reload-all)
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
@@ -301,8 +297,10 @@
 
 (require 'scala-mode)
 
-;; (require 'magit)
-;; (global-set-key (kbd "C-x g") 'magit-status)
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+(require 'xcscope)
 
 
 (defun my/prog-mode ()
@@ -314,22 +312,24 @@
   (evil-leader/set-key "g c" 'xref-find-references))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
-(defun my/c-mode ()
+(defun my/c-common-mode ()
   (setq indent-tabs-mode t)
-  (setq tab-width 8))
-(add-hook 'c-mode-hook 'my/c-mode)
+  (setq tab-width 8)
+  (setq c-basic-offset 8)
+  (evil-leader/set-key "g g" 'cscope-find-global-definition-no-prompting)
+  (evil-leader/set-key "g b" 'cscope-pop-mark)
+  (evil-leader/set-key "g c" 'cscope-find-functions-calling-this-function))
+(add-hook 'c-mode-common-hook 'my/c-common-mode)
 
 (defun my/java-mode ()
   (setq indent-tabs-mode nil)
+  (setq c-basic-offset 4)
   (setq tab-width 4))
 (add-hook 'java-mode-hook 'my/java-mode)
 
 (defun my/python-mode ()
   (setq indent-tabs-mode nil)
-  (setq tab-width 4)
-  (evil-leader/set-key "g g" 'xref-find-definitions)
-  (evil-leader/set-key "g b" 'xref-pop-marker-stack)
-  (evil-leader/set-key "g c" 'xref-find-references))
+  (setq tab-width 4))
 (add-hook 'python-mode-hook 'my/python-mode)
 
 
@@ -345,10 +345,6 @@
    "Major mode for editing GitHub Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
 
-(add-hook 'org-mode-hook
-    (lambda ()
-      (flyspell-mode -1)
-      (toggle-truncate-lines -1)))
 (setq org-html-postamble nil)
 ;; (setq org-startup-indented t)
 (setq org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "|" "DONE(d)" "CANCELLED(c)"))
@@ -396,14 +392,18 @@
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
-  (define-key evil-motion-state-map (kbd "C-i") 'org-cycle))
+  (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
+  (flyspell-mode -1)
+  (toggle-truncate-lines -1))
 (add-hook 'org-mode-hook 'my/org-mode)
 
 (defun my/markdown-mode ()
-  (markdown-toggle-math)
+  (markdown-toggle-math t)
+  (markdown-toggle-fontify-code-blocks-natively t)
   (linum-mode t)
   (column-number-mode t)
-  (line-number-mode t))
+  (line-number-mode t)
+  (define-key evil-motion-state-map (kbd "C-i") 'markdown-cycle))
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 
 (provide 'init)
