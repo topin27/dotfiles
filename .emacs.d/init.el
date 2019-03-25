@@ -104,6 +104,7 @@
 (line-number-mode -1)
 
 (set-face-foreground 'linum "#362E2E")
+(setq linum-format "%d ")
 
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))
@@ -301,11 +302,8 @@
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
-<<<<<<< HEAD
 
 (require 'xcscope)
-=======
->>>>>>> 93ef9e07998a9b2060a01714ae9900783102eca8
 
 
 (defun my/prog-mode ()
@@ -403,7 +401,7 @@
 (add-hook 'org-mode-hook 'my/org-mode)
 
 (defun my/markdown-mode ()
-  (markdown-toggle-math t)
+  (markdown-toggle-math)
   (markdown-toggle-fontify-code-blocks-natively t)
   (linum-mode t)
   (column-number-mode t)
