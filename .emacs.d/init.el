@@ -166,6 +166,7 @@
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
 
 (require 'evil-leader)
+(evil-leader/set-leader ",")
 (global-evil-leader-mode)
 
 (require 'evil-surround)
@@ -404,7 +405,6 @@
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  (markdown-toggle-fontify-code-blocks-natively t)
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t))
