@@ -104,7 +104,7 @@
 (line-number-mode -1)
 
 (set-face-foreground 'linum "#362E2E")
-(setq linum-format "%d ")
+;; (setq linum-format "%d ")
 
 (require 'diminish)
 (eval-after-load "projectile" '(diminish 'projectile-mode))

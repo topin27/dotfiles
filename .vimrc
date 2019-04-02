@@ -56,6 +56,8 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
 nmap <leader>tp :setlocal paste!<cr>
 
 
