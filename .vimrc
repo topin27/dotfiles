@@ -228,7 +228,7 @@ let g:jedi#rename_command = "<leader>pr"
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd FileType markdown setlocal ts=4 sts=4 et sw=4
+autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0
 
 " For vim-markdown
 let g:vim_markdown_folding_disabled = 1
