@@ -66,8 +66,8 @@ nmap <leader>tp :setlocal paste!<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " For NERDTree
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-let NERDTreeHighlightCursorline=1
+let g:NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+let g:NERDTreeHighlightCursorline=1
 map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
@@ -86,7 +86,7 @@ let g:ctrlp_map = '<leader>f'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
 \ }
 nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :CtrlPTag<CR>
