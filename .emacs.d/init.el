@@ -35,12 +35,12 @@
 		      yasnippet
 		      yasnippet-snippets
 		      cython-mode
-		      scala-mode
 		      markdown-mode
 		      magit
 		      company
 		      neotree
 		      xcscope
+		      pyim
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -233,7 +233,7 @@
 
 (require 'imenu-list)
 (setq imenu-list-auto-resize t)
-(global-set-key (kbd "C-\\") 'imenu-list-smart-toggle)
+(global-set-key (kbd "C-c t i") 'imenu-list-smart-toggle)
 
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
@@ -244,7 +244,18 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 (require 'neotree)
+(setq neo-smart-open t)
 (global-set-key (kbd "C-c t n") 'neotree-toggle)
+
+(require 'pyim)
+(require 'pyim-basedict)
+(pyim-basedict-enable)
+(setq default-input-method "pyim")
+(setq pyim-default-scheme 'quanpin)
+(setq default-input-method "pyim")
+(setq pyim-page-tooltip 'popup)
+(setq pyim-page-length 9)
+(global-set-key (kbd "C-\\") 'toggle-input-method)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -267,11 +278,11 @@
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"                 ;; personal snippets
-        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
-        ))
+;; (setq yas-snippet-dirs
+;;       '(;; "~/.emacs.d/snippets"                 ;; personal snippets
+;;         ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+;; 	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
+;;         ))
 (yas-global-mode 1)
 ;; (yas-reload-all)
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
@@ -298,8 +309,6 @@
 (require 'cython-mode)
 (setq auto-mode-alist
       (cons '(".pyx" . cython-mode) auto-mode-alist))
-
-(require 'scala-mode)
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
