@@ -252,7 +252,6 @@
 (pyim-basedict-enable)
 (setq default-input-method "pyim")
 (setq pyim-default-scheme 'quanpin)
-(setq default-input-method "pyim")
 (setq pyim-page-tooltip 'popup)
 (setq pyim-page-length 9)
 (global-set-key (kbd "C-\\") 'toggle-input-method)
