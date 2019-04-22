@@ -14,7 +14,7 @@ alias gitp='git push'
 alias gitf='git pull'
 alias gitd='git diff'
 alias gita='git add'
-alias nvim='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.featured)'
+alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.minimal)'
 
 my-workon () {
 	case $1 in
