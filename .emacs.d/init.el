@@ -233,6 +233,7 @@
 
 (require 'imenu-list)
 (setq imenu-list-auto-resize t)
+(setq imenu-list-focus-after-activation t)
 (global-set-key (kbd "C-c t i") 'imenu-list-smart-toggle)
 
 (require 'wgrep)
@@ -255,6 +256,7 @@
 (setq pyim-page-tooltip 'popup)
 (setq pyim-page-length 9)
 (global-set-key (kbd "C-\\") 'toggle-input-method)
+(global-set-key (kbd "M-c") 'toggle-input-method)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

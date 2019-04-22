@@ -8,16 +8,15 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'derekwyatt/vim-scala'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'davidhalter/jedi-vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
 
@@ -54,6 +53,7 @@ nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
+nmap <leader>q :b#<bar>bd#<CR>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
@@ -88,6 +88,7 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
 \ }
+let g:ctrlp_key_loop = 1
 nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :CtrlPTag<CR>
 
@@ -96,7 +97,7 @@ let g:SuperTabDefaultCompletionType = "<c-p>"
 let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
 " For EasyMotion
-map , <Plug>(easymotion-s)
+nmap , <Plug>(easymotion-s)
 
 " For Ctrlsf
 nmap     <C-X>f <Plug>CtrlSFPrompt<Space>
@@ -133,9 +134,9 @@ let g:UltiSnipsJumpBackwardTrigger="OO"
 let g:UltiSnipsSnippetDirectories = ['~/.vim/snippets/']
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 
-" For indentLine
-let g:indentLine_char = '┆'
-let g:indentLine_enable = 1
+" " For indentLine
+" let g:indentLine_char = '┆'
+" let g:indentLine_enable = 1
 
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>ta'
@@ -149,12 +150,12 @@ let g:AutoPairsShortcutToggle = '<leader>ta'
 "  YouCompleteMe
 " --------------
 
-autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
-autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
-autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_add_preview_to_completeopt = 0
+" autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
+" autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
+" autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
+" let g:ycm_min_num_of_chars_for_completion = 3
+" let g:ycm_add_preview_to_completeopt = 0
 
 " -------
 " C & C++
@@ -170,10 +171,9 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 " ------------
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
-autocmd FileType scala setlocal ts=2 sts=2 et sw=2
 autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType java,scala map <F3> :TagbarToggle<CR>
+autocmd FileType java map <F3> :TagbarToggle<CR>
 
 " ------
 " Python
