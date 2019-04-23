@@ -17,6 +17,7 @@ Plug 'mhinz/vim-startify'
 Plug 'davidhalter/jedi-vim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/YouCompleteMe'
+Plug 'davidoc/taskpaper.vim'
 call plug#end()
 
 
@@ -58,7 +59,7 @@ inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
-nmap <leader>tp :setlocal paste!<cr>
+nmap <leader>pt :setlocal paste!<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -72,12 +73,19 @@ map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
 let g:tagbar_right=1
-let g:tagbar_type_markdown = {
-        \ 'ctagstype' : 'markdown',
-        \ 'kinds' : [
-                \ 'h:headings',
-        \ ],
-    \ 'sort' : 0
+" let g:tagbar_type_markdown = {
+"         \ 'ctagstype' : 'markdown',
+"         \ 'kinds' : [
+"                 \ 'h:headings',
+"         \ ],
+"     \ 'sort' : 0
+" \ }
+let g:tagbar_type_taskpaper = {
+	\ 'ctagstype' : 'taskpaper',
+	\ 'kinds' : [
+		\ 'p:projects',
+	\ ],
+	\ 'sort' : 0
 \ }
 map <F3> :TagbarToggle<CR>
 
@@ -90,7 +98,7 @@ let g:ctrlp_custom_ignore = {
 \ }
 let g:ctrlp_key_loop = 1
 nmap <leader>b :CtrlPBuffer<CR>
-nmap <leader>t :CtrlPTag<CR>
+" nmap <leader>t :CtrlPTag<CR>
 
 " For supertab
 let g:SuperTabDefaultCompletionType = "<c-p>"
@@ -139,7 +147,7 @@ let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 " let g:indentLine_enable = 1
 
 " For auto-pairs
-let g:AutoPairsShortcutToggle = '<leader>ta'
+let g:AutoPairsShortcutToggle = '<leader>at'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
