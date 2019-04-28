@@ -41,6 +41,8 @@
 		      neotree
 		      xcscope
 		      pyim
+		      elfeed
+		      ag
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -84,7 +86,7 @@
 
 (if (not (display-graphic-p))
     (progn
-      ;; (xterm-mouse-mode t)
+      (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
     ;; (load-theme 'deeper-blue)
@@ -258,6 +260,15 @@
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 (global-set-key (kbd "M-c") 'toggle-input-method)
 
+(require 'elfeed)
+(global-set-key (kbd "C-x w") 'elfeed)
+(setq elfeed-feeds
+      '("http://nullprogram.com/feed/"
+        "http://planet.emacsen.org/atom.xml"
+	"feed://www.ruanyifeng.com/blog/atom.xml"
+	"https://www.byvoid.com/zhs/feed"
+	"https://coolshell.cn/feed"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dev
@@ -293,8 +304,9 @@
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0.2)
-(global-set-key (kbd "C-c y") 'company-yasnippet)
+(setq company-idle-delay 0.1)
+;; (global-set-key (kbd "C-c y") 'company-yasnippet)
+(setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -416,6 +428,7 @@
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
+  (markdown-toggle-url-hiding)
   (define-key evil-motion-state-map (kbd "C-i") 'markdown-cycle))
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 
