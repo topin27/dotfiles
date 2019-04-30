@@ -97,6 +97,8 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
 \ }
 let g:ctrlp_key_loop = 1
+let g:ctrlp_max_files = 0
+let g:ctrlp_working_path_mode = 'ra'
 nmap <leader>b :CtrlPBuffer<CR>
 " nmap <leader>t :CtrlPTag<CR>
 
