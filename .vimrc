@@ -69,17 +69,17 @@ nmap <leader>pt :setlocal paste!<cr>
 " For NERDTree
 let g:NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let g:NERDTreeHighlightCursorline=1
-map <F2> :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR><C-w>h
 
 " For tagbar
 let g:tagbar_right=1
-" let g:tagbar_type_markdown = {
-"         \ 'ctagstype' : 'markdown',
-"         \ 'kinds' : [
-"                 \ 'h:headings',
-"         \ ],
-"     \ 'sort' : 0
-" \ }
+let g:tagbar_type_markdown = {
+        \ 'ctagstype' : 'markdown',
+        \ 'kinds' : [
+                \ 'h:headings',
+        \ ],
+    \ 'sort' : 0
+\ }
 let g:tagbar_type_taskpaper = {
 	\ 'ctagstype' : 'taskpaper',
 	\ 'kinds' : [
@@ -87,7 +87,7 @@ let g:tagbar_type_taskpaper = {
 	\ ],
 	\ 'sort' : 0
 \ }
-map <F3> :TagbarToggle<CR>
+map <F3> :TagbarToggle<CR><C-w>l
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -96,10 +96,17 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
 \ }
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'bookmarkdir']
 let g:ctrlp_key_loop = 1
 let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden -g ""'
+endif
 nmap <leader>b :CtrlPBuffer<CR>
+nmap <leader>ji :CtrlPBufTag<CR>
+nmap <leader>jt :CtrlPTag<CR>
 " nmap <leader>t :CtrlPTag<CR>
 
 " For supertab
@@ -124,7 +131,6 @@ nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
 nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
 nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
 nnoremap <leader>sj :CtrlSF -filetype java<Space>
-nnoremap <leader>ss :CtrlSF -filetype scala<Space>
 let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
 let g:ctrlsf_default_view_mode = 'compact'
 
@@ -174,23 +180,23 @@ let g:AutoPairsShortcutToggle = '<leader>at'
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-w>l
 
-" ------------
-" Java & Scala
-" ------------
+" ----
+" Java
+" ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType java map <F3> :TagbarToggle<CR>
+autocmd FileType java map <F3> :TagbarToggle<CR><C-w>l
 
 " ------
 " Python
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
-autocmd FileType python map <F3> :TagbarToggle<CR>
+autocmd FileType python map <F3> :TagbarToggle<CR><C-w>l
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -257,4 +263,4 @@ function! MarkdownTocToggle()
 		let g:vim_markdown_toc_is_open = 1
 	endif
 endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR><C-w>l
