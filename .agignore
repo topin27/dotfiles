@@ -1,0 +1,12 @@
+.git
+.svn
+.hg
+.DS_Store
+**/*.pyc
+*.so
+*.zip
+*.tar
+*.gz
+*.class
+*.o
+*.ipynb
