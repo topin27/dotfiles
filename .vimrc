@@ -99,6 +99,8 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'bookmarkdir']
 let g:ctrlp_key_loop = 1
 let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth=40
+let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 if executable('ag')
