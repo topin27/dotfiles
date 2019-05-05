@@ -22,9 +22,6 @@
 		      undo-tree
 		      projectile
 		      ztree
-		      smex
-		      ido-vertical-mode
-		      idomenu
 		      imenu-list
 		      evil
 		      evil-leader
@@ -39,10 +36,12 @@
 		      magit
 		      company
 		      neotree
-		      xcscope
+		      helm
+		      helm-projectile
+		      helm-cscope
+		      helm-ag
 		      pyim
 		      elfeed
-		      ag
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -113,6 +112,8 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "company" '(diminish 'company-mode))
+(eval-after-load "helm" '(diminish 'helm))
+(eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
 ;; (diminish 'projectile-mode)
 
 
@@ -198,39 +199,6 @@
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-(require 'projectile)
-(projectile-mode +1)
-(setq projectile-enable-caching t)
-(setq-default projectile-globally-ignored-files
-	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
-(setq-default projectile-globally-ignored-directories
-	      (append '("__pycache__") projectile-globally-ignored-directories))
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-(require 'smex) ; Not needed if you use package.el
-(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
-                  ; when Smex is auto-initialized on its first run.
-(setq smex-save-file (expand-file-name "smex-items" user-emacs-directory))
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-(require 'ido)
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-everywhere t)
-;; (setq ido-auto-merge-work-directories-length -1)
-
-(require 'ido-vertical-mode)
-(ido-vertical-mode 1)
-(setq ido-vertical-show-count t)
-(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
-
-(require 'idomenu)
-(global-set-key (kbd "C-c j i") 'idomenu)
-
 (require 'ztree)
 
 (require 'imenu-list)
@@ -241,14 +209,73 @@
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-item 10)
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-
 (require 'neotree)
 (setq neo-smart-open t)
 (global-set-key (kbd "C-c t n") 'neotree-toggle)
+
+(require 'helm)
+(require 'helm-config)
+(helm-mode 1)
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-move-to-line-cycle-in-source    -1 ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t
+      helm-echo-input-in-header-line t)
+(set-face-attribute 'helm-selection nil
+		    :background "purple"
+		    :foreground "black")
+(defun my/helm-hide-minibuffer-maybe ()
+  "Hide minibuffer in Helm session if we use the header line as input field."
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'face
+                   (let ((bg-color (face-background 'default nil)))
+                     `(:background ,bg-color :foreground ,bg-color)))
+      (setq-local cursor-type nil))))
+(add-hook 'helm-minibuffer-set-up-hook
+          'my/helm-hide-minibuffer-maybe)
+;; (setq helm-autoresize-max-height 0)
+;; (setq helm-autoresize-min-height 20)
+;; (helm-autoresize-mode 1)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-c h i") 'helm-semantic-or-imenu)
+(setq helm-semantic-fuzzy-match t
+      helm-imenu-fuzzy-match    t)
+(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-c h b") 'helm-resume)
+(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+(global-set-key (kbd "C-c h x") 'helm-register)
+(global-set-key (kbd "C-c h /") 'helm-find)
+(global-set-key (kbd "C-c h m") 'helm-man-woman)
+(define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
+
+(require 'projectile)
+(projectile-mode +1)
+(setq projectile-enable-caching t)
+(setq-default projectile-globally-ignored-files
+	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
+(setq-default projectile-globally-ignored-directories
+	      (append '("__pycache__") projectile-globally-ignored-directories))
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
 
 (require 'pyim)
 (require 'pyim-basedict)
@@ -306,7 +333,7 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
 ;; (global-set-key (kbd "C-c y") 'company-yasnippet)
-(setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
+;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -326,7 +353,7 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(require 'xcscope)
+(require 'helm-cscope)
 
 
 (defun my/prog-mode ()
@@ -342,15 +369,18 @@
   (setq indent-tabs-mode t)
   (setq tab-width 8)
   (setq c-basic-offset 8)
-  (evil-leader/set-key "g g" 'cscope-find-global-definition-no-prompting)
-  (evil-leader/set-key "g b" 'cscope-pop-mark)
-  (evil-leader/set-key "g c" 'cscope-find-functions-calling-this-function))
+  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition-no-prompt)
+  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
+  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
 (add-hook 'c-mode-common-hook 'my/c-common-mode)
 
 (defun my/java-mode ()
   (setq indent-tabs-mode nil)
   (setq c-basic-offset 4)
-  (setq tab-width 4))
+  (setq tab-width 4)
+  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition-no-prompt)
+  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
+  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
 (add-hook 'java-mode-hook 'my/java-mode)
 
 (defun my/python-mode ()
@@ -379,7 +409,7 @@
 (setq org-src-fontify-natively t)
 (setq org-directory "~/Workspace/notes/")
 (setq org-agenda-files (list org-directory))
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
 	 "* TODO %?\n %i\n")
