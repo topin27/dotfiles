@@ -85,7 +85,7 @@
 
 (if (not (display-graphic-p))
     (progn
-      (xterm-mouse-mode t)
+      ;; (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
     ;; (load-theme 'deeper-blue)
@@ -112,7 +112,7 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "company" '(diminish 'company-mode))
-(eval-after-load "helm" '(diminish 'helm))
+(diminish 'helm-mode)
 (eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
 ;; (diminish 'projectile-mode)
 
@@ -261,7 +261,7 @@
 (global-set-key (kbd "C-c h b") 'helm-resume)
 (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
 (global-set-key (kbd "C-c h x") 'helm-register)
-(global-set-key (kbd "C-c h /") 'helm-find)
+(global-set-key (kbd "C-c h /") 'helm-do-ag)
 (global-set-key (kbd "C-c h m") 'helm-man-woman)
 (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
@@ -334,6 +334,7 @@
 (setq company-idle-delay 0.1)
 ;; (global-set-key (kbd "C-c y") 'company-yasnippet)
 ;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
+(setq company-dabbrev-downcase nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -459,6 +460,7 @@
   (column-number-mode t)
   (line-number-mode t)
   (markdown-toggle-url-hiding)
+  (markdown-toggle-fontify-code-blocks-natively)
   (define-key evil-motion-state-map (kbd "C-i") 'markdown-cycle))
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 

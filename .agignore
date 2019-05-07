@@ -10,3 +10,6 @@
 *.class
 *.o
 *.ipynb
+TAGS
+tags
+cscope*

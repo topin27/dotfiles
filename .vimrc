@@ -4,10 +4,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'dyng/ctrlsf.vim'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'mileszs/ack.vim'
 " Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -69,7 +68,7 @@ nmap <leader>pt :setlocal paste!<cr>
 " For NERDTree
 let g:NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 let g:NERDTreeHighlightCursorline=1
-map <F2> :NERDTreeToggle<CR><C-w>h
+map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
 let g:tagbar_right=1
@@ -87,7 +86,7 @@ let g:tagbar_type_taskpaper = {
 	\ ],
 	\ 'sort' : 0
 \ }
-map <F3> :TagbarToggle<CR><C-w>l
+map <F3> :TagbarToggle<CR>
 
 " For ctrlp
 let g:ctrlp_map = '<leader>f'
@@ -118,31 +117,18 @@ let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 " For EasyMotion
 nmap , <Plug>(easymotion-s)
 
-" For Ctrlsf
-nmap     <C-X>f <Plug>CtrlSFPrompt<Space>
-vmap     <C-X>f <Plug>CtrlSFVwordPath
-vmap     <C-X>F <Plug>CtrlSFVwordExec
-nmap     <C-X>n <Plug>CtrlSFCwordPath
-nmap     <C-X>p <Plug>CtrlSFPwordPath
-nnoremap <C-X>o :CtrlSFOpen<CR>
-nnoremap <C-X>t :CtrlSFToggle<CR>
-inoremap <C-X>t <Esc>:CtrlSFToggle<CR>
-nnoremap <leader>sp :CtrlSF -filetype python<Space>
-nnoremap <leader>sc :CtrlSF -filetype cc<Space>
-nnoremap <leader>sz :CtrlSF -filetype cpp<Space>
-nnoremap <leader>so :CtrlSF -filetype ocaml<Space>
-nnoremap <leader>sm :CtrlSF -filetype markdown<Space>
-nnoremap <leader>sj :CtrlSF -filetype java<Space>
-let g:ctrlsf_ignore_dir = ['.git', '.svn', 'tags', 'cscope*.out']
-let g:ctrlsf_default_view_mode = 'compact'
-
-" For multiple-cursors
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_key='<F5>'
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+" For Ack.vim
+if executable('ag')
+	let g:ackprg = 'ag --vimgrep'
+endif
+" set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
+nnoremap <leader>ss :Ack!<Space>
+nnoremap <leader>sp :Ack! --python<Space>
+nnoremap <leader>sc :Ack! --cc<Space>
+nnoremap <leader>sz :Ack! --cpp<Space>
+nnoremap <leader>so :Ack! --ocaml<Space>
+nnoremap <leader>sm :Ack! --markdown<Space>
+nnoremap <leader>sj :Ack! --java<Space>
 
 " For ultisnips
 let g:UltiSnipsExpandTrigger="yy"
@@ -182,7 +168,7 @@ let g:AutoPairsShortcutToggle = '<leader>at'
 autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-w>l
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ----
 " Java
@@ -191,14 +177,14 @@ autocmd FileType c,cpp map <F3> :TagbarToggle<CR><C-w>l
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType java map <F3> :TagbarToggle<CR><C-w>l
+autocmd FileType java map <F3> :TagbarToggle<CR>
 
 " ------
 " Python
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
-autocmd FileType python map <F3> :TagbarToggle<CR><C-w>l
+autocmd FileType python map <F3> :TagbarToggle<CR>
 
 " Add the virtualenv's site-packages to vim path
 if has('python')
@@ -254,6 +240,7 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_emphasis_multiline = 1
 let g:vim_markdown_toc_is_open = 0
 function! MarkdownTocToggle()
@@ -265,4 +252,4 @@ function! MarkdownTocToggle()
 		let g:vim_markdown_toc_is_open = 1
 	endif
 endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR><C-w>l
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
