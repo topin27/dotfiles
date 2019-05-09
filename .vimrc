@@ -13,7 +13,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/YouCompleteMe'
 Plug 'davidoc/taskpaper.vim'
@@ -66,12 +66,13 @@ nmap <leader>pt :setlocal paste!<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " For NERDTree
-let g:NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-let g:NERDTreeHighlightCursorline=1
+let g:NERDTreeIgnore = ['\.pyc$', '\~$'] "ignore files in NERDTree
+let g:NERDTreeHighlightCursorline = 1
 map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
-let g:tagbar_right=1
+let g:tagbar_right = 1
+let g:tagbar_autofocus = 1
 let g:tagbar_type_markdown = {
         \ 'ctagstype' : 'markdown',
         \ 'kinds' : [
@@ -95,12 +96,12 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
 \ }
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'bookmarkdir']
+let g:ctrlp_extensions = ['buffertag', 'bookmarkdir']
 let g:ctrlp_key_loop = 1
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth=40
 let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 if executable('ag')
 	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden -g ""'
@@ -131,10 +132,10 @@ nnoremap <leader>sm :Ack! --markdown<Space>
 nnoremap <leader>sj :Ack! --java<Space>
 
 " For ultisnips
-let g:UltiSnipsExpandTrigger="yy"
-let g:UltiSnipsListSnippets="yY"
-let g:UltiSnipsJumpForwardTrigger="YY"
-let g:UltiSnipsJumpBackwardTrigger="OO"
+let g:UltiSnipsExpandTrigger = "yy"
+let g:UltiSnipsListSnippets = "yY"
+let g:UltiSnipsJumpForwardTrigger = "YY"
+let g:UltiSnipsJumpBackwardTrigger = "OO"
 let g:UltiSnipsSnippetDirectories = ['~/.vim/snippets/']
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 
@@ -186,36 +187,36 @@ autocmd FileType java map <F3> :TagbarToggle<CR>
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
 autocmd FileType python map <F3> :TagbarToggle<CR>
 
-" Add the virtualenv's site-packages to vim path
-if has('python')
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-endif
+" " Add the virtualenv's site-packages to vim path
+" if has('python')
+" py << EOF
+" import os.path
+" import sys
+" import vim
+" if 'VIRTUAL_ENV' in os.environ:
+"     project_base_dir = os.environ['VIRTUAL_ENV']
+"     sys.path.insert(0, project_base_dir)
+"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"     execfile(activate_this, dict(__file__=activate_this))
+" EOF
+" endif
 
-" For jedi
-let g:jedi#completions_enabled = 1
-autocmd FileType python setlocal completeopt-=preview
-" let g:jedi#auto_initialization = 1
-" let g:jedi#auto_vim_configuration = 0
-" let g:jedi#use_tabs_not_buffers = 0
-" let g:jedi#use_splits_not_buffers = "left"
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
-let g:jedi#goto_command = "<leader>gd"
-let g:jedi#goto_assignments_command = "<leader>pa"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>gc"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>pr"
+" " For jedi
+" let g:jedi#completions_enabled = 1
+" autocmd FileType python setlocal completeopt-=preview
+" " let g:jedi#auto_initialization = 1
+" " let g:jedi#auto_vim_configuration = 0
+" " let g:jedi#use_tabs_not_buffers = 0
+" " let g:jedi#use_splits_not_buffers = "left"
+" let g:jedi#popup_on_dot = 0
+" let g:jedi#popup_select_first = 1
+" let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
+" let g:jedi#goto_command = "<leader>gd"
+" let g:jedi#goto_assignments_command = "<leader>pa"
+" let g:jedi#documentation_command = "K"
+" let g:jedi#usages_command = "<leader>gc"
+" let g:jedi#completions_command = "<C-Space>"
+" let g:jedi#rename_command = "<leader>pr"
 
 " -----
 " OCaml
@@ -243,13 +244,13 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_emphasis_multiline = 1
 let g:vim_markdown_toc_is_open = 0
-function! MarkdownTocToggle()
-	if g:vim_markdown_toc_is_open
-		lclose
-		let g:vim_markdown_toc_is_open = 0
-	else
-		Toc
-		let g:vim_markdown_toc_is_open = 1
-	endif
-endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
+" function! MarkdownTocToggle()
+" 	if g:vim_markdown_toc_is_open
+" 		lclose
+" 		let g:vim_markdown_toc_is_open = 0
+" 	else
+" 		Toc
+" 		let g:vim_markdown_toc_is_open = 1
+" 	endif
+" endfunction
+" autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
