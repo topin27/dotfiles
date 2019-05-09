@@ -17,6 +17,7 @@ Plug 'mhinz/vim-startify'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/YouCompleteMe'
 Plug 'davidoc/taskpaper.vim'
+Plug 'tommcdo/vim-kangaroo'
 call plug#end()
 
 
