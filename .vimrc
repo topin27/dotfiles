@@ -7,7 +7,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
-" Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -18,6 +17,8 @@ Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/YouCompleteMe'
 Plug 'davidoc/taskpaper.vim'
 Plug 'tommcdo/vim-kangaroo'
+Plug 'rustushki/JavaImp.vim'
+Plug 'skywind3000/vim-preview'
 call plug#end()
 
 
@@ -140,12 +141,12 @@ let g:UltiSnipsJumpBackwardTrigger = "OO"
 let g:UltiSnipsSnippetDirectories = ['~/.vim/snippets/']
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 
-" " For indentLine
-" let g:indentLine_char = '┆'
-" let g:indentLine_enable = 1
-
 " For auto-pairs
 let g:AutoPairsShortcutToggle = '<leader>at'
+
+" For vim-preview
+autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
+autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -180,6 +181,11 @@ autocmd FileType java setlocal ts=4 sts=4 et sw=4
 autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType java map <F3> :TagbarToggle<CR>
+
+" For JavaImp
+let g:JavaImpPaths =
+	\ $HOME . "/.vim/JavaImp/jmplst/"
+let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 
 " ------
 " Python
