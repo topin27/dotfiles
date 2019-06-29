@@ -17,7 +17,7 @@ Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/YouCompleteMe'
 Plug 'davidoc/taskpaper.vim'
 Plug 'tommcdo/vim-kangaroo'
-Plug 'rustushki/JavaImp.vim'
+Plug 'topin27/JavaImp.vim'
 Plug 'skywind3000/vim-preview'
 call plug#end()
 
@@ -27,7 +27,9 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 syntax on
-set nu
+syntax enable
+" set nu
+set rnu
 set ruler
 set ai
 set hlsearch
@@ -55,12 +57,13 @@ nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
-nmap <leader>q :b#<bar>bd#<CR>
+nmap <leader>q :b#<bar>bd#<CR><C-W><C-P>
+nmap <leader>pt :setlocal paste!<cr>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
-nmap <leader>pt :setlocal paste!<cr>
+nnoremap g] g<C-]>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -125,13 +128,14 @@ if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
 endif
 " set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
-nnoremap <leader>ss :Ack!<Space>
-nnoremap <leader>sp :Ack! --python<Space>
-nnoremap <leader>sc :Ack! --cc<Space>
-nnoremap <leader>sz :Ack! --cpp<Space>
-nnoremap <leader>so :Ack! --ocaml<Space>
-nnoremap <leader>sm :Ack! --markdown<Space>
-nnoremap <leader>sj :Ack! --java<Space>
+nnoremap <leader>ss :Ack! ""<Left>
+nnoremap <leader>sp :Ack! --python ""<Left>
+nnoremap <leader>sc :Ack! --cc ""<Left>
+nnoremap <leader>sz :Ack! --cpp ""<Left>
+nnoremap <leader>so :Ack! --ocaml ""<Left>
+nnoremap <leader>sm :Ack! --markdown ""<Left>
+nnoremap <leader>sj :Ack! --java ""<Left>
+nnoremap <leader>s/ :Ack! "" %<Left><Left><Left>
 
 " For ultisnips
 let g:UltiSnipsExpandTrigger = "yy"
