@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -19,6 +19,9 @@ Plug 'davidoc/taskpaper.vim'
 Plug 'tommcdo/vim-kangaroo'
 Plug 'topin27/JavaImp.vim'
 Plug 'skywind3000/vim-preview'
+Plug 'ybian/smartim'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --bin'}
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 
@@ -28,7 +31,7 @@ call plug#end()
 
 syntax on
 syntax enable
-" set nu
+set nu
 set rnu
 set ruler
 set ai
@@ -94,27 +97,38 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
-" For ctrlp
-let g:ctrlp_map = '<leader>f'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
-\ }
-let g:ctrlp_extensions = ['buffertag', 'bookmarkdir']
-let g:ctrlp_key_loop = 1
-let g:ctrlp_max_files = 0
-let g:ctrlp_max_depth=40
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'a'
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-if executable('ag')
-	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden -g ""'
-endif
-nmap <leader>b :CtrlPBuffer<CR>
-nmap <leader>ji :CtrlPBufTag<CR>
-nmap <leader>jt :CtrlPTag<CR>
-" nmap <leader>t :CtrlPTag<CR>
+" " For ctrlp
+" let g:ctrlp_map = '<leader>f'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_custom_ignore = {
+"     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+"     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
+" \ }
+" let g:ctrlp_extensions = ['buffertag', 'bookmarkdir']
+" let g:ctrlp_key_loop = 1
+" let g:ctrlp_max_files = 0
+" let g:ctrlp_max_depth=40
+" let g:ctrlp_by_filename = 1
+" let g:ctrlp_working_path_mode = 'a'
+" let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+" if executable('ag')
+" 	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden -g ""'
+" endif
+" nmap <leader>b :CtrlPBuffer<CR>
+" nmap <leader>ji :CtrlPBufTag<CR>
+" nmap <leader>jt :CtrlPTag<CR>
+" " nmap <leader>t :CtrlPTag<CR>
+
+" For fzf
+nnoremap <silent> <Leader>f :Files<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>ji :BTags<CR>
+nnoremap <silent> <Leader>jt :Tags<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+let g:fzf_layout = { 'down': '~40%' }
 
 " For supertab
 let g:SuperTabDefaultCompletionType = "<c-p>"
@@ -168,11 +182,16 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 " let g:ycm_min_num_of_chars_for_completion = 3
 " let g:ycm_add_preview_to_completeopt = 0
 
+" ---------
+" Taskpaper
+" ---------
+autocmd FileType taskpaper setlocal ts=4 sts=4 et sw=4
+
 " -------
 " C & C++
 " -------
 
-autocmd FileType cpp setlocal ts=4 sts=4 et sw=4
+autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
 autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
 autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
 autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
