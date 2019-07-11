@@ -5,12 +5,14 @@
 
 ;;; Code:
 
-;; (add-to-list 'load-path (expand-file-name "lisp" "~/.emacs.d/"))
+(add-to-list 'load-path (expand-file-name "lisp" "~/.emacs.d/"))
 
 (require 'package)
 (setq package-archives '(("gnu-china" . "http://elpa.emacs-china.org/gnu/")
 			 ("melpa-china" . "http://elpa.emacs-china.org/melpa/")
-			 ("marmalade" . "http://elpa.emacs-china.org/marmalade/")))
+			 ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
+			 ("gnu" . "http://elpa.emacs.org/gnu/")
+			 ("melpa" . "http://elpa.emacs.org/melpa/")))
 
 (package-initialize)
 
@@ -37,11 +39,10 @@
 		      company
 		      neotree
 		      helm
-		      helm-projectile
-		      helm-cscope
 		      helm-ag
 		      pyim
 		      elfeed
+		      fzf
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -108,13 +109,10 @@
 ;; (setq linum-format "%d ")
 
 (require 'diminish)
-(eval-after-load "projectile" '(diminish 'projectile-mode))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "company" '(diminish 'company-mode))
 (diminish 'helm-mode)
-(eval-after-load "helm-cscope" '(diminish 'helm-cscope-mode))
-;; (diminish 'projectile-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -154,10 +152,10 @@
 (global-auto-revert-mode 1)
 
 (setq evil-want-C-i-jump nil)
-(require 'evil)
-(setq evil-default-state 'emacs)
-(evil-mode 1)
 (modify-syntax-entry ?_ "w")
+(require 'evil)
+(setq evil-default-state 'normal)
+(evil-mode 1)
 (loop for (mode . state) in '((org-mode . normal)
 			      (markdown-mode . normal)
 			      (prog-mode . normal)
@@ -265,17 +263,10 @@
 (global-set-key (kbd "C-c h m") 'helm-man-woman)
 (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
+(global-set-key (kbd "C-c h \\") 'helm-ag-pop-stack)
 
-(require 'projectile)
-(projectile-mode +1)
-(setq projectile-enable-caching t)
-(setq-default projectile-globally-ignored-files
-	      (append '(".pyc" ".class" "~" ".cache") projectile-globally-ignored-files))
-(setq-default projectile-globally-ignored-directories
-	      (append '("__pycache__") projectile-globally-ignored-directories))
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
+(require 'fzf)
+(global-set-key (kbd "C-c C-f") 'fzf-directory)
 
 (require 'pyim)
 (require 'pyim-basedict)
@@ -354,8 +345,6 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(require 'helm-cscope)
-
 
 (defun my/prog-mode ()
   (linum-mode t)
@@ -369,19 +358,13 @@
 (defun my/c-common-mode ()
   (setq indent-tabs-mode t)
   (setq tab-width 8)
-  (setq c-basic-offset 8)
-  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition-no-prompt)
-  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
-  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
+  (setq c-basic-offset 8))
 (add-hook 'c-mode-common-hook 'my/c-common-mode)
 
 (defun my/java-mode ()
   (setq indent-tabs-mode nil)
   (setq c-basic-offset 4)
-  (setq tab-width 4)
-  (evil-leader/set-key "g g" 'helm-cscope-find-global-definition-no-prompt)
-  (evil-leader/set-key "g b" 'helm-cscope-pop-mark)
-  (evil-leader/set-key "g c" 'helm-cscope-find-calling-this-function))
+  (setq tab-width 4))
 (add-hook 'java-mode-hook 'my/java-mode)
 
 (defun my/python-mode ()
