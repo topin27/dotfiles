@@ -33,16 +33,14 @@
 		      clean-aindent-mode
 		      yasnippet
 		      yasnippet-snippets
-		      cython-mode
 		      markdown-mode
-		      magit
 		      company
-		      neotree
-		      helm
-		      helm-ag
 		      pyim
 		      elfeed
-		      fzf
+		      swiper
+		      counsel-etags
+		      find-file-in-project
+		      plantuml-mode
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -89,7 +87,7 @@
       ;; (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
-    ;; (load-theme 'deeper-blue)
+    (load-theme 'deeper-blue)
     ;; (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
@@ -112,7 +110,6 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "company" '(diminish 'company-mode))
-(diminish 'helm-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -151,23 +148,43 @@
 
 (global-auto-revert-mode 1)
 
+(require 'swiper)
+(require 'ivy)
+(require 'counsel)
+(require 'counsel-etags)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+;; enable this if you want `swiper' to use it
+;; (setq search-default-mode #'char-fold-to-regexp)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-c i") 'counsel-imenu)
+
+(require 'find-file-in-project)
+
 (setq evil-want-C-i-jump nil)
 (modify-syntax-entry ?_ "w")
 (require 'evil)
 (setq evil-default-state 'normal)
 (evil-mode 1)
-(loop for (mode . state) in '((org-mode . normal)
-			      (markdown-mode . normal)
-			      (prog-mode . normal)
-			      (xref--xref-buffer-mode . emacs)
-			      (shell-mode . normal)
+(loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
+			      (elfeed-search-mode . emacs)
+			      (elfeed-show-mode . emacs)
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
-(define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+(define-key evil-normal-state-map (kbd ",") 'ace-jump-mode)
 
 (require 'evil-leader)
-(evil-leader/set-leader ",")
+(evil-leader/set-leader "<SPC>")
 (global-evil-leader-mode)
+(evil-leader/set-key "f" 'find-file-in-project)
+(evil-leader/set-key "q" 'kill-buffer)
+(evil-leader/set-key "i" 'counsel-imenu)
+(evil-leader/set-key "/" 'counsel-ag)
+(evil-leader/set-key "b" 'ivy-switch-buffer)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -175,9 +192,9 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "<f10>") 'rename-buffer)
-(global-set-key (kbd "<f12>") 'other-window)
+; (global-set-key (kbd "<f12>") 'other-window)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "M-.") 'find-tag)
 
 (require 'dired)
 (setq dired-recursive-deletes 'always)
@@ -207,67 +224,6 @@
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
-(require 'neotree)
-(setq neo-smart-open t)
-(global-set-key (kbd "C-c t n") 'neotree-toggle)
-
-(require 'helm)
-(require 'helm-config)
-(helm-mode 1)
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source    -1 ; move to end or beginning of source when reaching top or bottom of source.
-      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-echo-input-in-header-line t)
-(set-face-attribute 'helm-selection nil
-		    :background "purple"
-		    :foreground "black")
-(defun my/helm-hide-minibuffer-maybe ()
-  "Hide minibuffer in Helm session if we use the header line as input field."
-  (when (with-helm-buffer helm-echo-input-in-header-line)
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'face
-                   (let ((bg-color (face-background 'default nil)))
-                     `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
-(add-hook 'helm-minibuffer-set-up-hook
-          'my/helm-hide-minibuffer-maybe)
-;; (setq helm-autoresize-max-height 0)
-;; (setq helm-autoresize-min-height 20)
-;; (helm-autoresize-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-c h i") 'helm-semantic-or-imenu)
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(global-set-key (kbd "C-c h b") 'helm-resume)
-(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
-(global-set-key (kbd "C-c h x") 'helm-register)
-(global-set-key (kbd "C-c h /") 'helm-do-ag)
-(global-set-key (kbd "C-c h m") 'helm-man-woman)
-(define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
-(global-set-key (kbd "C-x C-r") 'helm-recentf)
-(global-set-key (kbd "C-c h \\") 'helm-ag-pop-stack)
-
-(require 'fzf)
-(global-set-key (kbd "C-c C-f") 'fzf-directory)
-
 (require 'pyim)
 (require 'pyim-basedict)
 (pyim-basedict-enable)
@@ -280,11 +236,9 @@
 
 (require 'elfeed)
 (global-set-key (kbd "C-x w") 'elfeed)
+(setq elfeed-db-directory "~/.emacs.d/elfeed/")
 (setq elfeed-feeds
-      '("http://nullprogram.com/feed/"
-        "http://planet.emacsen.org/atom.xml"
-	"feed://www.ruanyifeng.com/blog/atom.xml"
-	"https://www.byvoid.com/zhs/feed"
+      '("https://www.byvoid.com/zhs/feed"
 	"https://coolshell.cn/feed"))
 
 
@@ -308,11 +262,11 @@
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'yasnippet)
-;; (setq yas-snippet-dirs
-;;       '(;; "~/.emacs.d/snippets"                 ;; personal snippets
-;;         ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-;; 	;; "~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
-;;         ))
+(setq yas-snippet-dirs
+      '(;; "~/.emacs.d/snippets"                 ;; personal snippets
+        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+	"~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
+        ))
 (yas-global-mode 1)
 ;; (yas-reload-all)
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
@@ -338,21 +292,13 @@
  '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
  '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
 
-(require 'cython-mode)
-(setq auto-mode-alist
-      (cons '(".pyx" . cython-mode) auto-mode-alist))
-
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
-
 
 (defun my/prog-mode ()
   (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
-  (evil-leader/set-key "g g" 'xref-find-definitions)
-  (evil-leader/set-key "g b" 'xref-pop-marker-stack)
-  (evil-leader/set-key "g c" 'xref-find-references))
+  (evil-leader/set-key "g" 'counsel-etags-find-tag-at-point)
+  (evil-leader/set-key "t" 'pop-tag-mark))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
 (defun my/c-common-mode ()
@@ -405,6 +351,19 @@
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c o s") 'org-store-link)
 
+(require 'plantuml-mode)
+(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+;; (add-to-list
+;;   'org-src-lang-modes '("plantuml" . plantuml))
+;; active Org-babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(;; other Babel languages
+   (plantuml . t)))
+(setq org-plantuml-jar-path
+      (expand-file-name "~/bins/plantuml/bin/plantuml.jar"))
+(setq plantuml-default-exec-mode 'jar)
+
 ;; (require 'ox-publish)
 ;; (setq org-publish-project-alist
 ;;       '(
@@ -450,3 +409,11 @@
 (provide 'init)
 
 ;;; Auto-generated code below
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (plantuml-mode diminish ace-jump-mode undo-tree projectile ztree imenu-list evil evil-leader evil-surround wgrep rainbow-delimiters clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company pyim elfeed swiper counsel-etags find-file-in-project))))
