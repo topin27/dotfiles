@@ -9,7 +9,7 @@
   :group 'helm-fzf)
 
 (defun helm-fzf--project-root ()
-  (cl-loop for dir in '(".git/" ".hg/" ".svn/" ".git")
+  (cl-loop for dir in '(".git/" ".hg/" ".svn/" ".git" "Makefile" "TAGS" ".dir-locals.el")
            when (locate-dominating-file default-directory dir)
            return it))
 

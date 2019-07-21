@@ -44,7 +44,7 @@ set ls=2
 set conceallevel=0
 set wildmenu
 set completeopt-=preview
-colorscheme torte  " Or murphy, darkblue for dark, delek for light
+" colorscheme torte  " Or murphy, darkblue for dark, delek for light
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>

@@ -22,7 +22,6 @@
 		      diminish
 		      ace-jump-mode
 		      undo-tree
-		      projectile
 		      ztree
 		      imenu-list
 		      evil
@@ -34,14 +33,12 @@
 		      yasnippet
 		      yasnippet-snippets
 		      markdown-mode
-		      magit
 		      company
 		      pyim
 		      elfeed
 		      helm
 		      helm-ag
 		      plantuml-mode
-		      s
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -305,22 +302,22 @@
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'yasnippet)
-(setq yas-snippet-dirs
-      '(;; "~/.emacs.d/snippets"                 ;; personal snippets
-        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-	"~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
-        ))
+;; (setq yas-snippet-dirs
+;;       '(;; "~/.emacs.d/snippets"                 ;; personal snippets
+;;         ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+;; 	"~/.emacs.d/site-lisp/yasnippet-snippets/snippets" ;; the yasnippet-snippets collection
+;;         ))
 (yas-global-mode 1)
 ;; (yas-reload-all)
 ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
-(define-key yas-minor-mode-map (kbd "<tab>") nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "C-<tab>") 'yas-expand)
+;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
+;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+;; (define-key yas-minor-mode-map (kbd "C-<tab>") 'yas-expand)
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
-;; (global-set-key (kbd "C-c y") 'company-yasnippet)
+(global-set-key (kbd "C-c y") 'company-yasnippet)
 ;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (setq company-dabbrev-downcase nil)
 (custom-set-faces
@@ -334,15 +331,78 @@
  '(company-tooltip-common ((((type x)) (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
  '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
  '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
+;; (defun check-expansion ()
+;;   (save-excursion
+;;     (if (looking-at "\\_>") t
+;;       (backward-char 1)
+;;       (if (looking-at "\\.") t
+;;     (backward-char 1)
+;;     (if (looking-at "->") t nil)))))
+;; (defun do-yas-expand ()
+;;   (let ((yas/fallback-behavior 'return-nil))
+;;     (yas/expand)))
+;; (defun tab-indent-or-complete ()
+;;   (interactive)
+;;   (cond
+;;    ((minibufferp)
+;;     (minibuffer-complete))
+;;    (t
+;;     (indent-for-tab-command)
+;;     (if (or (not yas/minor-mode)
+;;         (null (do-yas-expand)))
+;;     (if (check-expansion)
+;;         (progn
+;;           (company-manual-begin)
+;;           (if (null company-candidates)
+;;           (progn
+;;             (company-abort)
+;;             (indent-for-tab-command)))))))))
+;; (defun tab-complete-or-next-field ()
+;;   (interactive)
+;;   (if (or (not yas/minor-mode)
+;;       (null (do-yas-expand)))
+;;       (if company-candidates
+;;       (company-complete-selection)
+;;     (if (check-expansion)
+;;       (progn
+;;         (company-manual-begin)
+;;         (if (null company-candidates)
+;;         (progn
+;;           (company-abort)
+;;           (yas-next-field))))
+;;       (yas-next-field)))))
+;; (defun expand-snippet-or-complete-selection ()
+;;   (interactive)
+;;   (if (or (not yas/minor-mode)
+;;       (null (do-yas-expand))
+;;       (company-abort))
+;;       (company-complete-selection)))
+;; (defun abort-company-or-yas ()
+;;   (interactive)
+;;   (if (null company-candidates)
+;;       (yas-abort-snippet)
+;;     (company-abort)))
+;; (global-set-key [tab] 'tab-indent-or-complete)
+;; (global-set-key (kbd "TAB") 'tab-indent-or-complete)
+;; (global-set-key [(control return)] 'company-complete-common)
+;; (define-key company-active-map [tab] 'expand-snippet-or-complete-selection)
+;; (define-key company-active-map (kbd "TAB") 'expand-snippet-or-complete-selection)
+;; (define-key yas-minor-mode-map [tab] nil)
+;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+;; (define-key yas-keymap [tab] 'tab-complete-or-next-field)
+;; (define-key yas-keymap (kbd "TAB") 'tab-complete-or-next-field)
+;; (define-key yas-keymap [(control tab)] 'yas-next-field)
+;; (define-key yas-keymap (kbd "C-g") 'abort-company-or-yas)
 
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
+(require 'company-tabnine)
+(setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
 
 
 (defun my/prog-mode ()
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
+  (add-to-list 'company-backends #'company-tabnine)
   (evil-leader/set-key "g" 'helm-etags-select)
   (evil-leader/set-key "t" 'pop-tag-mark))
 (add-hook 'prog-mode-hook 'my/prog-mode)
@@ -434,7 +494,7 @@
 ;; 	))
 
 (defun my/org-mode ()
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
@@ -444,7 +504,7 @@
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   (markdown-toggle-fontify-code-blocks-natively)
