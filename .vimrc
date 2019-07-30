@@ -22,6 +22,7 @@ Plug 'skywind3000/vim-preview'
 Plug 'ybian/smartim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
+" Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
 
@@ -125,6 +126,7 @@ nnoremap <silent> <Leader>f :Files<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>ji :BTags<CR>
 nnoremap <silent> <Leader>jt :Tags<CR>
+nnoremap <silent> <Leader>js :Snippets<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
