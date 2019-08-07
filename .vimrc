@@ -22,6 +22,8 @@ Plug 'skywind3000/vim-preview'
 Plug 'ybian/smartim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
+Plug 'sickill/vim-monokai'
+Plug 'jceb/vim-orgmode'
 " Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
@@ -46,6 +48,7 @@ set conceallevel=0
 set wildmenu
 set completeopt-=preview
 " colorscheme torte  " Or murphy, darkblue for dark, delek for light
+colorscheme monokai
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
