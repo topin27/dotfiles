@@ -2,8 +2,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-" Plug 'ctrlpvim/ctrlp.vim'
-Plug 'easymotion/vim-easymotion'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
@@ -12,9 +10,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
-" Plug 'davidhalter/jedi-vim'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'Valloric/YouCompleteMe'
 Plug 'davidoc/taskpaper.vim'
 Plug 'tommcdo/vim-kangaroo'
 Plug 'topin27/JavaImp.vim'
@@ -42,13 +38,13 @@ set hlsearch
 set noet
 set ts=8
 set mouse=a
-" set cc=81
 set ls=2
 set conceallevel=0
 set wildmenu
 set completeopt-=preview
-" colorscheme torte  " Or murphy, darkblue for dark, delek for light
 colorscheme monokai
+
+let maplocalleader = ','
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
@@ -102,28 +98,6 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
-" " For ctrlp
-" let g:ctrlp_map = '<leader>f'
-" let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_custom_ignore = {
-"     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-"     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc|ipynb|class|o)$',
-" \ }
-" let g:ctrlp_extensions = ['buffertag', 'bookmarkdir']
-" let g:ctrlp_key_loop = 1
-" let g:ctrlp_max_files = 0
-" let g:ctrlp_max_depth=40
-" let g:ctrlp_by_filename = 1
-" let g:ctrlp_working_path_mode = 'a'
-" let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-" if executable('ag')
-" 	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden -g ""'
-" endif
-" nmap <leader>b :CtrlPBuffer<CR>
-" nmap <leader>ji :CtrlPBufTag<CR>
-" nmap <leader>jt :CtrlPTag<CR>
-" " nmap <leader>t :CtrlPTag<CR>
-
 " For fzf
 nnoremap <silent> <Leader>f :Files<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
@@ -140,22 +114,25 @@ let g:fzf_layout = { 'down': '~40%' }
 let g:SuperTabDefaultCompletionType = "<c-p>"
 let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
-" For EasyMotion
-nmap , <Plug>(easymotion-s)
-
 " For Ack.vim
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
 endif
 " set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
 nnoremap <leader>ss :Ack! ""<Left>
-nnoremap <leader>sp :Ack! --python ""<Left>
-nnoremap <leader>sc :Ack! --cc ""<Left>
-nnoremap <leader>sz :Ack! --cpp ""<Left>
-nnoremap <leader>so :Ack! --ocaml ""<Left>
-nnoremap <leader>sm :Ack! --markdown ""<Left>
-nnoremap <leader>sj :Ack! --java ""<Left>
 nnoremap <leader>s/ :Ack! "" %<Left><Left><Left>
+autocmd FileType python nnoremap <localleader>ss :Ack! --python ""<Left>
+autocmd FileType c  nnoremap <localleader>ss :Ack! --cc ""<Left>
+autocmd FileType cpp  nnoremap <localleader>ss :Ack! --cpp ""<Left>
+autocmd FileType ocaml  nnoremap <localleader>ss :Ack! --ocaml ""<Left>
+autocmd FileType markdown  nnoremap <localleader>ss :Ack! --markdown ""<Left>
+autocmd FileType java  nnoremap <localleader>ss :Ack! --java ""<Left>
+" nnoremap <leader>sp :Ack! --python ""<Left>
+" nnoremap <leader>sc :Ack! --cc ""<Left>
+" nnoremap <leader>sz :Ack! --cpp ""<Left>
+" nnoremap <leader>so :Ack! --ocaml ""<Left>
+" nnoremap <leader>sm :Ack! --markdown ""<Left>
+" nnoremap <leader>sj :Ack! --java ""<Left>
 
 " For ultisnips
 let g:UltiSnipsExpandTrigger = "yy"
@@ -177,17 +154,6 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" --------------
-"  YouCompleteMe
-" --------------
-
-" autocmd FileType c,cpp,java,python nmap <leader>gd :YcmCompleter GoTo<CR>
-" autocmd FileType c,cpp,java,python nmap <leader>gc :YcmCompleter GoToReferences<CR>
-" autocmd FileType c,cpp,java,python nmap <leader>go :YcmCompleter GetDoc<CR>
-" autocmd FileType java nmap <leader>oi :YcmCompleter OrganizeImports<CR>
-" let g:ycm_min_num_of_chars_for_completion = 3
-" let g:ycm_add_preview_to_completeopt = 0
-
 " ---------
 " Taskpaper
 " ---------
@@ -198,18 +164,12 @@ autocmd FileType taskpaper setlocal ts=4 sts=4 et sw=4
 " -------
 
 autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
-autocmd FileType c,cpp nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType c,cpp nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ----
 " Java
 " ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
-autocmd FileType java nmap <leader>gc :cs find c <cword><CR>
-autocmd FileType java nmap <leader>gd :cs find g <cword><CR>
-autocmd FileType java map <F3> :TagbarToggle<CR>
 
 " For JavaImp
 let g:JavaImpPaths =
@@ -221,38 +181,6 @@ let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
-autocmd FileType python map <F3> :TagbarToggle<CR>
-
-" " Add the virtualenv's site-packages to vim path
-" if has('python')
-" py << EOF
-" import os.path
-" import sys
-" import vim
-" if 'VIRTUAL_ENV' in os.environ:
-"     project_base_dir = os.environ['VIRTUAL_ENV']
-"     sys.path.insert(0, project_base_dir)
-"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-"     execfile(activate_this, dict(__file__=activate_this))
-" EOF
-" endif
-
-" " For jedi
-" let g:jedi#completions_enabled = 1
-" autocmd FileType python setlocal completeopt-=preview
-" " let g:jedi#auto_initialization = 1
-" " let g:jedi#auto_vim_configuration = 0
-" " let g:jedi#use_tabs_not_buffers = 0
-" " let g:jedi#use_splits_not_buffers = "left"
-" let g:jedi#popup_on_dot = 0
-" let g:jedi#popup_select_first = 1
-" let g:jedi#show_call_signatures = "2" 	" Set to 2 in command line
-" let g:jedi#goto_command = "<leader>gd"
-" let g:jedi#goto_assignments_command = "<leader>pa"
-" let g:jedi#documentation_command = "K"
-" let g:jedi#usages_command = "<leader>gc"
-" let g:jedi#completions_command = "<C-Space>"
-" let g:jedi#rename_command = "<leader>pr"
 
 " -----
 " OCaml
