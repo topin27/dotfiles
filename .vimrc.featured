@@ -1,5 +1,4 @@
 call plug#begin('~/.vim/plugged')
-Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -18,7 +17,7 @@ Plug 'skywind3000/vim-preview'
 Plug 'ybian/smartim'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
-" Plug 'zxqfl/tabnine-vim'
+Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
 
@@ -111,10 +110,6 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
 
-" For supertab
-let g:SuperTabDefaultCompletionType = "<c-p>"
-let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
-
 " For Ack.vim
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
@@ -159,11 +154,6 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 " Taskpaper
 " ---------
 autocmd FileType taskpaper setlocal ts=4 sts=4 et sw=4
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTodo
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>c <Plug>TaskPaperToggleCancelled
-
 
 " -------
 " C & C++

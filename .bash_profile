@@ -15,39 +15,8 @@ alias gitf='git pull'
 alias gitd='git diff'
 alias gita='git add'
 alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.minimal)'
+alias nvi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.featured)'
 
-my-workon () {
-	case $1 in
-		"python")
-			# export PATH=$HOME/Library/Python/2.7/bin:$PATH
-			export PATH=$HOME/.local/bin/:$PATH
-			;;
-		"java")
-			export PATH=$HOME/bins/maven/bin/:$PATH
-			;;
-		"scala")
-			export PATH=$HOME/bins/sbt/bin/:$HOME/bins/scala/bin/:$PATH
-			;;
-		*)
-			echo "Usage: my-workon <java|python|scala>"
-			;;
-	esac
-}
-
-my-workoff () {
-	case $1 in 
-		"python")
-			PATH=$(echo $PATH | sed -e "s;:$HOME/.local/bin/;;" -e "s;$HOME/.local/bin/:;;")
-			;;
-		"java")
-			PATH=$(echo $PATH | sed -e "s;:$HOME/bins/maven/bin/;;" -e "s;$HOME/bins/maven/bin/:;;")
-			;;
-		"scala")
-			PATH=$(echo $PATH | sed -e "s;:$HOME/bins/sbt/bin/;;" -e "s;$HOME/bins/sbt/bin/:;;")
-			PATH=$(echo $PATH | sed -e "s;:$HOME/bins/scala/bin/;;" -e "s;$HOME/bins/scala/bin/:;;")
-			;;
-		*)
-			echo "Usage: my-workoff <java|python|scala>"
-			;;
-	esac
+my-md2html() {
+	pandoc -f markdown -t html --mathml --toc -N --self-contained -s $1 -o $2
 }

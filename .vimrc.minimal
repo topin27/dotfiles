@@ -1,0 +1,40 @@
+syntax on
+syntax enable
+set nu
+set rnu
+set ruler
+set ai
+set hlsearch
+set noet
+set ts=8
+set mouse=a
+set ls=2
+set conceallevel=0
+set wildmenu
+set completeopt-=preview
+
+let maplocalleader = ','
+
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-d> <S-Right><Delete>
+cnoremap <C-g> <C-c>
+cnoremap <C-K> <C-U>
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
+nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
+nmap <LocalLeader>tp :setlocal paste!<cr>
+inoremap <C-E> <End>
+inoremap <C-A> <Home>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
+nnoremap g] g<C-]>
+imap <Esc> <Esc><Esc>
