@@ -10,9 +10,7 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
-Plug 'jiangmiao/auto-pairs'
 Plug 'topin27/taskpaper.vim'
-Plug 'tommcdo/vim-kangaroo'
 Plug 'topin27/JavaImp.vim'
 Plug 'skywind3000/vim-preview'
 Plug 'ybian/smartim'
@@ -60,6 +58,8 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <LocalLeader>tp :setlocal paste!<cr>
+nmap <LocalLeader>s :w<CR>
+nmap <F5> :w<CR> :make<Up><CR>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
@@ -101,9 +101,8 @@ let g:fzf_command_prefix = "Fzf"
 nnoremap <silent> <Leader>f :FzfFiles<CR>
 nnoremap <silent> <Leader>b :FzfBuffers<CR>
 nnoremap <silent> <Leader>w :FzfWindows<CR>
-nnoremap <silent> <Leader>t :FzfTags <C-R><C-W><CR>
 nnoremap <silent> <Leader>jt :FzfTags<CR>
-nnoremap <silent> <LocalLeader>jt :FzfBTags<CR>
+nnoremap <silent> <Leader>ji :FzfBTags<CR>
 nnoremap <silent> <Leader>cs :FzfSnippets<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -136,15 +135,16 @@ nnoremap <Leader>sm :Ack! --markdown ""<Left>
 nnoremap <Leader>sj :Ack! --java ""<Left>
 
 " For ultisnips
+" better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "yy"
-let g:UltiSnipsListSnippets = "yY"
-let g:UltiSnipsJumpForwardTrigger = "YY"
-let g:UltiSnipsJumpBackwardTrigger = "OO"
-let g:UltiSnipsSnippetDirectories = ['~/.vim/snippets/']
+let g:UltiSnipsJumpForwardTrigger = "<C-D>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-A>"
+" let g:UltiSnipsExpandTrigger = "yy"
+" let g:UltiSnipsListSnippets = "yY"
+" let g:UltiSnipsJumpForwardTrigger = "YY"
+" let g:UltiSnipsJumpBackwardTrigger = "OO"
+let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/plugged/vim-snippets/UltiSnips/']
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
-
-" For auto-pairs
-let g:AutoPairsShortcutToggle = '<LocalLeader>ta'
 
 " For vim-preview
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
@@ -163,7 +163,6 @@ autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTod
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>c <Plug>TaskPaperToggleCancelled
-
 
 " -------
 " C & C++
@@ -204,3 +203,5 @@ autocmd FileType python setlocal ts=4 sts=4 et sw=4
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0
+autocmd FileType markdown nmap <LocalLeader>ih :,s/^#\([# ]\+\)/##\1/c<Home>
+autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
