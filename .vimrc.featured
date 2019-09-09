@@ -6,7 +6,7 @@ Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'tpope/vim-markdown'
+Plug 'topin27/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
@@ -57,7 +57,7 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <LocalLeader>tp :setlocal paste!<cr>
-nmap <LocalLeader>s :w<CR>
+nmap <LocalLeader>w :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
