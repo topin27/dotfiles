@@ -13,10 +13,10 @@ Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
 Plug 'topin27/JavaImp.vim'
 Plug 'skywind3000/vim-preview'
-Plug 'ybian/smartim'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 " Plug 'zxqfl/tabnine-vim'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 
@@ -65,7 +65,13 @@ inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
 nnoremap g] g<C-]>
-imap <Esc> <Esc><Esc>
+" imap <Esc> <Esc><Esc>
+
+function! s:tig_status()
+  !tig
+endfunction
+nmap <C-G> :TigStatus<CR><CR>
+command! TigStatus call s:tig_status()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
