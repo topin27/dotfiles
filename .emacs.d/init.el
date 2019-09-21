@@ -1,7 +1,7 @@
 ;;; init --- Initialize.
 
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
 
@@ -34,11 +34,15 @@
 		      yasnippet-snippets
 		      markdown-mode
 		      company
-		      pyim
 		      elfeed
 		      helm
 		      helm-ag
-		      plantuml-mode
+		      projectile
+		      helm-projectile
+		      ;; plantuml-mode
+		      magit
+		      pyim
+		      neotree
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -85,7 +89,7 @@
       ;; (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
-    (load-theme 'deeper-blue)
+    ;; (load-theme 'deeper-blue)
     ;; (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
@@ -108,7 +112,9 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
 (eval-after-load "company" '(diminish 'company-mode))
-(diminish 'helm-mode)
+(eval-after-load "projectile" '(diminish 'projectile-mode))
+(eval-after-load "helm" '(diminish 'helm-mode))
+;; (diminish 'helm-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -136,10 +142,11 @@
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; (setq mac-command-modifier 'control)
 
 (winner-mode 1)
-
-(windmove-default-keybindings)
 
 ;; (setq default-buffer-file-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
@@ -195,46 +202,11 @@
 (global-set-key (kbd "C-c h b") 'helm-resume)
 (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
 (global-set-key (kbd "C-c h x") 'helm-register)
-(global-set-key (kbd "C-c h /") 'helm-do-ag)
+(global-set-key (kbd "C-c h /") 'helm-ag)
 (global-set-key (kbd "C-c h m") 'helm-man-woman)
 (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 (global-set-key (kbd "C-c h C-r") 'helm-recentf)
 (global-set-key (kbd "C-c h \\") 'helm-ag-pop-stack)
-
-(require 'helm-fzf)
-
-(setq evil-want-C-i-jump nil)
-(modify-syntax-entry ?_ "w")
-(require 'evil)
-(setq evil-default-state 'normal)
-(evil-mode 1)
-(loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
-			      (elfeed-search-mode . emacs)
-			      (elfeed-show-mode . emacs)
-			      (term-mode . emacs))
-      do (evil-set-initial-state mode state))
-(define-key evil-normal-state-map (kbd ",") 'ace-jump-mode)
-
-(require 'evil-leader)
-(evil-leader/set-leader "<SPC>")
-(global-evil-leader-mode)
-(evil-leader/set-key "f" 'helm-fzf-project-root)
-(evil-leader/set-key "b" 'helm-mini)
-(evil-leader/set-key "q" 'kill-this-buffer)
-(evil-leader/set-key "/" 'helm-do-ag)
-(evil-leader/set-key "i" 'helm-semantic-or-imenu)
-(evil-leader/set-key "o" 'helm-occur)
-(evil-leader/set-key "\\" 'helm-ag-pop-stack)
-
-(require 'evil-surround)
-(global-evil-surround-mode 1)
-
-(global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "<f10>") 'rename-buffer)
-(global-set-key (kbd "<f12>") 'other-window)
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(define-key evil-normal-state-map (kbd "M-.") 'find-tag)
 
 (require 'dired)
 (setq dired-recursive-deletes 'always)
@@ -264,6 +236,13 @@
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
+(require 'elfeed)
+(global-set-key (kbd "C-x w") 'elfeed)
+(setq elfeed-db-directory "~/.emacs.d/elfeed/")
+(setq elfeed-feeds
+      '("https://www.byvoid.com/zhs/feed"
+	"https://coolshell.cn/feed"))
+
 (require 'pyim)
 (require 'pyim-basedict)
 (pyim-basedict-enable)
@@ -273,13 +252,107 @@
 (setq pyim-page-length 9)
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 (global-set-key (kbd "M-c") 'toggle-input-method)
+(setq-default pyim-english-input-switch-functions
+              '(pyim-probe-dynamic-english
+                pyim-probe-isearch-mode
+                pyim-probe-program-mode
+                pyim-probe-org-structure-template))
 
-(require 'elfeed)
-(global-set-key (kbd "C-x w") 'elfeed)
-(setq elfeed-db-directory "~/.emacs.d/elfeed/")
-(setq elfeed-feeds
-      '("https://www.byvoid.com/zhs/feed"
-	"https://coolshell.cn/feed"))
+(require 'neotree)
+(global-set-key (kbd "C-c t n") 'neotree-toggle)
+
+(require 'projectile)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-indexing-method 'alien)
+(setq projectile-enable-caching t)
+(add-to-list 'projectile-globally-ignored-files "tags")
+(add-to-list 'projectile-globally-ignored-files "*.pyc")
+(add-to-list 'projectile-globally-ignored-files "*.class")
+(add-to-list 'projectile-globally-ignored-files "*.o")
+(setq projectile-globally-ignored-directories
+      (append '("__pycache__") projectile-globally-ignored-directories))
+(setq projectile-globally-ignored-file-suffixes '("pyc" "class"))
+
+(require 'helm-projectile)
+(helm-projectile-on)
+
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+(require 'windmove)
+(global-set-key (kbd "C-c w h") 'windmove-left)
+(global-set-key (kbd "C-c w l") 'windmove-right)
+(global-set-key (kbd "C-c w j") 'windmove-down)
+(global-set-key (kbd "C-c w k") 'windmove-up)
+
+(setq evil-want-C-i-jump nil)
+(modify-syntax-entry ?_ "w")
+(require 'evil)
+(setq evil-default-state 'normal)
+(evil-mode 1)
+(loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
+			      (elfeed-search-mode . emacs)
+			      (elfeed-show-mode . emacs)
+			      (neotree-mode . emacs)
+			      (special-mode . emacs)
+			      (ztree-mode . emacs)
+			      (term-mode . emacs))
+      do (evil-set-initial-state mode state))
+(define-key evil-normal-state-map (kbd ",") 'ace-jump-mode)
+
+(require 'evil-leader)
+(evil-leader/set-leader "<SPC>")
+(global-evil-leader-mode)
+(evil-leader/set-key "f f" 'helm-find-files)
+(evil-leader/set-key "f r" 'helm-recentf)
+(evil-leader/set-key "f 4" 'find-file-other-window)
+(evil-leader/set-key "f 5" 'find-file-other-frame)
+(evil-leader/set-key "b b" 'helm-mini)
+(evil-leader/set-key "b 4" 'switch-to-buffer-other-window)
+(evil-leader/set-key "b 5" 'switch-to-buffer-other-frame)
+(evil-leader/set-key "b q" 'kill-this-buffer)
+(evil-leader/set-key "t i" 'imenu-list-smart-toggle)
+(evil-leader/set-key "t p" 'my/toggle-paste)
+(evil-leader/set-key "t n" 'neotree-toggle)
+(evil-leader/set-key "/" 'helm-do-ag)
+(evil-leader/set-key "h r" 'helm-resume)
+(evil-leader/set-key "h m" 'helm-man-woman)
+(evil-leader/set-key "p /" 'helm-projectile-ag)
+(evil-leader/set-key "p h" 'helm-projectile)
+(evil-leader/set-key "p f" 'helm-projectile-find-file)
+(evil-leader/set-key "p e" 'helm-projectile-recentf)
+(evil-leader/set-key "p r" 'projectile-replace)
+(evil-leader/set-key "p j" 'projectile-find-tag)
+(evil-leader/set-key "p b" 'helm-projectile-switch-to-buffer)
+(evil-leader/set-key "p k" 'projectile-kill-buffers)
+(evil-leader/set-key "p p" 'helm-projectile-switch-project)
+(evil-leader/set-key "p g" 'helm-projectile-find-file-dwim)
+(evil-leader/set-key "p d" 'helm-projectile-find-dir)
+(evil-leader/set-key "p a" 'helm-projectile-find-other-file)
+(evil-leader/set-key "p c" 'helm-projectile-compile-project)
+(evil-leader/set-key "p s g" 'helm-projectile-grep)
+(evil-leader/set-key "p s a" 'helm-projectile-ack)
+(evil-leader/set-key "j i" 'helm-semantic-or-imenu)
+(evil-leader/set-key "j I" 'helm-imenu-in-all-buffers)
+(evil-leader/set-key "j o" 'helm-occur)
+(evil-leader/set-key "w u" 'winner-undo)
+(evil-leader/set-key "w l" 'windmove-right)
+(evil-leader/set-key "w h" 'windmove-left)
+(evil-leader/set-key "w j" 'windmove-down)
+(evil-leader/set-key "w k" 'windmove-up)
+(evil-leader/set-key "w q" 'delete-window)
+(evil-leader/set-key "\\" 'helm-ag-pop-stack)
+
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "<f10>") 'rename-buffer)
+(global-set-key (kbd "<f12>") 'other-window)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(define-key evil-normal-state-map (kbd "M-.") 'find-tag)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -394,17 +467,17 @@
 ;; (define-key yas-keymap [(control tab)] 'yas-next-field)
 ;; (define-key yas-keymap (kbd "C-g") 'abort-company-or-yas)
 
-(require 'company-tabnine)
-(setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
+;; (require 'company-tabnine)
+;; (setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
 
 
 (defun my/prog-mode ()
   ;; (linum-mode t)
+  ;; (linum-relative-mode)
   (column-number-mode t)
   (line-number-mode t)
-  (add-to-list 'company-backends #'company-tabnine)
-  (evil-leader/set-key "g" 'helm-etags-select)
-  (evil-leader/set-key "t" 'pop-tag-mark))
+  (evil-leader/set-key "g g" 'helm-etags-select)
+  (evil-leader/set-key "g b" 'pop-tag-mark))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
 (defun my/c-common-mode ()
@@ -429,6 +502,7 @@
 ;; Writing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'markdown-mode)
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
@@ -436,6 +510,7 @@
 (autoload 'gfm-mode "markdown-mode"
    "Major mode for editing GitHub Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+(setq markdown-command "pandoc --toc -N --mathml")
 
 (setq org-html-postamble nil)
 ;; (setq org-startup-indented t)
@@ -457,44 +532,46 @@
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c o s") 'org-store-link)
 
-(require 'plantuml-mode)
-(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-;; (add-to-list
-;;   'org-src-lang-modes '("plantuml" . plantuml))
-;; active Org-babel languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(;; other Babel languages
-   (plantuml . t)))
-(setq org-plantuml-jar-path
-      (expand-file-name "~/bins/plantuml/bin/plantuml.jar"))
-(setq plantuml-default-exec-mode 'jar)
+;; (require 'plantuml-mode)
+;; (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+;; ;; (add-to-list
+;; ;;   'org-src-lang-modes '("plantuml" . plantuml))
+;; ;; active Org-babel languages
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '(;; other Babel languages
+;;    (plantuml . t)))
+;; (setq org-plantuml-jar-path
+;;       (expand-file-name "~/bins/plantuml/bin/plantuml.jar"))
+;; (setq plantuml-default-exec-mode "jar")
+;; ;; (setq plantuml-default-exec-mode 'server)
 
-;; (require 'ox-publish)
-;; (setq org-publish-project-alist
-;;       '(
-;;         ("org-notes"
-;;          :base-directory "~/Workspace/wiki/"
-;;          :base-extension "org"
-;;          :publishing-directory "~/Workspace/src/topin27.github.io/"
-;;          :recursive t
-;;          ;; :publishing-function org-publish-org-to-html
-;; 	 :publishing-function org-html-publish-to-html
-;;          :headline-levels 4             ; Just the default for this project.
-;;          :auto-preamble t
-;;          )
-;;         ("org-static"
-;;          :base-directory "~/Workspace/wiki/static/"
-;;          :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-;;          :publishing-directory "~/Workspace/src/topin27.github.io/static/"
-;;          :recursive t
-;;          :publishing-function org-publish-attachment
-;;          )
-;;         ("org" :components ("org-notes" "org-static"))
-;; 	))
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(
+        ("org-wiki"
+         :base-directory "~/Workspace/wiki/"
+         :base-extension "org"
+         :publishing-directory "~/Workspace/src/topin27.github.io/"
+         :recursive t
+         ;; :publishing-function org-publish-org-to-html
+	 :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble t
+         )
+        ("org-wiki-static"
+         :base-directory "~/Workspace/wiki/static/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/Workspace/src/topin27.github.io/static/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+        ("wiki" :components ("org-wiki" "org-wiki-static"))
+	))
 
 (defun my/org-mode ()
   ;; (linum-mode t)
+  ;; (linum-relative-mode)
   (column-number-mode t)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
@@ -505,9 +582,10 @@
 (defun my/markdown-mode ()
   (markdown-toggle-math)
   ;; (linum-mode t)
+  ;; (linum-relative-mode)
   (column-number-mode t)
   (line-number-mode t)
-  (markdown-toggle-fontify-code-blocks-natively)
+  ;; (markdown-toggle-fontify-code-blocks-natively)
   (define-key evil-motion-state-map (kbd "C-i") 'markdown-cycle))
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 

@@ -15,7 +15,6 @@ Plug 'skywind3000/vim-preview'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 Plug 'zxqfl/tabnine-vim'
-Plug 'vim-airline/vim-airline'
 call plug#end()
 
 
