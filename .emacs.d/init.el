@@ -39,7 +39,6 @@
 		      helm-ag
 		      projectile
 		      helm-projectile
-		      ;; plantuml-mode
 		      magit
 		      pyim
 		      neotree
@@ -238,7 +237,7 @@
 
 (require 'elfeed)
 (global-set-key (kbd "C-x w") 'elfeed)
-(setq elfeed-db-directory "~/.emacs.d/elfeed/")
+(setq elfeed-db-directory (expand-file-name "~/.emacs.d/elfeed/"))
 (setq elfeed-feeds
       '("https://www.byvoid.com/zhs/feed"
 	"https://coolshell.cn/feed"))
@@ -330,7 +329,7 @@
 (evil-leader/set-key "p g" 'helm-projectile-find-file-dwim)
 (evil-leader/set-key "p d" 'helm-projectile-find-dir)
 (evil-leader/set-key "p a" 'helm-projectile-find-other-file)
-(evil-leader/set-key "p c" 'helm-projectile-compile-project)
+(evil-leader/set-key "p c" 'projectile-compile-project)
 (evil-leader/set-key "p s g" 'helm-projectile-grep)
 (evil-leader/set-key "p s a" 'helm-projectile-ack)
 (evil-leader/set-key "j i" 'helm-semantic-or-imenu)
@@ -532,20 +531,6 @@
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c o s") 'org-store-link)
 
-;; (require 'plantuml-mode)
-;; (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-;; ;; (add-to-list
-;; ;;   'org-src-lang-modes '("plantuml" . plantuml))
-;; ;; active Org-babel languages
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '(;; other Babel languages
-;;    (plantuml . t)))
-;; (setq org-plantuml-jar-path
-;;       (expand-file-name "~/bins/plantuml/bin/plantuml.jar"))
-;; (setq plantuml-default-exec-mode "jar")
-;; ;; (setq plantuml-default-exec-mode 'server)
-
 (require 'ox-publish)
 (setq org-publish-project-alist
       '(
@@ -592,3 +577,11 @@
 (provide 'init)
 
 ;;; Auto-generated code below
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (diminish ace-jump-mode undo-tree ztree imenu-list evil evil-leader evil-surround wgrep rainbow-delimiters clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company elfeed helm helm-ag projectile helm-projectile magit pyim neotree))))

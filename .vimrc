@@ -7,7 +7,7 @@ Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'topin27/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
@@ -34,7 +34,7 @@ set noet
 set ts=8
 set mouse=a
 set ls=2
-set conceallevel=0
+set conceallevel=2
 set wildmenu
 set completeopt-=preview
 
@@ -65,12 +65,6 @@ inoremap <C-F> <Right>
 inoremap <C-B> <Left>
 nnoremap g] g<C-]>
 " imap <Esc> <Esc><Esc>
-
-function! s:tig_status()
-  !tig
-endfunction
-nmap <C-G> :TigStatus<CR><CR>
-command! TigStatus call s:tig_status()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -142,12 +136,9 @@ nnoremap <Leader>sj :Ack! --java ""<Left>
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "yy"
-let g:UltiSnipsJumpForwardTrigger = "<C-D>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-A>"
-" let g:UltiSnipsExpandTrigger = "yy"
-" let g:UltiSnipsListSnippets = "yY"
-" let g:UltiSnipsJumpForwardTrigger = "YY"
-" let g:UltiSnipsJumpBackwardTrigger = "OO"
+let g:UltiSnipsJumpForwardTrigger = "YY"
+let g:UltiSnipsJumpBackwardTrigger = "OO"
+let g:UltiSnipsListSnippets = "yY"
 let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/plugged/vim-snippets/UltiSnips/']
 let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
 
@@ -208,5 +199,22 @@ autocmd FileType python setlocal ts=4 sts=4 et sw=4
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0
+let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_folding_level = 6
+" let g:vim_markdown_no_default_key_mappings = 1
+let g:vim_markdown_toc_autofit = 1
+let g:vim_markdown_conceal = 1
+let g:tex_conceal = ""
+let g:vim_markdown_math = 0
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+
 autocmd FileType markdown nmap <LocalLeader>ih :,s/^#\([# ]\+\)/##\1/c<Home>
 autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
+
+" ----------
+" JavaScript
+" ----------
+autocmd FileType javascript setlocal ts=4 sts=4 et sw=4

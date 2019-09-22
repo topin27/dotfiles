@@ -9,7 +9,7 @@ set noet
 set ts=8
 set mouse=a
 set ls=2
-set conceallevel=0
+set conceallevel=2
 set wildmenu
 set completeopt-=preview
 
