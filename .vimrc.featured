@@ -15,6 +15,8 @@ Plug 'skywind3000/vim-preview'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 Plug 'zxqfl/tabnine-vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'rhysd/vim-wasm'
 call plug#end()
 
 
@@ -121,12 +123,14 @@ autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp ""<Left>
 autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml ""<Left>
 autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown ""<Left>
 autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java ""<Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js ""<Left>
 nnoremap <Leader>sp :Ack! --python ""<Left>
 nnoremap <Leader>sc :Ack! --cc ""<Left>
 nnoremap <Leader>sz :Ack! --cpp ""<Left>
 nnoremap <Leader>so :Ack! --ocaml ""<Left>
 nnoremap <Leader>sm :Ack! --markdown ""<Left>
 nnoremap <Leader>sj :Ack! --java ""<Left>
+nnoremap <Leader>sa :Ack! --js ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger

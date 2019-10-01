@@ -28,7 +28,6 @@
 		      evil-leader
 		      evil-surround
 		      wgrep
-		      rainbow-delimiters
 		      clean-aindent-mode
 		      yasnippet
 		      yasnippet-snippets
@@ -42,6 +41,8 @@
 		      magit
 		      pyim
 		      neotree
+		      company-tabnine
+		      js2-mode
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -119,6 +120,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Basic stuff
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq mac-command-modifier 'control)     ;; mac 下使用 command 键作为 control
 
 ;; (cond
 ;;  ((string-equal system-type "gnu/linux")
@@ -251,11 +254,6 @@
 (setq pyim-page-length 9)
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 (global-set-key (kbd "M-c") 'toggle-input-method)
-(setq-default pyim-english-input-switch-functions
-              '(pyim-probe-dynamic-english
-                pyim-probe-isearch-mode
-                pyim-probe-program-mode
-                pyim-probe-org-structure-template))
 
 (require 'neotree)
 (global-set-key (kbd "C-c t n") 'neotree-toggle)
@@ -342,6 +340,7 @@
 (evil-leader/set-key "w k" 'windmove-up)
 (evil-leader/set-key "w q" 'delete-window)
 (evil-leader/set-key "\\" 'helm-ag-pop-stack)
+(evil-leader/set-key "<tab>" 'other-window)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -350,6 +349,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "<f10>") 'rename-buffer)
 (global-set-key (kbd "<f12>") 'other-window)
+(global-set-key (kbd "C-c <tab>") 'other-window)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (define-key evil-normal-state-map (kbd "M-.") 'find-tag)
 
@@ -366,9 +366,6 @@
   (setq electric-pair-mode (if (eq electric-pair-mode t) nil t))
   (setq electric-indent-mode (if (eq electric-indent-mode t) nil t)))
 (global-set-key (kbd "C-c t p") 'my/toggle-paste)
-
-(require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
@@ -389,6 +386,7 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
+(setq company-show-numbers t)
 (global-set-key (kbd "C-c y") 'company-yasnippet)
 ;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (setq company-dabbrev-downcase nil)
@@ -466,13 +464,12 @@
 ;; (define-key yas-keymap [(control tab)] 'yas-next-field)
 ;; (define-key yas-keymap (kbd "C-g") 'abort-company-or-yas)
 
-;; (require 'company-tabnine)
-;; (setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
-
+(require 'company-tabnine)
+(setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
+(add-to-list 'company-backends #'company-tabnine)
 
 (defun my/prog-mode ()
-  ;; (linum-mode t)
-  ;; (linum-relative-mode)
+  (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   (evil-leader/set-key "g g" 'helm-etags-select)
@@ -482,6 +479,7 @@
 (defun my/c-common-mode ()
   (setq indent-tabs-mode t)
   (setq tab-width 8)
+  (irony-mode)
   (setq c-basic-offset 8))
 (add-hook 'c-mode-common-hook 'my/c-common-mode)
 
@@ -495,6 +493,14 @@
   (setq indent-tabs-mode nil)
   (setq tab-width 4))
 (add-hook 'python-mode-hook 'my/python-mode)
+
+(defun my/js-mode ()
+  (setq indent-tabs-mode nil)
+  (js2-minor-mode)
+  (setq tab-width 4))
+(add-hook 'js-mode-hook 'my/js-mode)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -555,8 +561,7 @@
 	))
 
 (defun my/org-mode ()
-  ;; (linum-mode t)
-  ;; (linum-relative-mode)
+  (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
@@ -566,8 +571,7 @@
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  ;; (linum-mode t)
-  ;; (linum-relative-mode)
+  (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   ;; (markdown-toggle-fontify-code-blocks-natively)
@@ -584,4 +588,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (diminish ace-jump-mode undo-tree ztree imenu-list evil evil-leader evil-surround wgrep rainbow-delimiters clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company elfeed helm helm-ag projectile helm-projectile magit pyim neotree))))
+    (js2-mode company-tabnine diminish ace-jump-mode undo-tree ztree imenu-list evil evil-leader evil-surround wgrep clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company elfeed helm helm-ag projectile helm-projectile magit pyim neotree))))
