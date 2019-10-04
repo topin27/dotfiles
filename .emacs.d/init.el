@@ -43,6 +43,7 @@
 		      neotree
 		      company-tabnine
 		      js2-mode
+		      dracula-theme
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -66,6 +67,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(load-theme 'dracula)
 
 (global-font-lock-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -121,7 +124,7 @@
 ;; Basic stuff
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq mac-command-modifier 'control)     ;; mac 下使用 command 键作为 control
+;; (setq mac-command-modifier 'control)     ;; mac 下使用 command 键作为 control
 
 ;; (cond
 ;;  ((string-equal system-type "gnu/linux")
@@ -243,7 +246,9 @@
 (setq elfeed-db-directory (expand-file-name "~/.emacs.d/elfeed/"))
 (setq elfeed-feeds
       '("https://www.byvoid.com/zhs/feed"
-	"https://coolshell.cn/feed"))
+	"https://coolshell.cn/feed"
+	"feed://www.brendangregg.com/blog/rss.xml"
+	"http://feeds.feedburner.com/ruanyifeng"))
 
 (require 'pyim)
 (require 'pyim-basedict)
@@ -269,7 +274,7 @@
 (add-to-list 'projectile-globally-ignored-files "*.o")
 (setq projectile-globally-ignored-directories
       (append '("__pycache__") projectile-globally-ignored-directories))
-(setq projectile-globally-ignored-file-suffixes '("pyc" "class"))
+(setq projectile-globally-ignored-file-suffixes '("pyc" "class" "o"))
 
 (require 'helm-projectile)
 (helm-projectile-on)
@@ -324,6 +329,7 @@
 (evil-leader/set-key "p b" 'helm-projectile-switch-to-buffer)
 (evil-leader/set-key "p k" 'projectile-kill-buffers)
 (evil-leader/set-key "p p" 'helm-projectile-switch-project)
+(evil-leader/set-key "p 4" 'projectile-find-file-other-window)
 (evil-leader/set-key "p g" 'helm-projectile-find-file-dwim)
 (evil-leader/set-key "p d" 'helm-projectile-find-dir)
 (evil-leader/set-key "p a" 'helm-projectile-find-other-file)
@@ -363,6 +369,7 @@
 (electric-indent-mode t)
 (defun my/toggle-paste ()
   (interactive)
+  (message "Toggle paste")
   (setq electric-pair-mode (if (eq electric-pair-mode t) nil t))
   (setq electric-indent-mode (if (eq electric-indent-mode t) nil t)))
 (global-set-key (kbd "C-c t p") 'my/toggle-paste)
@@ -401,6 +408,7 @@
  '(company-tooltip-common ((((type x)) (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
  '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
  '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
+
 ;; (defun check-expansion ()
 ;;   (save-excursion
 ;;     (if (looking-at "\\_>") t
@@ -479,7 +487,6 @@
 (defun my/c-common-mode ()
   (setq indent-tabs-mode t)
   (setq tab-width 8)
-  (irony-mode)
   (setq c-basic-offset 8))
 (add-hook 'c-mode-common-hook 'my/c-common-mode)
 
@@ -494,13 +501,18 @@
   (setq tab-width 4))
 (add-hook 'python-mode-hook 'my/python-mode)
 
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (defun my/js-mode ()
   (setq indent-tabs-mode nil)
   (js2-minor-mode)
   (setq tab-width 4))
 (add-hook 'js-mode-hook 'my/js-mode)
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(defun my/shell-mode ()
+  (setq company-mode -1)
+  (setq line-number-mode -1)
+  (setq column-number-mode -1))
+(add-hook 'shell-mode-hook 'my/shell-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -581,11 +593,3 @@
 (provide 'init)
 
 ;;; Auto-generated code below
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (js2-mode company-tabnine diminish ace-jump-mode undo-tree ztree imenu-list evil evil-leader evil-surround wgrep clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company elfeed helm helm-ag projectile helm-projectile magit pyim neotree))))
