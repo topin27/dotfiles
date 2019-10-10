@@ -248,7 +248,8 @@
       '("https://www.byvoid.com/zhs/feed"
 	"https://coolshell.cn/feed"
 	"feed://www.brendangregg.com/blog/rss.xml"
-	"http://feeds.feedburner.com/ruanyifeng"))
+	"http://feeds.feedburner.com/ruanyifeng"
+	"https://emacs.cafe/feed.xml"))
 
 (require 'pyim)
 (require 'pyim-basedict)
@@ -283,6 +284,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 (require 'windmove)
+(windmove-default-keybindings)
 (global-set-key (kbd "C-c w h") 'windmove-left)
 (global-set-key (kbd "C-c w l") 'windmove-right)
 (global-set-key (kbd "C-c w j") 'windmove-down)
@@ -346,7 +348,7 @@
 (evil-leader/set-key "w k" 'windmove-up)
 (evil-leader/set-key "w q" 'delete-window)
 (evil-leader/set-key "\\" 'helm-ag-pop-stack)
-(evil-leader/set-key "<tab>" 'other-window)
+(evil-leader/set-key "TAB" 'other-window)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -395,6 +397,14 @@
 (setq company-idle-delay 0.1)
 (setq company-show-numbers t)
 (global-set-key (kbd "C-c y") 'company-yasnippet)
+(setq company-backends
+      '((company-files          ; files & directory
+         company-keywords       ; keywords
+         company-capf
+         company-yasnippet
+         )
+        (company-abbrev company-dabbrev)
+        ))
 ;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (setq company-dabbrev-downcase nil)
 (custom-set-faces
@@ -474,21 +484,27 @@
 
 (require 'company-tabnine)
 (setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
-(add-to-list 'company-backends #'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
 
 (defun my/prog-mode ()
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
+  (add-to-list (make-local-variable 'company-backends) 'company-tabnine)
   (evil-leader/set-key "g g" 'helm-etags-select)
   (evil-leader/set-key "g b" 'pop-tag-mark))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
-(defun my/c-common-mode ()
+(defun my/c-mode ()
   (setq indent-tabs-mode t)
-  (setq tab-width 8)
-  (setq c-basic-offset 8))
-(add-hook 'c-mode-common-hook 'my/c-common-mode)
+  (setq tab-width 8))
+(add-hook 'c-mode-hook 'my/c-mode)
+
+(defun my/c++-mode ()
+  (setq indent-tabs-mode nil)
+  (setq tab-width 2)
+  (setq c-basic-offset 2))
+(add-hook 'c++-mode-hook 'my/c++-mode)
 
 (defun my/java-mode ()
   (setq indent-tabs-mode nil)
@@ -573,7 +589,7 @@
 	))
 
 (defun my/org-mode ()
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
@@ -583,7 +599,7 @@
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  (linum-mode t)
+  ;; (linum-mode t)
   (column-number-mode t)
   (line-number-mode t)
   ;; (markdown-toggle-fontify-code-blocks-natively)
