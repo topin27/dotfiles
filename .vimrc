@@ -55,6 +55,7 @@ cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
 cnoremap <C-K> <C-U>
+nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -68,12 +69,11 @@ nmap <LocalLeader>tp :setlocal paste!<cr>
 map <LocalLeader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 nmap <LocalLeader>w :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
-" inoremap <C-E> <End>
-" inoremap <C-A> <Home>
-" inoremap <C-F> <Right>
-" inoremap <C-B> <Left>
+inoremap <C-E> <End>
+inoremap <C-A> <Home>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
 nnoremap g] g<C-]>
-" imap <Esc> <Esc><Esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -219,7 +219,7 @@ autocmd FileType python setlocal ts=4 sts=4 et sw=4
 " --------
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0
+autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM
 let g:vim_markdown_folding_disabled = 0
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_folding_level = 6
@@ -240,18 +240,18 @@ autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
 " ----------
 autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
 
-" For vim-javascript
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_ngdoc = 1
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:javascript_conceal_noarg_arrow_function = "🞅"
-let g:javascript_conceal_underscore_arrow_function = "🞅"
+" " For vim-javascript
+" let g:javascript_plugin_jsdoc = 1
+" let g:javascript_plugin_ngdoc = 1
+" let g:javascript_conceal_function             = "ƒ"
+" let g:javascript_conceal_null                 = "ø"
+" let g:javascript_conceal_this                 = "@"
+" let g:javascript_conceal_return               = "⇚"
+" let g:javascript_conceal_undefined            = "¿"
+" let g:javascript_conceal_NaN                  = "ℕ"
+" let g:javascript_conceal_prototype            = "¶"
+" let g:javascript_conceal_static               = "•"
+" let g:javascript_conceal_super                = "Ω"
+" let g:javascript_conceal_arrow_function       = "⇒"
+" let g:javascript_conceal_noarg_arrow_function = "🞅"
+" let g:javascript_conceal_underscore_arrow_function = "🞅"

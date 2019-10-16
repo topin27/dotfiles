@@ -26,6 +26,7 @@ cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
 cnoremap <C-K> <C-U>
+nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
@@ -39,9 +40,8 @@ nmap <LocalLeader>tp :setlocal paste!<cr>
 map <LocalLeader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 nmap <LocalLeader>w :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
-" inoremap <C-E> <End>
-" inoremap <C-A> <Home>
-" inoremap <C-F> <Right>
-" inoremap <C-B> <Left>
+inoremap <C-E> <End>
+inoremap <C-A> <Home>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
 nnoremap g] g<C-]>
-" imap <Esc> <Esc><Esc>
