@@ -35,10 +35,10 @@ nmap <C-Down> <C-W>j
 nmap <C-Up> <C-W>k
 nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
-nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
-nmap <LocalLeader>tp :setlocal paste!<cr>
-map <LocalLeader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-nmap <LocalLeader>w :w<CR>
+nmap <ESC>q :b#<bar>bd#<CR><C-W><C-P>
+nmap <Leader>tp :setlocal paste!<cr>
+nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
+nmap <ESC>s :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>

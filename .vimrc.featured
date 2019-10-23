@@ -19,6 +19,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'rhysd/vim-wasm'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
+Plug 'tommcdo/vim-kangaroo'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 
@@ -63,10 +65,10 @@ nmap <C-Down> <C-W>j
 nmap <C-Up> <C-W>k
 nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
-nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
-nmap <LocalLeader>tp :setlocal paste!<cr>
-map <LocalLeader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-nmap <LocalLeader>w :w<CR>
+nmap <ESC>q :b#<bar>bd#<CR><C-W><C-P>
+nmap <Leader>tp :setlocal paste!<cr>
+nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
+nmap <ESC>s :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
@@ -162,6 +164,19 @@ nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gg :Git<Space>
 
+" For EasyMotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nmap s <Plug>(easymotion-overwin-f2)
+nmap <Leader>/ <Plug>(easymotion-sn)
+nmap <ESC>h <Plug>(easymotion-linebackward)
+nmap <ESC>l <Plug>(easymotion-lineforward)
+nmap <ESC>j <Plug>(easymotion-j)
+nmap <ESC>k <Plug>(easymotion-k)
+
+" For kangaroo
+nnoremap <ESC>g :KangarooPush<cr>:FzfTags <C-R><C-W><cr>
+nnoremap <ESC>b :KangarooPop<cr>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SPECIFIC PLUGINS & SETTINGS
@@ -234,19 +249,3 @@ autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
-
-" " For vim-javascript
-" let g:javascript_plugin_jsdoc = 1
-" let g:javascript_plugin_ngdoc = 1
-" let g:javascript_conceal_function             = "ƒ"
-" let g:javascript_conceal_null                 = "ø"
-" let g:javascript_conceal_this                 = "@"
-" let g:javascript_conceal_return               = "⇚"
-" let g:javascript_conceal_undefined            = "¿"
-" let g:javascript_conceal_NaN                  = "ℕ"
-" let g:javascript_conceal_prototype            = "¶"
-" let g:javascript_conceal_static               = "•"
-" let g:javascript_conceal_super                = "Ω"
-" let g:javascript_conceal_arrow_function       = "⇒"
-" let g:javascript_conceal_noarg_arrow_function = "🞅"
-" let g:javascript_conceal_underscore_arrow_function = "🞅"
