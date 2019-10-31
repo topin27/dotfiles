@@ -56,6 +56,7 @@ cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><Delete>
 cnoremap <C-g> <C-c>
 cnoremap <C-K> <C-U>
+
 nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
@@ -70,11 +71,15 @@ nmap <Leader>tp :setlocal paste!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 nmap <LocalLeader>w :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
+
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
+
 nnoremap g] g<C-]>
+
+autocmd FileType qf nnoremap <silent><buffer> q :q<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -90,11 +95,11 @@ map <F2> :NERDTreeToggle<CR>
 let g:tagbar_right = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_type_markdown = {
-        \ 'ctagstype' : 'markdown',
-        \ 'kinds' : [
-                \ 'h:headings',
-        \ ],
-    \ 'sort' : 0
+	\ 'ctagstype' : 'markdown',
+	\ 'kinds' : [
+		\ 'h:headings',
+	\ ],
+	\ 'sort' : 0
 \ }
 let g:tagbar_type_taskpaper = {
 	\ 'ctagstype' : 'taskpaper',
@@ -167,7 +172,6 @@ nnoremap <Leader>gg :Git<Space>
 " For EasyMotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_smartcase = 1
-nnoremap <LocalLeader>gg :KangarooPush<cr>:FzfTags <C-R><C-W><cr>
 nmap s <Plug>(easymotion-overwin-f2)
 nmap <LocalLeader>/ <Plug>(easymotion-sn)
 nmap <LocalLeader>h <Plug>(easymotion-linebackward)
@@ -183,7 +187,7 @@ function! My_GotoDef(name)
 	endif
 	return l:res
 endfunction
-nnoremap <LocalLeader>gc :call My_GotoDef(expand('<cword>'))<CR>
+nnoremap <LocalLeader>gg :call My_GotoDef(expand('<cword>'))<CR>
 nnoremap <LocalLeader>gb :KangarooPop<cr>
 
 
@@ -199,18 +203,21 @@ autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTod
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>c <Plug>TaskPaperToggleCancelled
+autocmd FileType taskpaper map <F3> :TagbarToggle<CR>
 
 " -------
 " C & C++
 " -------
 
 autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
+autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ----
 " Java
 " ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
+autocmd FileType java map <F3> :TagbarToggle<CR>
 
 " For JavaImp
 let g:JavaImpPaths =
@@ -222,6 +229,7 @@ let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
+autocmd FileType python map <F3> :TagbarToggle<CR>
 
 " -----
 " OCaml
@@ -251,6 +259,17 @@ let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 
+let g:vim_markdown_toc_is_open = 0
+function! MarkdownTocToggle()
+	if g:vim_markdown_toc_is_open
+		lclose
+		let g:vim_markdown_toc_is_open = 0
+	else
+		Toc
+		let g:vim_markdown_toc_is_open = 1
+	endif
+endfunction
+autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
 autocmd FileType markdown nmap <LocalLeader>ih :,s/^#\([# ]\+\)/##\1/c<Home>
 autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
 
@@ -258,3 +277,4 @@ autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
+autocmd FileType javascript map <F3> :TagbarToggle<CR>
