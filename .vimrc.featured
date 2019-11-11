@@ -1,4 +1,5 @@
 call plug#begin('~/.vim/plugged')
+Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -6,7 +7,6 @@ Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
@@ -115,6 +115,7 @@ let g:fzf_command_prefix = "Fzf"
 nnoremap <silent> <Leader>f :FzfFiles<CR>
 nnoremap <silent> <Leader>b :FzfBuffers<CR>
 nnoremap <silent> <Leader>w :FzfWindows<CR>
+nnoremap <silent> <Leader>m :FzfMarks<CR>
 nnoremap <silent> <Leader>jt :FzfTags<CR>
 nnoremap <silent> <Leader>ji :FzfBTags<CR>
 nnoremap <silent> <Leader>cs :FzfSnippets<CR>
@@ -124,6 +125,10 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
 
+" For supertab
+let g:SuperTabDefaultCompletionType = "<c-p>"
+let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
+
 " For Ack.vim
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
@@ -131,20 +136,20 @@ endif
 " set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
 nnoremap <Leader>ss :Ack! ""<Left>
 nnoremap <Leader>s/ :Ack! "" %<Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python ""<Left>
-autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc ""<Left>
-autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp ""<Left>
-autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml ""<Left>
-autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown ""<Left>
-autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java ""<Left>
-autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js ""<Left>
-nnoremap <Leader>sp :Ack! --python ""<Left>
-nnoremap <Leader>sc :Ack! --cc ""<Left>
-nnoremap <Leader>sz :Ack! --cpp ""<Left>
-nnoremap <Leader>so :Ack! --ocaml ""<Left>
-nnoremap <Leader>sm :Ack! --markdown ""<Left>
-nnoremap <Leader>sj :Ack! --java ""<Left>
-nnoremap <Leader>sa :Ack! --js ""<Left>
+autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python -w ""<Left>
+autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc -w ""<Left>
+autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp -w ""<Left>
+autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml -w ""<Left>
+autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown -w ""<Left>
+autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java -w ""<Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js -w ""<Left>
+nnoremap <Leader>sp :Ack! --python -w ""<Left>
+nnoremap <Leader>sc :Ack! --cc -w ""<Left>
+nnoremap <Leader>sz :Ack! --cpp -w ""<Left>
+nnoremap <Leader>so :Ack! --ocaml -w ""<Left>
+nnoremap <Leader>sm :Ack! --markdown -w ""<Left>
+nnoremap <Leader>sj :Ack! --java -w ""<Left>
+nnoremap <Leader>sa :Ack! --js -w ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
@@ -152,8 +157,8 @@ let g:UltiSnipsExpandTrigger = "<C-e>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/plugged/vim-snippets/UltiSnips/']
-let g:UltiSnipsSnippetsDir = "~/.vim/snippets/"
+let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/UltiSnips']
+let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
 " For vim-preview
 autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
@@ -203,21 +208,18 @@ autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTod
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>c <Plug>TaskPaperToggleCancelled
-autocmd FileType taskpaper map <F3> :TagbarToggle<CR>
 
 " -------
 " C & C++
 " -------
 
 autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
-autocmd FileType c,cpp map <F3> :TagbarToggle<CR>
 
 " ----
 " Java
 " ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
-autocmd FileType java map <F3> :TagbarToggle<CR>
 
 " For JavaImp
 let g:JavaImpPaths =
@@ -229,7 +231,6 @@ let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 " ------
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
-autocmd FileType python map <F3> :TagbarToggle<CR>
 
 " -----
 " OCaml
@@ -247,34 +248,10 @@ autocmd FileType python map <F3> :TagbarToggle<CR>
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM
-let g:vim_markdown_folding_disabled = 0
-let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_folding_level = 6
-" let g:vim_markdown_no_default_key_mappings = 1
-let g:vim_markdown_toc_autofit = 1
-let g:vim_markdown_conceal = 1
-let g:tex_conceal = ""
-let g:vim_markdown_math = 0
-let g:vim_markdown_conceal_code_blocks = 0
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_strikethrough = 1
-
-let g:vim_markdown_toc_is_open = 0
-function! MarkdownTocToggle()
-	if g:vim_markdown_toc_is_open
-		lclose
-		let g:vim_markdown_toc_is_open = 0
-	else
-		Toc
-		let g:vim_markdown_toc_is_open = 1
-	endif
-endfunction
-autocmd FileType markdown map <F3> :call MarkdownTocToggle()<CR>
-autocmd FileType markdown nmap <LocalLeader>ih :,s/^#\([# ]\+\)/##\1/c<Home>
-autocmd FileType markdown nmap <LocalLeader>dh :,s/^##\([# ]\+\)/#\1/c<Home>
+autocmd FileType markdown nmap <LocalLeader>ih :s/^#\([# ]\+\)/##\1/c<Home>
+autocmd FileType markdown nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Home>
 
 " ----------
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
-autocmd FileType javascript map <F3> :TagbarToggle<CR>
