@@ -41,6 +41,8 @@ nmap <Leader>tp :setlocal paste!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 nmap <LocalLeader>w :w<CR>
 nmap <F5> :w<CR> :make<Up><CR>
+vmap <Leader>pw :w! ~/.vim/clipboard.txt
+nmap <Leader>pr :r ~/.vim/clipboard.txt
 
 inoremap <C-E> <End>
 inoremap <C-A> <Home>
@@ -50,3 +52,9 @@ inoremap <C-B> <Left>
 nnoremap g] g<C-]>
 
 autocmd FileType qf nnoremap <silent><buffer> q :q<cr>
+
+if !exists('g:my_lasttab')
+  let g:my_lasttab = 1
+endif
+nmap <Leader>tt :exe "tabn ".g:my_lasttab<CR>
+au TabLeave * let g:my_lasttab = tabpagenr()
