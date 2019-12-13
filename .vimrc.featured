@@ -1,5 +1,5 @@
 call plug#begin('~/.vim/plugged')
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -81,6 +81,12 @@ nnoremap g] g<C-]>
 
 autocmd FileType qf nnoremap <silent><buffer> q :q<cr>
 
+if !exists('g:my_lasttab')
+  let g:my_lasttab = 1
+endif
+nmap <Leader>tt :exe "tabn ".g:my_lasttab<CR>
+au TabLeave * let g:my_lasttab = tabpagenr()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL PLUGINS
@@ -126,8 +132,8 @@ let g:fzf_action = {
 let g:fzf_layout = { 'down': '~40%' }
 
 " For supertab
-let g:SuperTabDefaultCompletionType = "<c-p>"
-let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
+" let g:SuperTabDefaultCompletionType = "<c-p>"
+" let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
 
 " For Ack.vim
 if executable('ag')
@@ -136,20 +142,20 @@ endif
 " set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
 nnoremap <Leader>ss :Ack! ""<Left>
 nnoremap <Leader>s/ :Ack! "" %<Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python -w ""<Left>
-autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc -w ""<Left>
-autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp -w ""<Left>
-autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml -w ""<Left>
-autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown -w ""<Left>
-autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java -w ""<Left>
-autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js -w ""<Left>
-nnoremap <Leader>sp :Ack! --python -w ""<Left>
-nnoremap <Leader>sc :Ack! --cc -w ""<Left>
-nnoremap <Leader>sz :Ack! --cpp -w ""<Left>
-nnoremap <Leader>so :Ack! --ocaml -w ""<Left>
-nnoremap <Leader>sm :Ack! --markdown -w ""<Left>
-nnoremap <Leader>sj :Ack! --java -w ""<Left>
-nnoremap <Leader>sa :Ack! --js -w ""<Left>
+autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python ""<Left>
+autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc ""<Left>
+autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp ""<Left>
+autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml ""<Left>
+autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown ""<Left>
+autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java ""<Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js ""<Left>
+nnoremap <Leader>sp :Ack! --python ""<Left>
+nnoremap <Leader>sc :Ack! --cc ""<Left>
+nnoremap <Leader>sz :Ack! --cpp ""<Left>
+nnoremap <Leader>so :Ack! --ocaml ""<Left>
+nnoremap <Leader>sm :Ack! --markdown ""<Left>
+nnoremap <Leader>sj :Ack! --java ""<Left>
+nnoremap <Leader>sa :Ack! --js ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
@@ -186,7 +192,7 @@ nmap <LocalLeader>k <Plug>(easymotion-k)
 
 " For kangaroo
 function! My_GotoDef(name)
-	let l:res = fzf#vim#tags(a:name)
+	let l:res = fzf#vim#ag(a:name)
 	if !empty(l:res)
 		KangarooPush
 	endif

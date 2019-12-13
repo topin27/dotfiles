@@ -50,3 +50,9 @@ inoremap <C-B> <Left>
 nnoremap g] g<C-]>
 
 autocmd FileType qf nnoremap <silent><buffer> q :q<cr>
+
+if !exists('g:my_lasttab')
+  let g:my_lasttab = 1
+endif
+nmap <Leader>tt :exe "tabn ".g:my_lasttab<CR>
+au TabLeave * let g:my_lasttab = tabpagenr()
