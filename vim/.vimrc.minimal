@@ -7,7 +7,7 @@ set ai
 set hlsearch
 set noet
 set ts=8
-set mouse=a
+" set mouse=a
 set ls=2
 set conceallevel=2
 set wildmenu
@@ -40,7 +40,7 @@ nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 nmap <LocalLeader>w :w<CR>
-nmap <F5> :w<CR> :make<Up><CR>
+nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
 nmap <Leader>pr :r ~/.vim/clipboard.txt
 

@@ -1,0 +1,4 @@
+patch:
+  schema_list:
+    - schema: double_pinyin_mspy   # 微软双拼
+    - schema: luna_pinyin_simp     # 简体全拼
