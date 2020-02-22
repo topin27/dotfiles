@@ -1,5 +1,6 @@
 call plug#begin('~/.vim/plugged')
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -67,9 +68,11 @@ nmap <C-Up> <C-W>k
 nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
 nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
+nmap QQ :q<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-nmap <LocalLeader>w :w<CR>
+" nmap <LocalLeader>w :w<CR>
+nmap s :w<CR>
 nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
 nmap <Leader>pr :r ~/.vim/clipboard.txt
@@ -134,9 +137,21 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
 
-" For supertab
-let g:SuperTabDefaultCompletionType = "<c-p>"
-let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
+" " For supertab
+" let g:SuperTabDefaultCompletionType = "<c-p>"
+" let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
+" let g:SuperTabRetainCompletionType = 1
+
+" For mucomplete
+set shortmess+=c    " Shut off completion messages
+set belloff+=ctrlg  " If Vim beeps during completion
+inoremap <silent> <plug>(MUcompleteFwdKey) <right>
+imap <right> <plug>(MUcompleteCycFwd)
+inoremap <silent> <plug>(MUcompleteBwdKey) <left>
+imap <left> <plug>(MUcompleteCycBwd)
+let g:mucomplete#chains = {
+	\ 'default': ['file', 'keyp', 'tags', 'omni', 'incl', 'ulti'],
+	\ }
 
 " For Ack.vim
 if executable('ag')
@@ -183,15 +198,15 @@ nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gg :Git<Space>
 
-" For EasyMotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-let g:EasyMotion_smartcase = 1
-nmap s <Plug>(easymotion-overwin-f2)
-nmap <LocalLeader>/ <Plug>(easymotion-sn)
-nmap <LocalLeader>h <Plug>(easymotion-linebackward)
-nmap <LocalLeader>l <Plug>(easymotion-lineforward)
-nmap <LocalLeader>j <Plug>(easymotion-j)
-nmap <LocalLeader>k <Plug>(easymotion-k)
+" " For EasyMotion
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" let g:EasyMotion_smartcase = 1
+" nmap s <Plug>(easymotion-overwin-f2)
+" nmap <LocalLeader>/ <Plug>(easymotion-sn)
+" nmap <LocalLeader>h <Plug>(easymotion-linebackward)
+" nmap <LocalLeader>l <Plug>(easymotion-lineforward)
+" nmap <LocalLeader>j <Plug>(easymotion-j)
+" nmap <LocalLeader>k <Plug>(easymotion-k)
 
 " For kangaroo
 function! My_GotoDef(name)
