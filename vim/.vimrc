@@ -12,16 +12,12 @@ Plug 'amix/open_file_under_cursor.vim'
 Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
 Plug 'topin27/JavaImp.vim'
-Plug 'skywind3000/vim-preview'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 " Plug 'zxqfl/tabnine-vim'
 Plug 'leafgarland/typescript-vim'
-Plug 'rhysd/vim-wasm'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
-Plug 'tommcdo/vim-kangaroo'
-Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 
@@ -42,7 +38,8 @@ set ts=8
 set ls=2
 set conceallevel=2
 set wildmenu
-set completeopt-=preview
+" set completeopt-=preview
+set completeopt=menuone
 
 let maplocalleader = ','
 
@@ -150,7 +147,7 @@ imap <right> <plug>(MUcompleteCycFwd)
 inoremap <silent> <plug>(MUcompleteBwdKey) <left>
 imap <left> <plug>(MUcompleteCycBwd)
 let g:mucomplete#chains = {
-	\ 'default': ['file', 'keyp', 'tags', 'omni', 'incl', 'ulti'],
+	\ 'default': ['path', 'keyp', 'tags', 'omni', 'incl', 'ulti'],
 	\ }
 
 " For Ack.vim
@@ -181,12 +178,8 @@ let g:UltiSnipsExpandTrigger = "<C-e>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/UltiSnips']
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
 let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
-
-" For vim-preview
-autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
-autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 
 " For Fuitive
 nnoremap <Leader>gs :Gstatus<CR>
@@ -197,27 +190,6 @@ nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gg :Git<Space>
-
-" " For EasyMotion
-" let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" let g:EasyMotion_smartcase = 1
-" nmap s <Plug>(easymotion-overwin-f2)
-" nmap <LocalLeader>/ <Plug>(easymotion-sn)
-" nmap <LocalLeader>h <Plug>(easymotion-linebackward)
-" nmap <LocalLeader>l <Plug>(easymotion-lineforward)
-" nmap <LocalLeader>j <Plug>(easymotion-j)
-" nmap <LocalLeader>k <Plug>(easymotion-k)
-
-" For kangaroo
-function! My_GotoDef(name)
-	let l:res = fzf#vim#ag(a:name)
-	if !empty(l:res)
-		KangarooPush
-	endif
-	return l:res
-endfunction
-nnoremap <LocalLeader>gg :call My_GotoDef(expand('<cword>'))<CR>
-nnoremap <LocalLeader>gb :KangarooPop<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

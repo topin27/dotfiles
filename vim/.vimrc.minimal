@@ -11,7 +11,8 @@ set ts=8
 set ls=2
 set conceallevel=2
 set wildmenu
-set completeopt-=preview
+" set completeopt-=preview
+set completeopt=menuone
 
 let maplocalleader = ','
 
