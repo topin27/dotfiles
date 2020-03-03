@@ -18,6 +18,7 @@ Plug 'zxqfl/tabnine-vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
+Plug 'vim-pandoc/vim-pandoc-syntax'
 call plug#end()
 
 
@@ -147,7 +148,7 @@ imap <right> <plug>(MUcompleteCycFwd)
 inoremap <silent> <plug>(MUcompleteBwdKey) <left>
 imap <left> <plug>(MUcompleteCycBwd)
 let g:mucomplete#chains = {
-	\ 'default': ['path', 'keyp', 'tags', 'omni', 'incl', 'ulti'],
+	\ 'default': ['path', 'keyp', 'tags', 'omni', 'incl'],
 	\ }
 
 " For Ack.vim
@@ -164,6 +165,7 @@ autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml ""<Left>
 autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown ""<Left>
 autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java ""<Left>
 autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js ""<Left>
+autocmd FileType makefile nnoremap <LocalLeader>ss :Ack! --make ""<Left>
 nnoremap <Leader>sp :Ack! --python ""<Left>
 nnoremap <Leader>sc :Ack! --cc ""<Left>
 nnoremap <Leader>sz :Ack! --cpp ""<Left>
@@ -171,6 +173,7 @@ nnoremap <Leader>so :Ack! --ocaml ""<Left>
 nnoremap <Leader>sm :Ack! --markdown ""<Left>
 nnoremap <Leader>sj :Ack! --java ""<Left>
 nnoremap <Leader>sa :Ack! --js ""<Left>
+nnoremap <Leader>sk :Ack! --make ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
@@ -238,14 +241,18 @@ autocmd FileType python setlocal ts=4 sts=4 et sw=4
 " autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
 " autocmd FileType ocaml map <F3> :MerlinOutline<CR>
 
-" --------
-" Markdown
-" --------
+" ---------------
+" Markdown.pandoc
+" ---------------
 
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd FileType markdown setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM
-autocmd FileType markdown nmap <LocalLeader>ih :s/^#\([# ]\+\)/##\1/c<Home>
-autocmd FileType markdown nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Home>
+augroup pandoc_syntax
+    au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+augroup END
+
+" autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd FileType markdown.pandoc setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM
+autocmd FileType markdown.pandoc nmap <LocalLeader>ih :s/^#\([# ]\+\)/##\1/c<Home>
+autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Home>
 
 " ----------
 " JavaScript
