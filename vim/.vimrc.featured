@@ -1,6 +1,5 @@
 call plug#begin('~/.vim/plugged')
 " Plug 'ervandew/supertab'
-Plug 'lifepillar/vim-mucomplete'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -40,7 +39,7 @@ set ls=2
 set conceallevel=2
 set wildmenu
 " set completeopt-=preview
-set completeopt=menuone
+set completeopt=menu,longest
 
 let maplocalleader = ','
 
@@ -136,20 +135,9 @@ let g:fzf_action = {
 let g:fzf_layout = { 'down': '~40%' }
 
 " " For supertab
-" let g:SuperTabDefaultCompletionType = "<c-p>"
-" let g:SuperTabContextDefaultCompletionTyper= "<c-p>"
-" let g:SuperTabRetainCompletionType = 1
-
-" For mucomplete
-set shortmess+=c    " Shut off completion messages
-set belloff+=ctrlg  " If Vim beeps during completion
-inoremap <silent> <plug>(MUcompleteFwdKey) <right>
-imap <right> <plug>(MUcompleteCycFwd)
-inoremap <silent> <plug>(MUcompleteBwdKey) <left>
-imap <left> <plug>(MUcompleteCycBwd)
-let g:mucomplete#chains = {
-	\ 'default': ['path', 'keyp', 'tags', 'omni', 'incl'],
-	\ }
+" let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
+" let g:SuperTabRetainCompletionDuration = 'insert'
+" let g:SuperTabLongestEnhanced = 1
 
 " For Ack.vim
 if executable('ag')
