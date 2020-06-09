@@ -8,22 +8,22 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'amix/open_file_under_cursor.vim'
-Plug 'mhinz/vim-startify'
 Plug 'topin27/taskpaper.vim'
 Plug 'topin27/JavaImp.vim'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
-" Plug 'zxqfl/tabnine-vim'
-Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'aklt/plantuml-syntax'
 call plug#end()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+filetype plugin on
 
 syntax on
 syntax enable
@@ -34,12 +34,13 @@ set ai
 set hlsearch
 set noet
 set ts=8
-" set mouse=a
+set mouse=a
 set ls=2
 set conceallevel=2
 set wildmenu
-" set completeopt-=preview
 set completeopt=menu,longest
+" set iskeyword+=-
+set nocompatible
 
 let maplocalleader = ','
 
@@ -78,6 +79,14 @@ inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
+inoremap <C-D> <Del>
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap < <><Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
+inoremap ` ``<Left>
 
 nnoremap g] g<C-]>
 
@@ -88,6 +97,8 @@ if !exists('g:my_lasttab')
 endif
 nmap <Leader>tt :exe "tabn ".g:my_lasttab<CR>
 au TabLeave * let g:my_lasttab = tabpagenr()
+
+packadd! matchit
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -165,7 +176,7 @@ nnoremap <Leader>sk :Ack! --make ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-e>"
+let g:UltiSnipsExpandTrigger = "<C-y>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
@@ -246,3 +257,8 @@ autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Hom
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
+
+" --------
+" Plantuml
+" --------
+let g:plantuml_executable_script = 0

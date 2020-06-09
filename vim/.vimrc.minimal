@@ -7,12 +7,14 @@ set ai
 set hlsearch
 set noet
 set ts=8
-" set mouse=a
+set mouse=a
 set ls=2
 set conceallevel=2
 set wildmenu
 " set completeopt-=preview
 set completeopt=menu,longest
+" set iskeyword+=-
+set nocompatible
 
 let maplocalleader = ','
 
@@ -51,6 +53,14 @@ inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
+inoremap <C-D> <Del>
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap < <><Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
+inoremap ` ``<Left>
 
 nnoremap g] g<C-]>
 
@@ -61,3 +71,5 @@ if !exists('g:my_lasttab')
 endif
 nmap <Leader>tt :exe "tabn ".g:my_lasttab<CR>
 au TabLeave * let g:my_lasttab = tabpagenr()
+
+packadd! matchit

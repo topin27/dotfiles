@@ -6,6 +6,7 @@
 ;;; Code:
 
 (add-to-list 'load-path (expand-file-name "lisp" "~/.emacs.d/"))
+(add-to-list 'package--builtin-versions '(emacs 26 1))
 
 (require 'package)
 (setq package-archives '(("gnu-china" . "http://elpa.emacs-china.org/gnu/")
@@ -255,8 +256,8 @@
 (require 'pyim-basedict)
 (pyim-basedict-enable)
 (setq default-input-method "pyim")
-(setq pyim-default-scheme 'quanpin)
-(setq pyim-page-tooltip 'popup)
+(setq pyim-default-scheme 'microsoft-shuangpin)
+; (setq pyim-page-tooltip 'popup)
 (setq pyim-page-length 9)
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 (global-set-key (kbd "M-c") 'toggle-input-method)
@@ -482,8 +483,8 @@
 ;; (define-key yas-keymap [(control tab)] 'yas-next-field)
 ;; (define-key yas-keymap (kbd "C-g") 'abort-company-or-yas)
 
-(require 'company-tabnine)
-(setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
+;; (require 'company-tabnine)
+;; (setq company-tabnine-binaries-folder "~/.emacs.d/TabNine")
 ;; (add-to-list 'company-backends #'company-tabnine)
 
 (defun my/prog-mode ()
@@ -609,3 +610,14 @@
 (provide 'init)
 
 ;;; Auto-generated code below
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("dcdd1471fde79899ae47152d090e3551b889edf4b46f00df36d653adc2bf550d" default)))
+ '(package-selected-packages
+   (quote
+    (atom-one-dark-theme diminish ace-jump-mode undo-tree ztree imenu-list evil evil-leader evil-surround wgrep clean-aindent-mode yasnippet yasnippet-snippets markdown-mode company elfeed helm helm-ag projectile helm-projectile magit pyim neotree company-tabnine js2-mode dracula-theme))))
