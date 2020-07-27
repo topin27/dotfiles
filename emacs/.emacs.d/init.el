@@ -289,7 +289,7 @@
 (global-set-key (kbd "C-c w h") 'windmove-left)
 (global-set-key (kbd "C-c w l") 'windmove-right)
 (global-set-key (kbd "C-c w j") 'windmove-down)
-(global-set-key (kbd "C-c w k") 'windmove-up)
+'(global-set-key (kbd "C-c w k") 'windmove-up)
 
 (setq evil-want-C-i-jump nil)
 (modify-syntax-entry ?_ "w")

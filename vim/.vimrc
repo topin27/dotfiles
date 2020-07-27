@@ -38,7 +38,7 @@ set mouse=a
 set ls=2
 set conceallevel=2
 set wildmenu
-set completeopt=menu,longest
+set completeopt=menuone
 " set iskeyword+=-
 set nocompatible
 
@@ -79,14 +79,6 @@ inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
-inoremap <C-D> <Del>
-inoremap ( ()<Left>
-inoremap [ []<Left>
-inoremap { {}<Left>
-inoremap < <><Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
-inoremap ` ``<Left>
 
 nnoremap g] g<C-]>
 
@@ -176,7 +168,7 @@ nnoremap <Leader>sk :Ack! --make ""<Left>
 
 " For ultisnips
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-y>"
+let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"

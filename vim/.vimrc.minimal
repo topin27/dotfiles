@@ -54,13 +54,6 @@ inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
 inoremap <C-D> <Del>
-inoremap ( ()<Left>
-inoremap [ []<Left>
-inoremap { {}<Left>
-inoremap < <><Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
-inoremap ` ``<Left>
 
 nnoremap g] g<C-]>
 
