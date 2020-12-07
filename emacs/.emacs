@@ -10,6 +10,8 @@
 (require 'package)
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+;; (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+;;                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 (package-initialize)
 
@@ -17,7 +19,6 @@
 
 (defvar my/packages '(
 		      better-defaults
-		      diminish
 		      ace-jump-mode
 		      undo-tree
 		      ztree
@@ -29,15 +30,14 @@
 		      markdown-mode
 		      company
 		      projectile
-                      ido-vertical-mode
-                      smex
 		      magit
-		      neotree
 		      js2-mode
 		      dracula-theme
                       evil
                       evil-surround
-                      icomplete-vertical
+                      ivy
+                      swiper
+                      counsel
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -62,18 +62,44 @@
 ;; UI
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-font-lock-mode t)
+;; the toolbar is just a waste of valuable screen estate
+;; in a tty tool-bar-mode does not properly auto-load, and is
+;; already disabled anyway
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+
+;; the blinking cursor is nothing, but an annoyance
+(blink-cursor-mode -1)
+
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; disable the annoying bell ring
 (setq ring-bell-function 'ignore)
+
+;; disable startup screen
+(setq inhibit-startup-screen t)
 
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
 
 (delete-selection-mode t) ;; inserting text while the mark is active causes the selected text to be deleted first
-(transient-mark-mode 1)
+;; (transient-mark-mode 1)
 (setq select-enable-clipboard t)
+
+;; maximized window when startup
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
+
+;; mode line settings
+(line-number-mode t)
+(column-number-mode t)
+(size-indication-mode t)
+
+;; nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
 
 (setq cursor-type 'bar)
 
@@ -98,21 +124,61 @@
       scroll-preserve-screen-position 1)
 
 (which-function-mode -1)
-(linum-mode -1)
-(column-number-mode -1)
-(line-number-mode -1)
-(setq mac-command-modifier 'control)
+;; (setq mac-command-modifier 'control)
 
-(require 'diminish)
-(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
-(eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-(eval-after-load "company" '(diminish 'company-mode))
-(eval-after-load "projectile" '(diminish 'projectile-mode))
+;; more useful frame title, that show either a file or a
+;; buffer name (if the buffer isn't visiting a file)
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Basic stuff
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Always load newest byte code
+(setq load-prefer-newer t)
+
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
+
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
+;; Emacs modes typically provide a standard means to change the
+;; indentation width -- eg. c-basic-offset: use that to adjust your
+;; personal indentation width, while maintaining the style (and
+;; meaning) of any files you load.
+;; (setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
+(setq-default tab-width 8)            ;; but maintain correct appearance
+
+;; Wrap lines at 80 characters
+(setq-default fill-column 80)
+
+;; delete the selection with a keypress
+(delete-selection-mode t)
+
+;; revert buffers automatically when underlying files are changed externally
+(global-auto-revert-mode t)
+
+;; hippie expand is dabbrev expand on steroids
+(setq hippie-expand-try-functions-list '(try-expand-dabbrev
+                                         try-expand-dabbrev-all-buffers
+                                         try-expand-dabbrev-from-kill
+                                         try-complete-file-name-partially
+                                         try-complete-file-name
+                                         try-expand-all-abbrevs
+                                         try-expand-list
+                                         try-expand-line
+                                         try-complete-lisp-symbol-partially
+                                         try-complete-lisp-symbol))
+
+;; use hippie-expand instead of dabbrev
+(global-set-key (kbd "M-/") #'hippie-expand)
+(global-set-key (kbd "s-/") #'hippie-expand)
 
 (if (string-equal system-type "darwin")
     (if (display-graphic-p)
@@ -125,21 +191,40 @@
 (setq auto-save-default nil)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(winner-mode 1)
-
 ;; (setq default-buffer-file-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(global-auto-revert-mode 1)
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 20)
+(setq recentf-max-saved-items 100)
+(setq recentf-auto-cleanup 'never)
 
 (require 'ibuffer)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-(global-set-key (kbd "RET") 'newline-and-indent)
+(require 'winner)
+(winner-mode 1)
 
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+(require 'paren)
+(show-paren-mode +1)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+;; rename after killing uniquified
+(setq uniquify-after-kill-buffer-p t)
+;; don't muck with special buffers
+(setq uniquify-ignore-buffers-re "^\\*")
+
+(require 'windmove)
+(windmove-default-keybindings)
 
 (require 'dired)
 (setq dired-recursive-deletes 'always)
@@ -167,9 +252,6 @@
 (require 'wgrep)
 (setq wgrep-auto-save-buffer t)
 
-(require 'neotree)
-(global-set-key (kbd "C-c t n") 'neotree-toggle)
-
 (require 'projectile)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -182,47 +264,9 @@
 (setq projectile-globally-ignored-directories
       (append '("__pycache__") projectile-globally-ignored-directories))
 (setq projectile-globally-ignored-file-suffixes '("pyc" "class" "o"))
-
-(require 'windmove)
-(windmove-default-keybindings)
-(global-set-key (kbd "C-c w h") 'windmove-left)
-(global-set-key (kbd "C-c w l") 'windmove-right)
-(global-set-key (kbd "C-c w j") 'windmove-down)
-(global-set-key (kbd "C-c w k") 'windmove-up)
+(setq projectile-completion-system 'ivy)
 
 (require 'better-defaults)
-
-(require 'smex)
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-(require 'ido)
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-auto-merge-work-directories-length -1)
-(global-set-key (kbd "C-x b") 'ido-switch-buffer)
-(global-set-key (kbd "C-x B") 'ido-switch-buffer-other-window)
-
-(require 'ido-vertical-mode)
-(ido-vertical-mode 1)
-(setq ido-vertical-show-count t)
-(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-
-(require 'icomplete-vertical)
-(icomplete-vertical-mode)
-(setq completion-styles '(partial-completion substring))
-(setq completion-category-overrides '((file (styles basic substring))))
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-(setq completion-ignore-case t)
-(define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
-(define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
-(define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
-(define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
-(define-key icomplete-minibuffer-map (kbd "C-v") 'icomplete-vertical-toggle)
 
 (setq evil-want-C-i-jump nil)
 (modify-syntax-entry ?_ "w")
@@ -234,17 +278,37 @@
 			      (ztree-mode . emacs)
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
-(define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+(define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
 
-(global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "<f10>") 'rename-buffer)
-(global-set-key (kbd "<f12>") 'other-window)
-(global-set-key (kbd "C-c <tab>") 'other-window)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(define-key evil-normal-state-map (kbd "M-.") 'find-tag)
+(define-key evil-normal-state-map (kbd "s") 'save-buffer)
+(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "TAB") 'other-window)
+
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+;; enable this if you want `swiper' to use it
+;; (setq search-default-mode #'char-fold-to-regexp)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-h f") 'counsel-describe-function)
+(global-set-key (kbd "C-h v") 'counsel-describe-variable)
+(global-set-key (kbd "C-h o") 'counsel-describe-symbol)
+(global-set-key (kbd "C-h l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+;; (global-set-key (kbd "C-c g") 'counsel-git)
+;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+;; (global-set-key (kbd "C-c k") 'counsel-ag)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(global-set-key (kbd "C-c h i") 'counsel-semantic-or-imenu)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -257,6 +321,7 @@
 (require 'electric)
 (electric-pair-mode t)
 (electric-indent-mode t)
+
 (defun my/toggle-paste ()
   (interactive)
   (message "Toggle paste")
@@ -266,7 +331,6 @@
 
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
-
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -303,7 +367,8 @@
 
 (defun my/c-mode ()
   (setq indent-tabs-mode t)
-  (setq tab-width 8))
+  (setq tab-width 8)
+  (setq c-basic-offset 8))
 (add-hook 'c-mode-hook 'my/c-mode)
 
 (defun my/c++-mode ()
@@ -331,7 +396,6 @@
 (add-hook 'js-mode-hook 'my/js-mode)
 
 (defun my/shell-mode ()
-  (setq company-mode -1)
   (setq line-number-mode -1)
   (setq column-number-mode -1))
 (add-hook 'shell-mode-hook 'my/shell-mode)
@@ -348,7 +412,7 @@
 (autoload 'gfm-mode "markdown-mode"
    "Major mode for editing GitHub Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
-(setq markdown-command "pandoc --toc -N --mathml")
+(setq markdown-command "pandoc --toc -N --mathjax -s")
 
 (require 'org)
 (setq org-html-postamble nil)
@@ -385,9 +449,9 @@
   (markdown-toggle-math)
   ;; (linum-mode t)
   (setq display-line-numbers 'relative)
-  (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
   (column-number-mode t)
-  (line-number-mode t))
+  (line-number-mode t)
+  (define-key evil-motion-state-map (kbd "M-TAB") 'markdown-cycle))
   ;; (markdown-toggle-fontify-code-blocks-natively)
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 

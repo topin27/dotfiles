@@ -2,8 +2,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+if has('python3')
+	Plug 'SirVer/ultisnips'
+	Plug 'honza/vim-snippets'
+endif
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -44,17 +46,13 @@ set nocompatible
 
 let maplocalleader = ','
 
+cnoremap <C-G> <C-F>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-d> <S-Right><Delete>
-cnoremap <C-g> <C-c>
-cnoremap <C-K> <C-U>
 
 nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
@@ -147,35 +145,37 @@ if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
 endif
 " set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
-nnoremap <Leader>ss :Ack! ""<Left>
+nnoremap <Leader>ss :Ack! "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>s/ :Ack! "" %<Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python ""<Left>
-autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc ""<Left>
-autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp ""<Left>
-autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml ""<Left>
-autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown ""<Left>
-autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java ""<Left>
-autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js ""<Left>
-autocmd FileType makefile nnoremap <LocalLeader>ss :Ack! --make ""<Left>
-nnoremap <Leader>sp :Ack! --python ""<Left>
-nnoremap <Leader>sc :Ack! --cc ""<Left>
-nnoremap <Leader>sz :Ack! --cpp ""<Left>
-nnoremap <Leader>so :Ack! --ocaml ""<Left>
-nnoremap <Leader>sm :Ack! --markdown ""<Left>
-nnoremap <Leader>sj :Ack! --java ""<Left>
-nnoremap <Leader>sa :Ack! --js ""<Left>
-nnoremap <Leader>sk :Ack! --make ""<Left>
+autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType makefile nnoremap <LocalLeader>ss :Ack! --make "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sp :Ack! --python "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sc :Ack! --cc "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sz :Ack! --cpp "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>so :Ack! --ocaml "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sm :Ack! --markdown "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sj :Ack! --java "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 
 " For ultisnips
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-d>"
-let g:UltiSnipsJumpForwardTrigger = "<C-f>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
-" let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
-let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
+if has('python3')
+	" better key bindings for UltiSnipsExpandTrigger
+	let g:UltiSnipsExpandTrigger = "<C-d>"
+	let g:UltiSnipsJumpForwardTrigger = "<C-f>"
+	let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
+	" let g:UltiSnipsListSnippets = "<C-l>"
+	let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
+	let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
+endif
 
-" For Fuitive
+" For Fugitive
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>
@@ -248,7 +248,7 @@ autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Hom
 " ----------
 " JavaScript
 " ----------
-autocmd FileType javascript setlocal ts=4 sts=4 et sw=4
+autocmd FileType javascript setlocal ts=2 sts=2 et sw=2
 
 " --------
 " Plantuml

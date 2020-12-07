@@ -1,0 +1,8 @@
+{
+	"shell_cmd": "pandoc ${file} -o ${file_base_name}.html --toc -N --mathml -s",
+	"selector": "source.markdown",
+	"variants": [
+		{"name": "Open", "shell_cmd": "open ${file_base_name}.html"},
+		{"name": "Clean", "shell_cmd": "rm -rf ${file_base_name}.html"}
+	]
+}
