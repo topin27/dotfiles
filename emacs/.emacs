@@ -38,6 +38,9 @@
                       ivy
                       swiper
                       counsel
+                      ivy-xref
+                      ;; pyim
+                      diminish
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -310,6 +313,25 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (global-set-key (kbd "C-c h i") 'counsel-semantic-or-imenu)
 
+(require 'ivy-xref)
+(when (>= emacs-major-version 27)
+  (setq xref-show-definitions-function #'ivy-xref-show-defs))
+(setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+
+;; (require 'pyim)
+;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
+;; (setq default-input-method "pyim")
+;; (setq pyim-default-scheme 'microsoft-shuangpin)
+;; (setq-default pyim-punctuation-half-width-functions
+;;               '(pyim-probe-punctuation-line-beginning
+;;                 pyim-probe-punctuation-after-punctuation))
+;; ;; 开启拼音搜索功能
+;; (pyim-isearch-mode 1)
+;; (global-set-key (kbd "C-\\") 'toggle-input-method)
+;; ;; (define-key pyim-mode-map "." 'pyim-page-next-page)
+;; ;; (define-key pyim-mode-map "," 'pyim-page-previous-page)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dev
@@ -441,6 +463,7 @@
   (column-number-mode t)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
+  (define-key evil-motion-state-map (kbd "M-TAB") 'org-cycle)
   (flyspell-mode -1)
   (toggle-truncate-lines -1))
 (add-hook 'org-mode-hook 'my/org-mode)
@@ -454,6 +477,17 @@
   (define-key evil-motion-state-map (kbd "M-TAB") 'markdown-cycle))
   ;; (markdown-toggle-fontify-code-blocks-natively)
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Finial init
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(diminish 'projectile-mode)
+(diminish 'undo-tree-mode)
+(diminish 'company-mode)
+(diminish 'ivy-mode)
+
 
 (provide 'init)
 
