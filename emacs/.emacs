@@ -30,16 +30,16 @@
 		      markdown-mode
 		      company
 		      projectile
-		      magit
 		      js2-mode
 		      dracula-theme
                       evil
                       evil-surround
+                      magit
                       ivy
                       swiper
                       counsel
                       ivy-xref
-                      ;; pyim
+                      pyim
                       diminish
 		      ) "Default packages")
 
@@ -183,6 +183,8 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
 
+(global-set-key (kbd "C-M-i") 'other-window)
+
 (if (string-equal system-type "darwin")
     (if (display-graphic-p)
 	(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))))
@@ -278,6 +280,7 @@
 (evil-mode 1)
 (loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
 			      (special-mode . emacs)
+			      (shell-mode . emacs)
 			      (ztree-mode . emacs)
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
@@ -289,7 +292,6 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (define-key evil-normal-state-map (kbd "s") 'save-buffer)
 (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
-(define-key evil-normal-state-map (kbd "TAB") 'other-window)
 
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
@@ -318,27 +320,24 @@
   (setq xref-show-definitions-function #'ivy-xref-show-defs))
 (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 
-;; (require 'pyim)
-;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
-;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
-;; (setq default-input-method "pyim")
-;; (setq pyim-default-scheme 'microsoft-shuangpin)
-;; (setq-default pyim-punctuation-half-width-functions
-;;               '(pyim-probe-punctuation-line-beginning
-;;                 pyim-probe-punctuation-after-punctuation))
-;; ;; 开启拼音搜索功能
-;; (pyim-isearch-mode 1)
-;; (global-set-key (kbd "C-\\") 'toggle-input-method)
-;; ;; (define-key pyim-mode-map "." 'pyim-page-next-page)
-;; ;; (define-key pyim-mode-map "," 'pyim-page-previous-page)
+(require 'pyim)
+(require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+(pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
+(setq default-input-method "pyim")
+(setq pyim-default-scheme 'microsoft-shuangpin)
+(setq-default pyim-punctuation-half-width-functions
+              '(pyim-probe-punctuation-line-beginning
+                pyim-probe-punctuation-after-punctuation))
+;; 开启拼音搜索功能
+(pyim-isearch-mode 1)
+(global-set-key (kbd "C-\\") 'toggle-input-method)
+(define-key pyim-mode-map "." 'pyim-page-next-page)
+(define-key pyim-mode-map "," 'pyim-page-previous-page)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dev
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
 
 (require 'electric)
 (electric-pair-mode t)
@@ -353,6 +352,9 @@
 
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
+
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -382,8 +384,8 @@
  '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
 
 (defun my/prog-mode ()
-  (setq display-line-numbers 'relative)
   (column-number-mode t)
+  (setq display-line-numbers 'relative)
   (line-number-mode t))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
@@ -419,7 +421,8 @@
 
 (defun my/shell-mode ()
   (setq line-number-mode -1)
-  (setq column-number-mode -1))
+  (setq column-number-mode -1)
+  (setq comint-prompt-read-only t))
 (add-hook 'shell-mode-hook 'my/shell-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -458,23 +461,19 @@
 (global-set-key (kbd "C-c o s") 'org-store-link)
 
 (defun my/org-mode ()
-  ;; (linum-mode t)
-  (setq display-line-numbers 'relative)
   (column-number-mode t)
+  (setq display-line-numbers 'relative)
   (line-number-mode t)
   (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
-  (define-key evil-motion-state-map (kbd "M-TAB") 'org-cycle)
   (flyspell-mode -1)
   (toggle-truncate-lines -1))
 (add-hook 'org-mode-hook 'my/org-mode)
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  ;; (linum-mode t)
   (setq display-line-numbers 'relative)
   (column-number-mode t)
-  (line-number-mode t)
-  (define-key evil-motion-state-map (kbd "M-TAB") 'markdown-cycle))
+  (line-number-mode t))
   ;; (markdown-toggle-fontify-code-blocks-natively)
 (add-hook 'markdown-mode-hook 'my/markdown-mode)
 
@@ -487,6 +486,7 @@
 (diminish 'undo-tree-mode)
 (diminish 'company-mode)
 (diminish 'ivy-mode)
+(diminish 'pyim-isearch-mode)
 
 
 (provide 'init)
