@@ -2,33 +2,29 @@ syntax on
 syntax enable
 set nu
 set rnu
+set is
 set ruler
 set ai
 set hlsearch
 set noet
 set ts=8
-set mouse=a
+set mouse=
 set ls=2
 set conceallevel=2
 set wildmenu
-" set completeopt-=preview
-set completeopt=menu,longest
+set completeopt=menuone
 " set iskeyword+=-
 set nocompatible
 
 let maplocalleader = ','
 
+cnoremap <C-G> <C-F>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-d> <S-Right><Delete>
-cnoremap <C-g> <C-c>
-cnoremap <C-K> <C-U>
 
 nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
@@ -53,7 +49,6 @@ inoremap <C-E> <End>
 inoremap <C-A> <Home>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
-inoremap <C-D> <Del>
 
 nnoremap g] g<C-]>
 

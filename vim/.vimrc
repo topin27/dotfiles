@@ -2,10 +2,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-if has('python3')
-	Plug 'SirVer/ultisnips'
-	Plug 'honza/vim-snippets'
-endif
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -31,12 +29,13 @@ syntax on
 syntax enable
 set nu
 set rnu
+set is
 set ruler
 set ai
 set hlsearch
 set noet
 set ts=8
-set mouse=a
+set mouse=
 set ls=2
 set conceallevel=2
 set wildmenu
@@ -165,15 +164,13 @@ nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 
 " For ultisnips
-if has('python3')
-	" better key bindings for UltiSnipsExpandTrigger
-	let g:UltiSnipsExpandTrigger = "<C-d>"
-	let g:UltiSnipsJumpForwardTrigger = "<C-f>"
-	let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
-	" let g:UltiSnipsListSnippets = "<C-l>"
-	let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
-	let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
-endif
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<C-d>"
+let g:UltiSnipsJumpForwardTrigger = "<C-f>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
+" let g:UltiSnipsListSnippets = "<C-l>"
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
+let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
 " For Fugitive
 nnoremap <Leader>gs :Gstatus<CR>
