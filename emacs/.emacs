@@ -31,15 +31,15 @@
 		      company
 		      projectile
 		      js2-mode
-		      dracula-theme
-                      evil
-                      evil-surround
+		      ; dracula-theme
+                      ; evil
+                      ; evil-surround
                       magit
                       ivy
-                      swiper
+                      ; swiper
                       counsel
                       ivy-xref
-                      pyim
+                      ; pyim
                       diminish
 		      ) "Default packages")
 
@@ -112,7 +112,7 @@
 
 (if (not (display-graphic-p))
     (progn
-      ;; (xterm-mouse-mode t)
+      (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
     (load-theme 'dracula t)
@@ -127,7 +127,7 @@
       scroll-preserve-screen-position 1)
 
 (which-function-mode -1)
-;; (setq mac-command-modifier 'control)
+(setq mac-command-modifier 'control)
 
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
@@ -273,32 +273,33 @@
 
 (require 'better-defaults)
 
-(setq evil-want-C-i-jump nil)
-(modify-syntax-entry ?_ "w")
-(require 'evil)
-(setq evil-default-state 'normal)
-(evil-mode 1)
-(loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
-			      (special-mode . emacs)
-			      (shell-mode . emacs)
-			      (ztree-mode . emacs)
-			      (term-mode . emacs))
-      do (evil-set-initial-state mode state))
-(define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
+;; (setq evil-want-C-i-jump nil)
+;; (modify-syntax-entry ?_ "w")
+;; (require 'evil)
+;; (setq evil-default-state 'normal)
+;; (evil-mode 1)
+;; (loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
+;; 			      (special-mode . emacs)
+;; 			      (shell-mode . emacs)
+;; 			      (ztree-mode . emacs)
+;; 			      (term-mode . emacs))
+;;       do (evil-set-initial-state mode state))
+;; (define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
 
-(require 'evil-surround)
-(global-evil-surround-mode 1)
+;; (require 'evil-surround)
+;; (global-evil-surround-mode 1)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(define-key evil-normal-state-map (kbd "s") 'save-buffer)
-(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+;; (define-key evil-normal-state-map (kbd "s") 'save-buffer)
+;; (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+;; (define-key evil-normal-state-map (kbd "TAB") 'other-window)
 
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
-(global-set-key "\C-s" 'swiper)
+;; (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -320,19 +321,19 @@
   (setq xref-show-definitions-function #'ivy-xref-show-defs))
 (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 
-(require 'pyim)
-(require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
-(pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
-(setq default-input-method "pyim")
-(setq pyim-default-scheme 'microsoft-shuangpin)
-(setq-default pyim-punctuation-half-width-functions
-              '(pyim-probe-punctuation-line-beginning
-                pyim-probe-punctuation-after-punctuation))
-;; 开启拼音搜索功能
-(pyim-isearch-mode 1)
-(global-set-key (kbd "C-\\") 'toggle-input-method)
-(define-key pyim-mode-map "." 'pyim-page-next-page)
-(define-key pyim-mode-map "," 'pyim-page-previous-page)
+;; (require 'pyim)
+;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
+;; (setq default-input-method "pyim")
+;; (setq pyim-default-scheme 'microsoft-shuangpin)
+;; (setq-default pyim-punctuation-half-width-functions
+;;               '(pyim-probe-punctuation-line-beginning
+;;                 pyim-probe-punctuation-after-punctuation))
+;; ;; 开启拼音搜索功能
+;; (pyim-isearch-mode 1)
+;; (global-set-key (kbd "C-\\") 'toggle-input-method)
+;; (define-key pyim-mode-map "." 'pyim-page-next-page)
+;; (define-key pyim-mode-map "," 'pyim-page-previous-page)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -356,19 +357,20 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(require 'yasnippet)
+(yas-global-mode 1)
+
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
 (setq company-show-numbers t)
 (global-set-key (kbd "C-c y") 'company-yasnippet)
 (setq company-backends
-      '((company-files          ; files & directory
+      '((company-abbrev company-dabbrev)
+        (company-files          ; files & directory
          company-keywords       ; keywords
          company-capf
-         company-yasnippet
-         )
-        (company-abbrev company-dabbrev)
-        ))
+         company-yasnippet)))
 ;; (setq company-backends '(company-dabbrev-code company-keywords company-semantic company-capf company-files (company-dabbrev company-yasnippet)))
 (setq company-dabbrev-downcase nil)
 (custom-set-faces
@@ -462,16 +464,16 @@
 
 (defun my/org-mode ()
   (column-number-mode t)
-  (setq display-line-numbers 'relative)
+  ;; (setq display-line-numbers 'relative)
   (line-number-mode t)
-  (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
+  ;; (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
   (flyspell-mode -1)
   (toggle-truncate-lines -1))
 (add-hook 'org-mode-hook 'my/org-mode)
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  (setq display-line-numbers 'relative)
+  ;; (setq display-line-numbers 'relative)
   (column-number-mode t)
   (line-number-mode t))
   ;; (markdown-toggle-fontify-code-blocks-natively)
@@ -486,7 +488,7 @@
 (diminish 'undo-tree-mode)
 (diminish 'company-mode)
 (diminish 'ivy-mode)
-(diminish 'pyim-isearch-mode)
+;; (diminish 'pyim-isearch-mode)
 
 
 (provide 'init)

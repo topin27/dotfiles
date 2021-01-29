@@ -190,7 +190,6 @@ nnoremap <Leader>gg :Git<Space>
 " ---------
 " Taskpaper
 " ---------
-autocmd FileType taskpaper setlocal ts=4 sts=4 et sw=4
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTodo
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
