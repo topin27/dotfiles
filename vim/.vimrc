@@ -3,7 +3,6 @@ Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -169,8 +168,8 @@ let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
-let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
+let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets/']
+" let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
 " For Fugitive
 nnoremap <Leader>gs :Gstatus<CR>
@@ -190,6 +189,7 @@ nnoremap <Leader>gg :Git<Space>
 " ---------
 " Taskpaper
 " ---------
+autocmd FileType taskpaper setlocal bri
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTodo
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
 autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
@@ -237,7 +237,7 @@ augroup pandoc_syntax
 augroup END
 
 " autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd FileType markdown.pandoc setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM
+autocmd FileType markdown.pandoc setlocal ts=4 sts=4 et sw=4 conceallevel=0 formatoptions+=mM bri
 autocmd FileType markdown.pandoc nmap <LocalLeader>ih :s/^#\([# ]\+\)/##\1/c<Home>
 autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Home>
 
