@@ -3,6 +3,7 @@ Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -127,6 +128,7 @@ nnoremap <silent> <Leader>m :FzfMarks<CR>
 nnoremap <silent> <Leader>jt :FzfTags<CR>
 nnoremap <silent> <Leader>ji :FzfBTags<CR>
 nnoremap <silent> <Leader>cs :FzfSnippets<CR>
+inoremap <silent> <C-o> <C-\><C-o>:FzfSnippets<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
@@ -168,7 +170,7 @@ let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets/']
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
 " let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
 " For Fugitive
