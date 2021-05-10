@@ -27,7 +27,7 @@ filetype plugin on
 
 syntax on
 syntax enable
-set nu
+" set nu
 set rnu
 set is
 set ruler
@@ -37,7 +37,7 @@ set noet
 set ts=8
 set mouse=
 set ls=2
-set conceallevel=2
+set conceallevel=0
 set wildmenu
 set completeopt=menuone
 " set iskeyword+=-
@@ -53,6 +53,7 @@ cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
+nmap = <C-w>=
 nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k

@@ -1,6 +1,6 @@
 syntax on
 syntax enable
-set nu
+" set nu
 set rnu
 set is
 set ruler
@@ -26,6 +26,7 @@ cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
+nmap = <C-w>=
 nmap <TAB> <C-w>w
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
