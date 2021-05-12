@@ -20,6 +20,8 @@ alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
 
+export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
+
 my-md2html() {
 	if [ $# -eq 1 ]; then
 		pandoc -f markdown -t html -s $1 -o `basename $1 .md`.html -N --toc --mathml

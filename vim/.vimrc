@@ -128,6 +128,7 @@ nnoremap <silent> <Leader>w :FzfWindows<CR>
 nnoremap <silent> <Leader>m :FzfMarks<CR>
 nnoremap <silent> <Leader>jt :FzfTags<CR>
 nnoremap <silent> <Leader>ji :FzfBTags<CR>
+nnoremap <silent> <leader>jg :FzfTags <C-r><C-w><CR>
 nnoremap <silent> <Leader>cs :FzfSnippets<CR>
 inoremap <silent> <C-o> <C-\><C-o>:FzfSnippets<CR>
 let g:fzf_action = {
