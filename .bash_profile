@@ -16,6 +16,7 @@ alias gitd='git diff'
 alias gita='git add'
 alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.minimal)'
 alias nvi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.featured)'
+alias nvim="PATH=~/bins/node/bin:$PATH ~/bins/nvim/bin/nvim"
 alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'

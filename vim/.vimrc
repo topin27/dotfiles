@@ -16,6 +16,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
+Plug 'mkitt/tabline.vim'
 call plug#end()
 
 
@@ -98,6 +99,9 @@ packadd! matchit
 " For NERDTree
 let g:NERDTreeIgnore = ['\.pyc$', '\~$'] "ignore files in NERDTree
 let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeMapHelp = '<F1>'
+let g:NERDTreeMapJumpNextSibling = '<C-n>'
+let g:NERDTreeMapJumpPrevSibling = '<C-p>'
 map <F2> :NERDTreeToggle<CR>
 
 " For tagbar

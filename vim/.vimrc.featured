@@ -1,5 +1,4 @@
 call plug#begin('~/.vim/plugged')
-Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
@@ -9,13 +8,14 @@ Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'topin27/taskpaper.vim'
-Plug 'topin27/JavaImp.vim'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
+Plug 'mkitt/tabline.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 
@@ -95,9 +95,144 @@ packadd! matchit
 " GENERAL PLUGINS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" ------------
+" For coc-nvim
+" ------------
+
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" " Give more space for displaying messages.
+" set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" " Always show the signcolumn, otherwise it would shift the text each time
+" " diagnostics appear/become resolved.
+" if has("nvim-0.5.0") || has("patch-8.1.1564")
+"   " Recently vim can merge signcolumn and number column into one
+"   set signcolumn=number
+" else
+"   set signcolumn=yes
+" endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-@> to trigger completion.
+inoremap <silent><expr> <c-@> coc#refresh()
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gK :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Formatting selected code.
+xmap <LocalLeader>f  <Plug>(coc-format-selected)
+nmap <LocalLeader>f  <Plug>(coc-format-selected)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <LocalLeader>a  <Plug>(coc-codeaction-selected)
+nmap <LocalLeader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <LocalLeader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <LocalLeader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Add `:CocFormat` command to format current buffer.
+command! -nargs=0 CocFormat :call CocAction('format')
+" Add `:CocFold` command to fold current buffer.
+command! -nargs=? CocFold :call     CocAction('fold', <f-args>)
+" Add `:CocOR` command for organize imports of the current buffer.
+command! -nargs=0 CocOR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+nmap <LocalLeader>ci :CocOR<CR>
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <LocalLeader>ca  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <LocalLeader>ce  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <LocalLeader>cc  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <LocalLeader>co  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <LocalLeader>cs  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <LocalLeader>cj  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <LocalLeader>ck  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <LocalLeader>cp  :<C-u>CocListResume<CR>
+
+" ------------
 " For NERDTree
+" ------------
+
 let g:NERDTreeIgnore = ['\.pyc$', '\~$'] "ignore files in NERDTree
 let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeMapHelp = '<F1>'
+let g:NERDTreeMapJumpNextSibling = '<C-n>'
+let g:NERDTreeMapJumpPrevSibling = '<C-p>'
 map <F2> :NERDTreeToggle<CR>
 
 " For tagbar
@@ -120,7 +255,10 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
+" -------
 " For fzf
+" -------
+
 let g:fzf_command_prefix = "Fzf"
 nnoremap <silent> <Leader>f :FzfFiles<CR>
 nnoremap <silent> <Leader>b :FzfBuffers<CR>
@@ -136,13 +274,12 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_preview_window = []
 
-" For supertab
-let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
-let g:SuperTabRetainCompletionDuration = 'insert'
-let g:SuperTabLongestEnhanced = 1
-
+" -----------
 " For Ack.vim
+" -----------
+
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
 endif
@@ -166,7 +303,10 @@ nnoremap <Leader>sj :Ack! --java "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 
+" -------------
 " For ultisnips
+" -------------
+
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
@@ -175,7 +315,10 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
 " let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
+" ------------
 " For Fugitive
+" ------------
+
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>
@@ -210,11 +353,6 @@ autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
 " ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
-
-" For JavaImp
-let g:JavaImpPaths =
-	\ $HOME . "/.vim/JavaImp/jmplst/"
-let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 
 " ------
 " Python
