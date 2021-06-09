@@ -10,7 +10,7 @@ set noet
 set ts=8
 set mouse=
 set ls=2
-set conceallevel=2
+set conceallevel=0
 set wildmenu
 set completeopt=menuone
 " set iskeyword+=-

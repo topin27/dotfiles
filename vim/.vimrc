@@ -17,6 +17,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
+Plug 'Asheq/close-buffers.vim'
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 
@@ -96,7 +98,10 @@ packadd! matchit
 " GENERAL PLUGINS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" ------------
 " For NERDTree
+" ------------
+
 let g:NERDTreeIgnore = ['\.pyc$', '\~$'] "ignore files in NERDTree
 let g:NERDTreeHighlightCursorline = 1
 let g:NERDTreeMapHelp = '<F1>'
@@ -124,7 +129,15 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
+" ------------------
+"  For close-buffers
+" ------------------
+nnoremap <silent> <LocalLeader>Q :Bdelete hidden<CR>
+
+" -------
 " For fzf
+" -------
+
 let g:fzf_command_prefix = "Fzf"
 nnoremap <silent> <Leader>f :FzfFiles<CR>
 nnoremap <silent> <Leader>b :FzfBuffers<CR>
@@ -140,13 +153,17 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_preview_window = ''
 
 " For supertab
 let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
 let g:SuperTabRetainCompletionDuration = 'insert'
 let g:SuperTabLongestEnhanced = 1
 
+" -----------
 " For Ack.vim
+" -----------
+
 if executable('ag')
 	let g:ackprg = 'ag --vimgrep'
 endif
@@ -170,7 +187,10 @@ nnoremap <Leader>sj :Ack! --java "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 
+" -------------
 " For ultisnips
+" -------------
+
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
@@ -179,7 +199,10 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
 " let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
+" ------------
 " For Fugitive
+" ------------
+
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>

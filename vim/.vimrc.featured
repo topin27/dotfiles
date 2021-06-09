@@ -1,8 +1,6 @@
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -16,6 +14,8 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Asheq/close-buffers.vim'
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 
@@ -129,6 +129,13 @@ set shortmess+=c
 "   set signcolumn=yes
 " endif
 
+let g:coc_global_extensions = [
+			\ 'coc-json',
+			\ 'coc-tsserver',
+			\ 'coc-java',
+			\ 'coc-snippets',
+			\ ]
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -156,11 +163,29 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
+function! s:goto_tag(tagkind) abort
+  let tagname = expand('<cWORD>')
+  let winnr = winnr()
+  let pos = getcurpos()
+  let pos[0] = bufnr()
+
+  if CocAction('jump' . a:tagkind)
+    call settagstack(winnr, { 
+      \ 'curidx': gettagstack()['curidx'], 
+      \ 'items': [{'tagname': tagname, 'from': pos}] 
+      \ }, 't')
+  endif
+endfunction
+
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+nmap gd :call <SID>goto_tag("Definition")<CR>
+nmap gi :call <SID>goto_tag("Implementation")<CR>
+nmap gr :call <SID>goto_tag("References")<CR>
+nmap gy :call <SID>goto_tag("TypeDefinition")<CR>
 nnoremap <silent> gK :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -224,6 +249,12 @@ nnoremap <silent><nowait> <LocalLeader>ck  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <LocalLeader>cp  :<C-u>CocListResume<CR>
 
+" For coc-snippets
+imap <C-d> <Plug>(coc-snippets-expand)
+let g:coc_snippet_next = '<c-f>'
+let g:coc_snippet_prev = '<c-b>'
+
+
 " ------------
 " For NERDTree
 " ------------
@@ -255,6 +286,11 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
+" ------------------
+"  For close-buffers
+" ------------------
+nnoremap <silent> <LocalLeader>Q :Bdelete hidden<CR>
+
 " -------
 " For fzf
 " -------
@@ -274,7 +310,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_preview_window = []
+let g:fzf_preview_window = ''
 
 " -----------
 " For Ack.vim
@@ -302,18 +338,6 @@ nnoremap <Leader>sm :Ack! --markdown "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sj :Ack! --java "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
 nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
-
-" -------------
-" For ultisnips
-" -------------
-
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-d>"
-let g:UltiSnipsJumpForwardTrigger = "<C-f>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
-" let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
-" let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
 
 " ------------
 " For Fugitive
