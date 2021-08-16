@@ -3,7 +3,7 @@ Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -18,7 +18,6 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'Asheq/close-buffers.vim'
-Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 
@@ -196,8 +195,8 @@ let g:UltiSnipsExpandTrigger = "<C-d>"
 let g:UltiSnipsJumpForwardTrigger = "<C-f>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 " let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "code_snippets"]
-" let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips/"
+let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets']
+" let g:UltiSnipsSnippetsDir = $HOME . '/.vim/code_snippets'
 
 " ------------
 " For Fugitive

@@ -15,7 +15,6 @@ Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Asheq/close-buffers.vim'
-Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 
@@ -303,8 +302,6 @@ nnoremap <silent> <Leader>m :FzfMarks<CR>
 nnoremap <silent> <Leader>jt :FzfTags<CR>
 nnoremap <silent> <Leader>ji :FzfBTags<CR>
 nnoremap <silent> <leader>jg :FzfTags <C-r><C-w><CR>
-nnoremap <silent> <Leader>cs :FzfSnippets<CR>
-inoremap <silent> <C-o> <C-\><C-o>:FzfSnippets<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
