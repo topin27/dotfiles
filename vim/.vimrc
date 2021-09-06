@@ -152,7 +152,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_preview_window = ''
+" let g:fzf_preview_window = ''
 
 " For supertab
 let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
@@ -202,10 +202,10 @@ let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets']
 " For Fugitive
 " ------------
 
-nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gs :Git<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gb :Git blame<CR>
 nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>

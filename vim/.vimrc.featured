@@ -34,7 +34,7 @@ set ai
 set hlsearch
 set noet
 set ts=8
-set mouse=a
+set mouse=
 set ls=2
 set conceallevel=0
 set wildmenu
@@ -307,7 +307,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_preview_window = ''
+" let g:fzf_preview_window = ''
 
 " -----------
 " For Ack.vim
@@ -340,10 +340,10 @@ nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 " For Fugitive
 " ------------
 
-nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gs :Git<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gb :Git blame<CR>
 nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>

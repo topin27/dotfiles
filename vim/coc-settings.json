@@ -1,5 +1,6 @@
 {
 	"coc.source.buffer.enable": false,
 	"coc.source.file.enable": false,
-	"snippets.userSnippetsDirectory": "~/.vim/code_snippets/"
+	"snippets.userSnippetsDirectory": "~/.vim/code_snippets/",
+	"suggest.minTriggerInputLength": 3
 }
