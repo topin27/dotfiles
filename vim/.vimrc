@@ -18,6 +18,8 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'Asheq/close-buffers.vim'
+Plug 'tommcdo/vim-kangaroo'
+Plug 'antiagainst/vim-tablegen'
 call plug#end()
 
 
