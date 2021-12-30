@@ -22,4 +22,7 @@
 
 --langdef=taskpaper
 --langmap=taskpaper:.taskpaper
---regex-taskpaper=/^(.*):$/. \1/p,projects/
+--regex-taskpaper=/^([^\t ]*):$/. \1/p,projects/
+--regex-taskpaper=/^\t{1}([^\t ]*):$/.   \1/p,projects/
+--regex-taskpaper=/^\t{2}([^\t ]*):$/.     \1/p,projects/
+--regex-taskpaper=/^\t{3}([^\t ]*):$/.       \1/p,projects/
