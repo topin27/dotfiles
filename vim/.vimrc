@@ -4,12 +4,10 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 " Plug 'honza/vim-snippets'
-Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'topin27/taskpaper.vim'
-Plug 'topin27/JavaImp.vim'
 Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
@@ -18,7 +16,6 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'Asheq/close-buffers.vim'
-Plug 'tommcdo/vim-kangaroo'
 Plug 'antiagainst/vim-tablegen'
 call plug#end()
 
@@ -110,7 +107,10 @@ let g:NERDTreeMapJumpNextSibling = '<C-n>'
 let g:NERDTreeMapJumpPrevSibling = '<C-p>'
 map <F2> :NERDTreeToggle<CR>
 
+" ----------
 " For tagbar
+" ----------
+
 let g:tagbar_right = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_type_markdown = {
@@ -130,9 +130,10 @@ let g:tagbar_type_taskpaper = {
 \ }
 map <F3> :TagbarToggle<CR>
 
-" ------------------
-"  For close-buffers
-" ------------------
+" -----------------
+" For close-buffers
+" -----------------
+
 nnoremap <silent> <LocalLeader>Q :Bdelete hidden<CR>
 
 " -------
@@ -154,39 +155,39 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%' }
-" let g:fzf_preview_window = ''
+let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
+command! -bang -nargs=* FzfMyAg
+  \call fzf#vim#grep(
+    \ "ag --nogroup --column --color " . join([<f-args>], ' '),
+    \ 1,
+    \ fzf#vim#with_preview(),
+    \ 0)
+nnoremap <Leader>ss :FzfMyAg! "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType python nnoremap <LocalLeader>ss :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType cpp  nnoremap <LocalLeader>ss :FzfMyAg! --cpp "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType ocaml  nnoremap <LocalLeader>ss :FzfMyAg! --ocaml "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType markdown  nnoremap <LocalLeader>ss :FzfMyAg! --markdown "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType java  nnoremap <LocalLeader>ss :FzfMyAg! --java "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :FzfMyAg! --js "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType makefile nnoremap <LocalLeader>ss :FzfMyAg! --make "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sp :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sc :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sz :FzfMyAg! --cpp "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>so :FzfMyAg! --ocaml "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sm :FzfMyAg! --markdown "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sj :FzfMyAg! --java "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sa :FzfMyAg! --js "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sk :FzfMyAg! --make "" -sw<Left><Left><Left><Left><Left>
+
+" ------------
 " For supertab
+" ------------
+
 let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
 let g:SuperTabRetainCompletionDuration = 'insert'
 let g:SuperTabLongestEnhanced = 1
-
-" -----------
-" For Ack.vim
-" -----------
-
-if executable('ag')
-	let g:ackprg = 'ag --vimgrep'
-endif
-" set shellpipe=>  " 解决 ag 的输出结果重定向至 stdout，但可能导致其他插件问题
-nnoremap <Leader>ss :Ack! "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>s/ :Ack! "" %<Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :Ack! --python "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType c  nnoremap <LocalLeader>ss :Ack! --cc "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType cpp  nnoremap <LocalLeader>ss :Ack! --cpp "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType ocaml  nnoremap <LocalLeader>ss :Ack! --ocaml "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType markdown  nnoremap <LocalLeader>ss :Ack! --markdown "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType java  nnoremap <LocalLeader>ss :Ack! --java "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType javascript  nnoremap <LocalLeader>ss :Ack! --js "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType makefile nnoremap <LocalLeader>ss :Ack! --make "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sp :Ack! --python "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sc :Ack! --cc "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sz :Ack! --cpp "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>so :Ack! --ocaml "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sm :Ack! --markdown "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sj :Ack! --java "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sa :Ack! --js "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sk :Ack! --make "" -sw<Left><Left><Left><Left><Left>
 
 " -------------
 " For ultisnips
@@ -238,11 +239,6 @@ autocmd FileType cpp setlocal ts=2 sts=2 et sw=2
 " ----
 
 autocmd FileType java setlocal ts=4 sts=4 et sw=4
-
-" For JavaImp
-let g:JavaImpPaths =
-	\ $HOME . "/.vim/JavaImp/jmplst/"
-let g:JavaImpDataDir = $HOME . "/.vim/JavaImp"
 
 " ------
 " Python
