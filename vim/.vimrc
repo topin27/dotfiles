@@ -157,12 +157,13 @@ let g:fzf_action = {
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
-command! -bang -nargs=* FzfMyAg
-  \call fzf#vim#grep(
+command! -bang -nargs=* -complete=dir FzfMyAg
+  \ call fzf#vim#grep(
     \ "ag --nogroup --column --color " . join([<f-args>], ' '),
     \ 1,
     \ fzf#vim#with_preview(),
     \ 0)
+
 nnoremap <Leader>ss :FzfMyAg! "" -sw<Left><Left><Left><Left><Left>
 autocmd FileType python nnoremap <LocalLeader>ss :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
 autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>

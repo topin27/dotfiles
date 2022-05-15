@@ -314,8 +314,8 @@ let g:fzf_action = {
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
-command! -bang -nargs=* FzfMyAg
-  \call fzf#vim#grep(
+command! -bang -nargs=* -complete=dir FzfMyAg
+  \ call fzf#vim#grep(
     \ "ag --nogroup --column --color " . join([<f-args>], ' '),
     \ 1,
     \ fzf#vim#with_preview(),
