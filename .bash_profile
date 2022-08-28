@@ -22,7 +22,7 @@ alias la='ls -ah'
 alias lla='ls -lah'
 
 export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
-export FZF_DEFAULT_OPTS='--bind up:preview-up,down:preview-down,alt-k:page-up,alt-j:page-down’
+export FZF_DEFAULT_OPTS='--bind up:preview-up,down:preview-down,alt-k:page-up,alt-j:page-down'
 
 my-md2html() {
 	if [ $# -eq 1 ]; then

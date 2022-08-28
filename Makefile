@@ -11,26 +11,11 @@ ag:
 
 ctags:
 	mkdir -p ~/.ctags.d/
-	cp .ctags ~/.ctags.d/custom.ctags
+	ln -is `pwd`/.ctags ~/.ctags.d/custom.ctags
 
 vim:
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	git clone --depth 1 https://github.com/ervandew/supertab.git ~/.vim/plugged/supertab/
-	git clone --depth 1 https://github.com/scrooloose/nerdtree.git ~/.vim/plugged/nerdtree/
-	git clone --depth 1 https://github.com/majutsushi/tagbar.git ~/.vim/plugged/tabular/
-	git clone --depth 1 https://github.com/SirVer/ultisnips.git ~/.vim/plugged/ultisnips/
-	git clone --depth 1 https://github.com/mileszs/ack.vim ~/.vim/plugged/ack.vim
-	git clone --depth 1 https://github.com/tpope/vim-surround ~/.vim/plugged/vim-surround/
-	git clone --depth 1 https://github.com/godlygeek/tabular ~/.vim/plugged/tabular/
-	git clone --depth 1 https://github.com/amix/open_file_under_cursor.vim ~/.vim/plugged/open_file_under_cursor/
-	git clone --depth 1 https://github.com/topin27/taskpaper.vim ~/.vim/plugged/supertab/taskpaper.vim
-	git clone --depth 1 https://github.com/topin27/JavaImp.vim ~/.vim/plugged/JavaImp.vim
-	git clone --depth 1 https://github.com/junegunn/fzf.vim ~/.vim/plugged/fzf.vim
-	git clone --depth 1 https://github.com/pangloss/vim-javascript ~/.vim/plugged/vim-javascript
-	git clone --depth 1 https://github.com/tpope/vim-fugitive ~/.vim/plugged/vim-fugitive
-	git clone --depth 1 https://github.com/vim-pandoc/vim-pandoc-syntax ~/.vim/plugged/vim-pandoc-syntax
-	git clone --depth 1 https://github.com/aklt/plantuml-syntax ~/.vim/plugged/plantuml-syntax
 	ln -is `pwd`/vim/.vimrc ~/.vim/vimrc
 	ln -is `pwd`/vim/.vimrc.featured ~/.vim/vimrc.featured
 	ln -is `pwd`/vim/.vimrc.minimal ~/.vim/vimrc.minimal
