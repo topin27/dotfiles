@@ -31,15 +31,16 @@
 		      company
 		      projectile
 		      js2-mode
-		      ; dracula-theme
-                      ; evil
-                      ; evil-surround
+		      dracula-theme
+                      evil
+                      evil-surround
                       magit
                       ivy
                       ; swiper
                       counsel
                       ivy-xref
-                      ; pyim
+                      ;; pyim
+                      ;; pyim-basedict
                       diminish
 		      ) "Default packages")
 
@@ -273,25 +274,25 @@
 
 (require 'better-defaults)
 
-;; (setq evil-want-C-i-jump nil)
-;; (modify-syntax-entry ?_ "w")
-;; (require 'evil)
-;; (setq evil-default-state 'normal)
-;; (evil-mode 1)
-;; (loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
-;; 			      (special-mode . emacs)
-;; 			      (shell-mode . emacs)
-;; 			      (ztree-mode . emacs)
-;; 			      (term-mode . emacs))
-;;       do (evil-set-initial-state mode state))
-;; (define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
+(setq evil-want-C-i-jump nil)
+(modify-syntax-entry ?_ "w")
+(require 'evil)
+(setq evil-default-state 'normal)
+(evil-mode 1)
+(loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
+			      (special-mode . emacs)
+			      (shell-mode . emacs)
+			      (ztree-mode . emacs)
+			      (term-mode . emacs))
+      do (evil-set-initial-state mode state))
+(define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
 
-;; (require 'evil-surround)
-;; (global-evil-surround-mode 1)
+(require 'evil-surround)
+(global-evil-surround-mode 1)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-;; (define-key evil-normal-state-map (kbd "s") 'save-buffer)
-;; (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "s") 'save-buffer)
+(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
 ;; (define-key evil-normal-state-map (kbd "TAB") 'other-window)
 
 (ivy-mode 1)
