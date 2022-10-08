@@ -320,6 +320,7 @@ command! -bang -nargs=* -complete=dir FzfMyAg
     \ 1,
     \ fzf#vim#with_preview(),
     \ 0)
+
 nnoremap <Leader>ss :FzfMyAg! "" -sw<Left><Left><Left><Left><Left>
 autocmd FileType python nnoremap <LocalLeader>ss :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
 autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>
