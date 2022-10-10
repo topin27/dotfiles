@@ -39,8 +39,8 @@
                       ; swiper
                       counsel
                       ivy-xref
-                      ;; pyim
-                      ;; pyim-basedict
+                      pyim
+                      pyim-basedict
                       diminish
 		      ) "Default packages")
 
@@ -116,7 +116,8 @@
       (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
-    (load-theme 'dracula t)
+    ;; (load-theme 'dracula t)
+    (load-theme 'leuven t)
     ;; (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
@@ -128,7 +129,7 @@
       scroll-preserve-screen-position 1)
 
 (which-function-mode -1)
-(setq mac-command-modifier 'control)
+;; (setq mac-command-modifier 'control)
 
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
@@ -217,6 +218,8 @@
 
 (require 'undo-tree)
 (global-undo-tree-mode)
+(with-eval-after-load 'undo-tree
+  (setq undo-tree-auto-save-history nil))
 
 (require 'paren)
 (show-paren-mode +1)
@@ -322,19 +325,19 @@
   (setq xref-show-definitions-function #'ivy-xref-show-defs))
 (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 
-;; (require 'pyim)
-;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
-;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
-;; (setq default-input-method "pyim")
-;; (setq pyim-default-scheme 'microsoft-shuangpin)
-;; (setq-default pyim-punctuation-half-width-functions
-;;               '(pyim-probe-punctuation-line-beginning
-;;                 pyim-probe-punctuation-after-punctuation))
-;; ;; 开启拼音搜索功能
-;; (pyim-isearch-mode 1)
-;; (global-set-key (kbd "C-\\") 'toggle-input-method)
-;; (define-key pyim-mode-map "." 'pyim-page-next-page)
-;; (define-key pyim-mode-map "," 'pyim-page-previous-page)
+(require 'pyim)
+(require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+(pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
+(setq default-input-method "pyim")
+(setq pyim-default-scheme 'microsoft-shuangpin)
+(setq-default pyim-punctuation-half-width-functions
+              '(pyim-probe-punctuation-line-beginning
+                pyim-probe-punctuation-after-punctuation))
+;; 开启拼音搜索功能
+(pyim-isearch-mode 1)
+(global-set-key (kbd "C-\\") 'toggle-input-method)
+(define-key pyim-mode-map "." 'pyim-page-next-page)
+(define-key pyim-mode-map "," 'pyim-page-previous-page)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -388,7 +391,7 @@
 
 (defun my/prog-mode ()
   (column-number-mode t)
-  (setq display-line-numbers 'relative)
+  ;; (setq display-line-numbers 'relative)
   (line-number-mode t))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
