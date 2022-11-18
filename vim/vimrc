@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
-" Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 " Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
@@ -190,17 +190,17 @@ let g:SuperTabDefaultCompletionType = "<c-x><c-p>"
 let g:SuperTabRetainCompletionDuration = 'insert'
 let g:SuperTabLongestEnhanced = 1
 
-" " -------------
-" " For ultisnips
-" " -------------
-" 
-" " better key bindings for UltiSnipsExpandTrigger
-" let g:UltiSnipsExpandTrigger = "<C-d>"
-" let g:UltiSnipsJumpForwardTrigger = "<C-f>"
-" let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
-" " let g:UltiSnipsListSnippets = "<C-l>"
-" let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets']
-" " let g:UltiSnipsSnippetsDir = $HOME . '/.vim/code_snippets'
+" -------------
+" For ultisnips
+" -------------
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<C-d>"
+let g:UltiSnipsJumpForwardTrigger = "<C-f>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
+" let g:UltiSnipsListSnippets = "<C-l>"
+let g:UltiSnipsSnippetDirectories = [$HOME . '/.vim/code_snippets']
+" let g:UltiSnipsSnippetsDir = $HOME . '/.vim/code_snippets'
 
 " ------------
 " For Fugitive

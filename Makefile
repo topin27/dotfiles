@@ -1,32 +1,29 @@
 UNAME := $(shell uname -s)
+LN := ln -sfi
 
-.PHONY: tmux ag ctags vim emacs update setup
-update: tmux ag ctags vim
+.PHONY: emacs vim sublime
 
-setup: update
-	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-tmux:
-	ln -is `pwd`/.tmux.conf ~/.tmux.conf
+update:  ## refresh the link to the installed config
+	$(LN) `pwd`/.agignore ~/.agignore
+	mkdir -p ~/.ctags.d/ && $(LN) `pwd`/ctags ~/.ctags.d/custom.ctags
+	$(LN) `pwd`/tmux.conf ~/.tmux.conf
 
-ag:
-	ln -is `pwd`/.agignore ~/.agignore
+vim:  ## install vim config
+	mkdir -p ~/.config/nvim/
+	$(LN) `pwd`/vim/coc-settings.json ~/.config/nvim/coc-settings.json
+	$(LN) `pwd`/vim/init.vim ~/.config/nvim/init.vim
+	mkdir -p ~/.vim/
+	$(LN) `pwd`/vim/vimrc ~/.vim/vimrc
+	$(LN) `pwd`/vim/vimrc.featured ~/.vim/vimrc.featured
+	$(LN) `pwd`/vim/vimrc.minimal ~/.vim/vimrc.minimal
 
-ctags:
-	mkdir -p ~/.ctags.d/
-	ln -is `pwd`/.ctags ~/.ctags.d/custom.ctags
-
-vim:
-	ln -is `pwd`/vim/.vimrc ~/.vim/vimrc
-	ln -is `pwd`/vim/.vimrc.featured ~/.vim/vimrc.featured
-	ln -is `pwd`/vim/.vimrc.minimal ~/.vim/vimrc.minimal
-	ln -is `pwd`/vim/coc-settings.json ~/.config/nvim/coc-settings.json
-	ln -is `pwd`/vim/init.vim ~/.config/nvim/init.vim
-
-emacs:
-	mkdir -p ~/.emacs.d
-	ln -s `pwd`/emacs/.emacs ~/.emacs.d/init.el
+emacs:  ## install emacs config
+	mkdir -p ~/.emacs.d/
+	$(LN) `pwd`/emacs/init.el ~/.emacs.d/init.el
 
 ifeq ($(UNAME),Darwin)
 sublime:
@@ -40,3 +37,6 @@ else
 sublime:
 	echo "The sublime install is not support to current OS platform!!"
 endif
+
+clean:
+	rm -rf tmp_for_vim

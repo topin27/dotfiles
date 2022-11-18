@@ -1,11 +1,16 @@
 ;;; init --- Initialize.
 
-;;; Commentary:
-;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic Info
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; Code:
+(setq user-full-name "Yang Tianping")
+(setq user-mail-address "yangtianpingytp@163.com")
 
-(add-to-list 'load-path (expand-file-name "lisp" "~/.emacs.d/"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package Management
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
@@ -21,17 +26,14 @@
 		      better-defaults
 		      ace-jump-mode
 		      undo-tree
-		      ztree
 		      imenu-list
-		      wgrep
-		      clean-aindent-mode
 		      yasnippet
 		      yasnippet-snippets
 		      markdown-mode
 		      company
 		      projectile
+                      ag
 		      js2-mode
-		      dracula-theme
                       evil
                       evil-surround
                       magit
@@ -39,8 +41,6 @@
                       ; swiper
                       counsel
                       ivy-xref
-                      pyim
-                      pyim-basedict
                       diminish
 		      ) "Default packages")
 
@@ -57,9 +57,6 @@
   (dolist (pkg my/packages)
     (when (not (package-installed-p pkg))
       (package-install pkg))))
-
-(setq user-full-name "Yang Tianping")
-(setq user-mail-address "yangtianpingytp@163.com")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -88,12 +85,13 @@
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
 
-(delete-selection-mode t) ;; inserting text while the mark is active causes the selected text to be deleted first
+(delete-selection-mode t) ;; inserting text while the mark is active causes the
+                          ;; selected text to be deleted first
 ;; (transient-mark-mode 1)
 (setq select-enable-clipboard t)
 
 ;; maximized window when startup
-(setq initial-frame-alist (quote ((fullscreen . maximized))))
+;; (setq initial-frame-alist (quote ((fullscreen . maximized))))
 
 ;; mode line settings
 (line-number-mode t)
@@ -116,8 +114,6 @@
       (xterm-mouse-mode t)
       (menu-bar-mode -1))
   (progn
-    ;; (load-theme 'dracula t)
-    (load-theme 'leuven t)
     ;; (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
@@ -169,23 +165,20 @@
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
 
-;; hippie expand is dabbrev expand on steroids
-(setq hippie-expand-try-functions-list '(try-expand-dabbrev
-                                         try-expand-dabbrev-all-buffers
-                                         try-expand-dabbrev-from-kill
-                                         try-complete-file-name-partially
-                                         try-complete-file-name
-                                         try-expand-all-abbrevs
-                                         try-expand-list
-                                         try-expand-line
-                                         try-complete-lisp-symbol-partially
-                                         try-complete-lisp-symbol))
-
-;; use hippie-expand instead of dabbrev
-(global-set-key (kbd "M-/") #'hippie-expand)
-(global-set-key (kbd "s-/") #'hippie-expand)
-
-(global-set-key (kbd "C-M-i") 'other-window)
+;; ;; hippie expand is dabbrev expand on steroids
+;; (setq hippie-expand-try-functions-list '(try-expand-dabbrev
+;;                                          try-expand-dabbrev-all-buffers
+;;                                          try-expand-dabbrev-from-kill
+;;                                          try-complete-file-name-partially
+;;                                          try-complete-file-name
+;;                                          try-expand-all-abbrevs
+;;                                          try-expand-list
+;;                                          try-expand-line
+;;                                          try-complete-lisp-symbol-partially
+;;                                          try-complete-lisp-symbol))
+;; ;; use hippie-expand instead of dabbrev
+;; (global-set-key (kbd "M-/") #'hippie-expand)
+;; (global-set-key (kbd "s-/") #'hippie-expand)
 
 (if (string-equal system-type "darwin")
     (if (display-graphic-p)
@@ -199,8 +192,11 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; (setq default-buffer-file-coding-system 'utf-8)
-(setq buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
+;; (setq-default-coding-systems 'utf-8)
+;; (setq-terminal-coding-systems 'utf-8)
+;; (setq-keyboard-coding-systems 'utf-8)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 
@@ -251,15 +247,10 @@
   t)
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 
-(require 'ztree)
-
 (require 'imenu-list)
 (setq imenu-list-auto-resize t)
 (setq imenu-list-focus-after-activation t)
 (global-set-key (kbd "C-c t i") 'imenu-list-smart-toggle)
-
-(require 'wgrep)
-(setq wgrep-auto-save-buffer t)
 
 (require 'projectile)
 (projectile-mode +1)
@@ -277,11 +268,11 @@
 
 (require 'better-defaults)
 
-(setq evil-want-C-i-jump nil)
-(modify-syntax-entry ?_ "w")
 (require 'evil)
+(setq evil-want-C-i-jump nil)
 (setq evil-default-state 'normal)
 (evil-mode 1)
+(modify-syntax-entry ?_ "w")
 (loop for (mode . state) in '((xref--xref-buffer-mode . emacs)
 			      (special-mode . emacs)
 			      (shell-mode . emacs)
@@ -289,6 +280,7 @@
 			      (term-mode . emacs))
       do (evil-set-initial-state mode state))
 (define-key evil-normal-state-map (kbd "\\") 'ace-jump-mode)
+(define-key evil-visual-state-map (kbd "\\") 'ace-jump-mode)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -320,24 +312,24 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (global-set-key (kbd "C-c h i") 'counsel-semantic-or-imenu)
 
-(require 'ivy-xref)
-(when (>= emacs-major-version 27)
-  (setq xref-show-definitions-function #'ivy-xref-show-defs))
-(setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-
-(require 'pyim)
-(require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
-(pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
-(setq default-input-method "pyim")
-(setq pyim-default-scheme 'microsoft-shuangpin)
-(setq-default pyim-punctuation-half-width-functions
-              '(pyim-probe-punctuation-line-beginning
-                pyim-probe-punctuation-after-punctuation))
-;; 开启拼音搜索功能
-(pyim-isearch-mode 1)
-(global-set-key (kbd "C-\\") 'toggle-input-method)
-(define-key pyim-mode-map "." 'pyim-page-next-page)
-(define-key pyim-mode-map "," 'pyim-page-previous-page)
+;; (require 'ivy-xref)
+;; (when (>= emacs-major-version 27)
+;;   (setq xref-show-definitions-function #'ivy-xref-show-defs))
+;; (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+;;
+;; (require 'pyim)
+;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
+;; (setq default-input-method "pyim")
+;; (setq pyim-default-scheme 'microsoft-shuangpin)
+;; (setq-default pyim-punctuation-half-width-functions
+;;               '(pyim-probe-punctuation-line-beginning
+;;                 pyim-probe-punctuation-after-punctuation))
+;; ;; 开启拼音搜索功能
+;; (pyim-isearch-mode 1)
+;; (global-set-key (kbd "C-\\") 'toggle-input-method)
+;; (define-key pyim-mode-map "." 'pyim-page-next-page)
+;; (define-key pyim-mode-map "," 'pyim-page-previous-page)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,9 +346,6 @@
   (setq electric-pair-mode (if (eq electric-pair-mode t) nil t))
   (setq electric-indent-mode (if (eq electric-indent-mode t) nil t)))
 (global-set-key (kbd "C-c t p") 'my/toggle-paste)
-
-(require 'clean-aindent-mode)
-(add-hook 'prog-mode-hook 'clean-aindent-mode)
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -391,7 +380,8 @@
 
 (defun my/prog-mode ()
   (column-number-mode t)
-  ;; (setq display-line-numbers 'relative)
+  (setq display-line-numbers-current-absolute nil)
+  (setq display-line-numbers 'relative)
   (line-number-mode t))
 (add-hook 'prog-mode-hook 'my/prog-mode)
 
@@ -468,7 +458,6 @@
 
 (defun my/org-mode ()
   (column-number-mode t)
-  ;; (setq display-line-numbers 'relative)
   (line-number-mode t)
   ;; (define-key evil-motion-state-map (kbd "C-i") 'org-cycle)
   (flyspell-mode -1)
@@ -477,7 +466,6 @@
 
 (defun my/markdown-mode ()
   (markdown-toggle-math)
-  ;; (setq display-line-numbers 'relative)
   (column-number-mode t)
   (line-number-mode t))
   ;; (markdown-toggle-fontify-code-blocks-natively)
@@ -492,6 +480,8 @@
 (diminish 'undo-tree-mode)
 (diminish 'company-mode)
 (diminish 'ivy-mode)
+(diminish 'eldoc-mode)
+(diminish 'yas-minor-mode)
 ;; (diminish 'pyim-isearch-mode)
 
 
