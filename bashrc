@@ -3,26 +3,15 @@ export CLICOLOR=1
 export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \W\$\[\033[00m\]'
 alias grep='grep --color=always'
 alias rm='rm -i'
-alias untar='tar xvf'
-alias ping='ping -c 5'
-alias www='python -m SimpleHTTPServer 8000'
 alias ipe='curl ipinfo.io/ip'
-alias ipi='ipconfig getifaddr en0'
-alias gits='git status'
-alias gitc='git commit -m'
-alias gitp='git push'
-alias gitf='git pull'
-alias gitd='git diff'
-alias gita='git add'
-alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.minimal)'
-alias nvim='PATH=~/bins/node/bin:$PATH vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vimrc.featured)'
-# alias nvim="PATH=~/bins/node/bin:$PATH ~/bins/nvim/bin/nvim"
+alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
+alias nvim='PATH=~/bins/node/bin:$PATH vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.featured)'
 alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
 
 export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
-export FZF_DEFAULT_OPTS='--bind up:preview-up,down:preview-down,alt-k:page-up,alt-j:page-down'
+export FZF_DEFAULT_OPTS='--bind ctrl-p:preview-up,ctrl-n:preview-down,alt-k:page-up,alt-j:page-down'
 
 my-md2html() {
 	if [ $# -eq 1 ]; then
@@ -62,3 +51,5 @@ my-addpath() {
 	fi
 	return 0
 }
+
+export PATH=~/bins/default/bin/:$PATH
