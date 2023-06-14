@@ -41,6 +41,7 @@ set wildmenu
 set completeopt=menuone
 " set iskeyword+=-
 set nocompatible
+set backspace=indent,eol,start
 
 let maplocalleader = ','
 
