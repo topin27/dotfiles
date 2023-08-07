@@ -5,26 +5,13 @@ alias grep='grep --color=always'
 # alias rm='rm -i'
 # alias ipe='curl ipinfo.io/ip'
 alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
-alias nvim='PATH=~/bins/node/bin:$PATH vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.featured)'
+alias nvim='PATH=~/bins/node/bin:$PATH ~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.featured)'
 alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
 
 export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
 export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
-
-# my-md2html() {
-# 	if [ $# -eq 1 ]; then
-# 		pandoc -f markdown -t html -s $1 -o `basename $1 .md`.html -N --toc --mathml
-# 	elif [ $# -eq 2 ]; then
-# 		pandoc -f markdown -t html -s $1 -o $2 -N --toc --mathml
-# 	else
-# 		echo "Error: Wrong usage!"
-# 		echo "Usage: my-md2html <md-file> [html-file]"
-# 		return 1
-# 	fi
-# 	return 0
-# }
 
 my-addpath() {
 	if [ $# -eq 0 ]; then

@@ -8,7 +8,7 @@ Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'topin27/taskpaper.vim'
-Plug 'junegunn/fzf', {'dir': '~/bins/fzf', 'do': './install --bin'}
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
