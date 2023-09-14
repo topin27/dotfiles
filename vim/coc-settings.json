@@ -4,5 +4,10 @@
 	"snippets.userSnippetsDirectory": "~/.vim/code_snippets/",
 	"snippets.ultisnips.pythonPrompt": false,
 	"suggest.minTriggerInputLength": 3,
-	"suggest.noselect": true
+	"suggest.noselect": true,
+	"inlayHint.enable": false,
+
+	"pyright.inlayHints.functionReturnTypes": false,
+	"pyright.inlayHints.variableTypes": false,
+	"pyright.disableDocumentation": true
 }
