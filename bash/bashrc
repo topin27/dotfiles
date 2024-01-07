@@ -43,4 +43,8 @@ my-addpath() {
 }
 
 export EDITOR=vim
-export PATH=~/bins/default/bin/:$PATH
+# export PATH=~/bins/default/bin/:$PATH
+case ":$PATH:" in
+	*":$(realpath ~/bins/default/bin/):"*) :;; # already there
+	*) PATH="$(realpath ~/bins/default/bin/):$PATH";; # or PATH="$PATH:$new_entry"
+esac

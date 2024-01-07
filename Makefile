@@ -45,8 +45,9 @@ tmux:
 		$(LN) `pwd`/tmux.conf ~/.tmux.conf
 
 bash:
-	test -L ~/.config/bashrc || \
-		$(LN) `pwd`/bashrc ~/.config/bashrc
+	mkdir -p ~/.config/bash/
+	test -L ~/.config/bash/bashrc || \
+		$(LN) `pwd`/bash/bashrc ~/.config/bash/bashrc
 
 VIM_DIR := ~/bins/vim9/
 vim-build:
