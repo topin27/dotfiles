@@ -46,6 +46,7 @@ set completeopt=menuone
 " set iskeyword+=-
 set nocompatible
 set backspace=indent,eol,start
+set viminfo+=n~/.vim/viminfo
 
 let maplocalleader = ','
 
@@ -69,7 +70,7 @@ nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
 nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap QQ :q<CR><C-W><C-P>
-nmap <Leader>tp :setlocal paste!<cr>
+nmap <Leader>tp :setlocal paste! rnu!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
 " nmap <LocalLeader>w :w<CR>
 nmap s :w<CR>
