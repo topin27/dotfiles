@@ -4,13 +4,16 @@ export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \w\$\[\033[00m\] '
 alias grep='grep --color=always'
 # alias rm='rm -i'
 # alias ipe='curl ipinfo.io/ip'
-alias vi='vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
+alias vi='~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
+alias vim='~/bins/vim9/bin/vim'
+alias view='~/bins/vim9/bin/vim -R'
+alias vimdiff='~/bins/vim9/bin/vim -d'
 alias nvim='PATH=~/bins/node/bin:$PATH ~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.featured)'
 alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
 
-export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
 
 my-addpath() {

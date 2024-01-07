@@ -168,23 +168,30 @@ command! -bang -nargs=* -complete=dir FzfMyAg
     \ fzf#vim#with_preview(),
     \ 0)
 
-nnoremap <Leader>ss :FzfMyAg! "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType cpp  nnoremap <LocalLeader>ss :FzfMyAg! --cpp "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType ocaml  nnoremap <LocalLeader>ss :FzfMyAg! --ocaml "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType markdown  nnoremap <LocalLeader>ss :FzfMyAg! --markdown "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType java  nnoremap <LocalLeader>ss :FzfMyAg! --java "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType javascript  nnoremap <LocalLeader>ss :FzfMyAg! --js "" -sw<Left><Left><Left><Left><Left>
-autocmd FileType makefile nnoremap <LocalLeader>ss :FzfMyAg! --make "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sp :FzfMyAg! --python "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sc :FzfMyAg! --cc "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sz :FzfMyAg! --cpp "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>so :FzfMyAg! --ocaml "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sm :FzfMyAg! --markdown "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sj :FzfMyAg! --java "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sa :FzfMyAg! --js "" -sw<Left><Left><Left><Left><Left>
-nnoremap <Leader>sk :FzfMyAg! --make "" -sw<Left><Left><Left><Left><Left>
+command! -bang -nargs=* -complete=dir FzfMyRg
+  \ call fzf#vim#grep(
+    \ "rg --no-heading --column --color always " . join([<f-args>], ' '),
+    \ 1,
+    \ fzf#vim#with_preview(),
+    \ 0)
+
+nnoremap <Leader>ss :FzfMyRg! "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType python nnoremap <LocalLeader>ss :FzfMyRg! -t python "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyRg! --c "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType cpp  nnoremap <LocalLeader>ss :FzfMyRg! --cpp "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType ocaml  nnoremap <LocalLeader>ss :FzfMyRg! --ocaml "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType markdown  nnoremap <LocalLeader>ss :FzfMyRg! --markdown "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType java  nnoremap <LocalLeader>ss :FzfMyRg! --java "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType javascript  nnoremap <LocalLeader>ss :FzfMyRg! --js "" -sw<Left><Left><Left><Left><Left>
+autocmd FileType makefile nnoremap <LocalLeader>ss :FzfMyRg! --make "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sp :FzfMyRg! -t python "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sc :FzfMyRg! -t cc "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sz :FzfMyRg! -t cpp "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>so :FzfMyRg! -t ocaml "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sm :FzfMyRg! -t markdown "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sj :FzfMyRg! -t java "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sa :FzfMyRg! -t js "" -sw<Left><Left><Left><Left><Left>
+nnoremap <Leader>sk :FzfMyRg! -t make "" -sw<Left><Left><Left><Left><Left>
 
 " ------------
 " For supertab
