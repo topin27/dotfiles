@@ -15,7 +15,7 @@ pre-build:
 	mkdir -p ~/bins/default/bin/
 	mkdir -p ~/bins/{ctags,vim,tmux,node}
 	mkdir -p build
-	apt-get install -y autoconf pkg-config libncurses-dev curl libevent-dev yacc
+	sudo apt-get install -y autoconf pkg-config libncurses-dev curl libevent-dev yacc
 
 VIM_DIR := $(shell realpath ~/bins/vim9/)
 vim-build:
@@ -32,15 +32,15 @@ vim-build:
 VIM_CONF := ~/.vim/
 vim-config:
 	mkdir -p $(VIM_CONF)
-	test -L $(VIM)/vimrc || $(LN) `pwd`/vim/vimrc $(VIM)/vimrc
-	test -L $(VIM)/vimrc.featured || $(LN) `pwd`/vim/vimrc.featured $(VIM)/vimrc.featured
-	test -L $(VIM)/vimrc.minimal || $(LN) `pwd`/vim/vimrc.minimal $(VIM)/vimrc.minimal
-	test -L $(VIM)/coc-settings.json || $(LN) `pwd`/vim/coc-settings.json $(VIM)/coc-settings.json
-	test -f $(VIM)/autoload/plug.vim || \
-		curl -fLo $(VIM)/autoload/plug.vim --create-dirs \
+	test -L $(VIM_CONF)/vimrc || $(LN) `pwd`/vim/vimrc $(VIM_CONF)/vimrc
+	test -L $(VIM_CONF)/vimrc.featured || $(LN) `pwd`/vim/vimrc.featured $(VIM_CONF)/vimrc.featured
+	test -L $(VIM_CONF)/vimrc.minimal || $(LN) `pwd`/vim/vimrc.minimal $(VIM_CONF)/vimrc.minimal
+	test -L $(VIM_CONF)/coc-settings.json || $(LN) `pwd`/vim/coc-settings.json $(VIM_CONF)/coc-settings.json
+	test -f $(VIM_CONF)/autoload/plug.vim || \
+		curl -fLo $(VIM_CONF)/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	git submodule update --init --recursive
-	test -L $(VIM)/code_snippets || (make -C code_snippets install)
+	test -L $(VIM_CONF)/code_snippets || (make -C code_snippets install)
 
 vim: vim-build vim-config node ctags rg
 	if [ ! -f ~/bins/vim9/bin/vim ]; then \
@@ -119,7 +119,7 @@ node:
 	if [ ! -f $(NODE_DIR)/bin/node ]; then \
 		pushd build/node/ && \
 		tar xvf node.tar && \
-		mv node-v18.19.0-linux-x64 $(NODE_DIR) && \
+		mv node-v18.19.0-linux-x64/* $(NODE_DIR)/. && \
 		rm -rf node-v18.19.0-linux-x64 && \
 		popd; \
 	fi
