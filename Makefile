@@ -1,5 +1,4 @@
 SHELL := /bin/bash
-UNAME := $(shell uname -s)
 LN := ln -sfi
 
 .PHONY: emacs vim sublime ag ctags tmux bash rime rg node
@@ -8,84 +7,130 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install: vim tmux bash
+.PHONY: install
+install: pre-build vim tmux rime bash
 
-ag:
-	$(LN) `pwd`/.agignore ~/.agignore
+.PHONY: pre-build
+pre-build:
+	mkdir -p ~/bins/default/bin/
+	mkdir -p ~/bins/{ctags,vim,tmux,node}
+	mkdir -p build
+	apt-get install -y autoconf pkg-config libncurses-dev curl libevent-dev yacc
 
-rg:
-	if [ ! -f ~/bins/default/bin/rg ]; then \
-		curl -OL https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz && \
-		tar xvf ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz && \
-		mv ripgrep-14.1.0-x86_64-unknown-linux-musl/rg ~/bins/default/bin/rg && \
-		rm -rf ripgrep-14.1.0-x86_64-unknown-linux-musl*; \
+VIM_DIR := $(shell realpath ~/bins/vim9/)
+vim-build:
+	if [ ! -d build/vim/ ]; then \
+		git clone --depth 1 https://github.com/vim/vim build/vim/; \
 	fi
+	if [ ! -f build/vim/src/vim ]; then \
+		pushd build/vim/ && \
+		./configure --with-features=huge --prefix=$(VIM_DIR) && \
+		make -j8 && \
+		popd; \
+	fi
+
+VIM_CONF := ~/.vim/
+vim-config:
+	mkdir -p $(VIM_CONF)
+	test -L $(VIM)/vimrc || $(LN) `pwd`/vim/vimrc $(VIM)/vimrc
+	test -L $(VIM)/vimrc.featured || $(LN) `pwd`/vim/vimrc.featured $(VIM)/vimrc.featured
+	test -L $(VIM)/vimrc.minimal || $(LN) `pwd`/vim/vimrc.minimal $(VIM)/vimrc.minimal
+	test -L $(VIM)/coc-settings.json || $(LN) `pwd`/vim/coc-settings.json $(VIM)/coc-settings.json
+	test -f $(VIM)/autoload/plug.vim || \
+		curl -fLo $(VIM)/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	git submodule update --init --recursive
+	test -L $(VIM)/code_snippets || (make -C code_snippets install)
+
+vim: vim-build vim-config node ctags rg
+	if [ ! -f ~/bins/vim9/bin/vim ]; then \
+		pushd build/vim/ && make install && popd; \
+	fi
+	$(LN) $(VIM_DIR)/bin/vim ~/bins/default/bin/vim
+	$(LN) $(VIM_DIR)/bin/xxd ~/bins/default/bin/xxd
 
 CTAGS_DIR := $(shell realpath ~/bins/ctags/)
 ctags-build:
-	if [ ! -f $(CTAGS_DIR)/bin/ctags ]; then \
-		mkdir -p build $(CTAGS_DIR) && \
-		git clone https://github.com/universal-ctags/ctags --depth 1 build/ctags && \
+	if [ ! -d build/ctags ]; then \
+		git clone https://github.com/universal-ctags/ctags --depth 1 build/ctags; \
+	fi
+	if [ ! -f build/ctags/ctags ]; then \
 		pushd build/ctags && \
 		./autogen.sh && \
 		./configure --prefix=$(CTAGS_DIR) && \
 		make -j8 && \
-		make install && \
-		$(LN) ~/bins/ctags/bin/ctags ~/bins/default/bin/ctags && \
-		popd && \
-		rm -rf build; \
+		popd; \
 	fi
 
-ctags: ctags-build
+ctags-config:
 	test -L ~/.ctags.d/custom.ctags || \
 		(mkdir -p ~/.ctags.d/ && $(LN) `pwd`/ctags ~/.ctags.d/custom.ctags)
 
-tmux:
-	test -L ~/.tmux.conf || \
-		$(LN) `pwd`/tmux.conf ~/.tmux.conf
+ctags: ctags-build ctags-config
+	if [ ! -f ~/bins/ctags/bin/ctags ]; then \
+		pushd build/ctags/ && make install && popd; \
+	fi
+	$(LN) ~/bins/ctags/bin/ctags ~/bins/default/bin/ctags
+
+rg:
+	if [ ! -f build/rg/rg.tar ]; then \
+		mkdir build/rg/ && \
+		curl -OL https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz && \
+		mv ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz build/rg/rg.tar.gz && \
+		pushd build/rg/ && gunzip rg.tar.gz; popd; \
+	fi
+	if [ ! -f ~/bins/default/bin/rg ]; then \
+		pushd build/rg/ && \
+		tar xvf rg.tar && \
+		mv ripgrep-14.1.0-x86_64-unknown-linux-musl/rg ~/bins/default/bin/rg && \
+		rm -rf ripgrep-14.1.0-x86_64-unknown-linux-musl/; \
+	fi
+
+TMUX_DIR := $(shell realpath ~/bins/tmux/)
+tmux-build:
+	if [ ! -d build/tmux ]; then \
+		git clone https://github.com/tmux/tmux --depth 1 build/tmux; \
+	fi
+	if [ ! -f build/tmux/tmux ]; then \
+		pushd build/tmux && \
+		./autogen.sh && \
+		./configure --prefix=$(TMUX_DIR) && \
+		make -j8 && \
+		popd; \
+	fi
+
+tmux-config:
+	test -L ~/.tmux.conf || $(LN) `pwd`/tmux.conf ~/.tmux.conf
+
+tmux: tmux-build tmux-config
+	if [ ! -f ~/bins/tmux/bin/tmux ]; then \
+		pushd build/tmux && make install && popd; \
+	fi
+	$(LN) ~/bins/tmux/bin/tmux ~/bins/default/bin/tmux
+
+NODE_DIR := $(shell realpath ~/bins/node/)
+node:
+	if [ ! -f build/node/node.tar ]; then \
+		mkdir -p build/node/ && \
+		curl -OL https://nodejs.org/download/release/v18.19.0/node-v18.19.0-linux-x64.tar.xz && \
+		mv node-v18.19.0-linux-x64.tar.xz build/node/node.tar.xz && \
+		pushd build/node/ && unxz node.tar.xz && popd; \
+	fi
+	if [ ! -f $(NODE_DIR)/bin/node ]; then \
+		pushd build/node/ && \
+		tar xvf node.tar && \
+		mv node-v18.19.0-linux-x64 $(NODE_DIR) && \
+		rm -rf node-v18.19.0-linux-x64 && \
+		popd; \
+	fi
 
 bash:
 	mkdir -p ~/.config/bash/
 	test -L ~/.config/bash/bashrc || \
 		$(LN) `pwd`/bash/bashrc ~/.config/bash/bashrc
 
-VIM_DIR := ~/bins/vim9/
-vim-build:
-	test -f $(VIM_DIR)/bin/vim || \
-		(git clone --depth 1 https://github.com/vim/vim && \
-		pushd vim && \
-		./configure --with-features=huge --prefix=$(VIM_DIR) && \
-		make -j8 && \
-		make install && \
-		$(LN) $(VIM_DIR)/bin/vim ~/bins/default/bin/vim && \
-		$(LN) $(VIM_DIR)/bin/xxd ~/bins/default/bin/xxd && \
-		popd)
-
-NODE_VERSION := v20.10.0
-NODE := node-$(NODE_VERSION)-linux-x64
-NODE_DIR := ~/bins/node/
-node:
-	test -d $(NODE_DIR) || \
-		(mkdir -p $(NODE_DIR) && \
-		curl -OL https://nodejs.org/dist/$(NODE_VERSION)/$(NODE).tar.xz && \
-		unxz $(NODE).tar.xz && \
-		tar xvf $(NODE).tar && \
-		mv $(NODE) $(NODE_DIR) && \
-		rm -rf $(NODE).tar)
-
-VIM := ~/.vim/
-vim: vim-build ctags rg node  ## install vim config
-	mkdir -p $(VIM)
-	test -L $(VIM)/vimrc || 		$(LN) `pwd`/vim/vimrc $(VIM)/vimrc
-	test -L $(VIM)/vimrc.featured || 	$(LN) `pwd`/vim/vimrc.featured $(VIM)/vimrc.featured
-	test -L $(VIM)/vimrc.minimal || 	$(LN) `pwd`/vim/vimrc.minimal $(VIM)/vimrc.minimal
-	test -L $(VIM)/coc-settings.json || 	$(LN) `pwd`/vim/coc-settings.json $(VIM)/coc-settings.json
-	test -f $(VIM)/autoload/plug.vim || \
-		curl -fLo $(VIM)/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	test -L $(VIM)/code_snippets || (make -C code_snippets install)
-
 rime:
+	mkdir -p ~/.config/ibus/
 	test -L ~/.config/ibus/rime || $(LN) `pwd`/squirrel/ ~/.config/ibus/rime
 
 emacs:  ## install emacs config
