@@ -43,6 +43,16 @@ my-addpath() {
 	return 0
 }
 
+my-proxy-on() {
+	export http_proxy=http://127.0.0.1:7890
+	export https_proxy=http://127.0.0.1:7890
+}
+
+my-proxy-off() {
+	unset http_proxy
+	unset https_proxy
+}
+
 export EDITOR=vim
 # export PATH=~/bins/default/bin/:$PATH
 case ":$PATH:" in
