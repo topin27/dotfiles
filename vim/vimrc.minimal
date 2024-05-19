@@ -17,6 +17,10 @@ set completeopt=menuone
 set nocompatible
 set backspace=indent,eol,start
 set viminfo+=n~/.vim/viminfo
+set exrc
+set secure
+set timeoutlen=1000  " time out for key codes
+set ttimeoutlen=50   " time out for special key after esc
 
 let maplocalleader = ','
 
