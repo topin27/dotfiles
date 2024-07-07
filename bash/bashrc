@@ -1,7 +1,7 @@
 # for color
 export CLICOLOR=1
 export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \w\$\[\033[00m\] '
-alias grep='grep --color=always'
+# alias grep='grep --color=always'  # This will cause the bash-complete bug
 # alias rm='rm -i'
 # alias ipe='curl ipinfo.io/ip'
 alias vi='~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
@@ -56,6 +56,6 @@ my-proxy-off() {
 export EDITOR=vim
 # export PATH=~/bins/default/bin/:$PATH
 case ":$PATH:" in
-	*":$(realpath ~/bins/default/bin/):"*) :;; # already there
-	*) PATH="$(realpath ~/bins/default/bin/):$PATH";; # or PATH="$PATH:$new_entry"
+	*":$HOME/bins/default/bin/:"*) :;; # already there
+	*) PATH="$HOME/bins/default/bin/:$PATH";; # or PATH="$PATH:$new_entry"
 esac

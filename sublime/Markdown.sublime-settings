@@ -1,8 +1,0 @@
-{
-	"trim_trailing_white_space_on_save": true,
-	"draw_centered": false,
-	"word_wrap": true,
-	"wrap_width": "auto",
-	"line_numbers": true,
-	"color_scheme": "Monokai.sublime-color-scheme",
-}
