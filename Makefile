@@ -123,7 +123,6 @@ config:  ## setup the configuration of modules
 	if [ ! -d vim/code_snippets ]; then \
 		git submodule update --init --recursive; \
 	fi
-	# test -L $(VIM_CONF)/code_snippets || (make -C vim/code_snippets install)
 	# tmux
 	test -L $(HOME)/.tmux.conf || $(LN) $(CUR_DIR)/tmux.conf $(HOME)/.tmux.conf
 	# bash
@@ -155,7 +154,7 @@ uninstall:  ## uninstall the modules
 	rm -rf $(BASH_CONF)
 ifneq ($(shell uname -s),Darwin)
 	# rime
-	rm -rf $(HOME)/.config/ibus/
+	rm -rf $(HOME)/.config/ibus/rime
 endif
 
 clean:

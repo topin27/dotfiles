@@ -1,3 +1,6 @@
 [submodule "code_snippets"]
 	path = vim/code_snippets
 	url = https://github.com/topin27/code_snippets.git
+[submodule "vim/code_snippets"]
+	path = vim/code_snippets
+	url = https://github.com/topin27/code_snippets
