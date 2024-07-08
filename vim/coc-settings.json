@@ -1,7 +1,7 @@
 {
 	"coc.source.buffer.enable": false,
 	"coc.source.file.enable": false,
-	"snippets.userSnippetsDirectory": "~/.vim/code_snippets/",
+	"snippets.userSnippetsDirectory": "~/.vim/code_snippets/vim/",
 	"snippets.ultisnips.pythonPrompt": false,
 	"suggest.minTriggerInputLength": 3,
 	"suggest.noselect": true,
