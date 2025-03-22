@@ -122,21 +122,6 @@ map <F3> :NERDTreeFind<CR>
 
 let g:tagbar_right = 1
 let g:tagbar_autofocus = 1
-let g:tagbar_type_markdown = {
-	\ 'ctagstype' : 'markdown',
-	\ 'kinds' : [
-		\ 'h:headings',
-		\ 'f:footnotes',
-	\ ],
-	\ 'sort' : 0
-\ }
-let g:tagbar_type_taskpaper = {
-	\ 'ctagstype' : 'taskpaper',
-	\ 'kinds' : [
-		\ 'p:projects',
-	\ ],
-	\ 'sort' : 0
-\ }
 map <F8> :TagbarToggle<CR>
 
 " -----------------
