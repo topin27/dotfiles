@@ -1,14 +1,6 @@
 # for color
 export CLICOLOR=1
 export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \w\$\[\033[00m\] '
-# alias grep='grep --color=always'  # This will cause the bash-complete bug
-# alias rm='rm -i'
-# alias ipe='curl ipinfo.io/ip'
-alias vi='~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.minimal)'
-alias vim='~/bins/vim9/bin/vim'
-alias view='~/bins/vim9/bin/vim -R'
-alias vimdiff='~/bins/vim9/bin/vim -d'
-alias nvim='PATH=~/bins/node/bin:$PATH ~/bins/vim9/bin/vim -u <(echo source /usr/share/vim/vimrc; cat ~/.vim/vimrc.featured)'
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -ah'
@@ -17,7 +9,36 @@ alias lla='ls -lah'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
 
-my-addpath() {
+function my-vim {
+	# CHANGEME: 这里默认 vim > 9.0，但如果是使用 neovim，就将下面的 vim 替换成 neovim 的路径；
+	# 如果是自己编译的 vim，将下面的 vim 替换成自己编译的 vim 的路径。
+	local real_vim=vim
+	local config_path=$1
+	shift
+	if [ -f .vimrc ]; then
+		$real_vim -u <(cat $config_path; cat .vimrc) $@
+	else
+		$real_vim -u <(cat $config_path) $@
+	fi
+}
+
+function vi {
+	my-vim ~/.vim/vimrc.minimal $@
+}
+
+function nvim {
+	PATH=~/bins/node/bin:$PATH my-vim ~/.vim/vimrc.featured $@
+}
+
+function view {
+	vi -R $@
+}
+
+function vimdiff {
+	vi -d $@
+}
+
+function my-addpath {
 	if [ $# -eq 0 ]; then
 		export PATH=`pwd`:$PATH
 		echo "Added \"`pwd`\" to \$PATH"

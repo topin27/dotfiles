@@ -139,6 +139,7 @@ config:  ## setup the configuration of modules
 	# bash
 	mkdir -p $(BASH_CONF)
 	test -L $(BASH_CONF)/bashrc || $(LN) $(CUR_DIR)/bash/bashrc $(BASH_CONF)/bashrc
+	@echo '需要手动在 $(BASH_CONF)/bashrc 在 `~/.bashrc` 中增加 `source` 语句'
 ifneq ($(shell uname -s),Darwin)
 	# rime
 	mkdir -p $(HOME)/.config/ibus/
