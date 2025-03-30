@@ -10,15 +10,19 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
 
 function my-vim {
-	# CHANGEME: 这里默认 vim > 9.0，但如果是使用 neovim，就将下面的 vim 替换成 neovim 的路径；
-	# 如果是自己编译的 vim，将下面的 vim 替换成自己编译的 vim 的路径。
+	# CHANGEME: 根据环境中使用的 vim 版本配置本函数。
+	# * 如果使用是 vim 9.0+，那么无需修改以下配置；
+	# * 如果使用的是 neovim，那么需要修改 `real_vim` 的路径指向 neovim 的安装路径，并且将下面的
+	#   `-u` 参数修改为：
+	#   `<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat $config_path)`
+	#   否则 neovim 不会加载 vim-plug 插件。
 	local real_vim=vim
 	local config_path=$1
 	shift
 	if [ -f .vimrc ]; then
 		$real_vim -u <(cat $config_path; cat .vimrc) $@
 	else
-		$real_vim -u <(cat $config_path) $@
+		$real_vim -u $config_path $@
 	fi
 }
 
