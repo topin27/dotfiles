@@ -107,13 +107,12 @@ packadd! matchit
 let g:coc_config_home = $HOME . '/.vim/'
 let g:coc_data_home = $HOME . '/.vim/coc/'
 let g:coc_global_extensions = [
-			\ 'coc-json',
-			\ 'coc-tsserver',
-			\ 'coc-java',
-			\ 'coc-pyright',
-			\ 'coc-snippets',
-			\ '@yaegassy/coc-marksman',
-			\ ]
+	\ 'coc-json',
+	\ 'coc-tsserver',
+	\ 'coc-java',
+	\ 'coc-pyright',
+	\ 'coc-snippets',
+	\ ]
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -345,6 +344,7 @@ nnoremap <Leader>sm :FzfMyRg! -t markdown "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sj :FzfMyRg! -t java "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sa :FzfMyRg! -t js "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sk :FzfMyRg! -t make "" -w<Left><Left><Left><Left>
+nnoremap <Leader>rp :!realpath --relative-to=%:h $($HOME/.vim/plugged/fzf/bin/fzf --height 40\%)
 
 " ------------
 " For supertab

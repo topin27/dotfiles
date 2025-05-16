@@ -182,6 +182,7 @@ nnoremap <Leader>sm :FzfMyRg! -t markdown "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sj :FzfMyRg! -t java "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sa :FzfMyRg! -t js "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sk :FzfMyRg! -t make "" -w<Left><Left><Left><Left>
+nnoremap <Leader>rp :!realpath --relative-to=%:h $($HOME/.vim/plugged/fzf/bin/fzf --height 40\%)
 
 " ------------
 " For supertab
