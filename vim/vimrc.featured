@@ -2,9 +2,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular'
-Plug 'amix/open_file_under_cursor.vim'
-Plug 'topin27/taskpaper.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
@@ -26,7 +23,6 @@ filetype plugin on
 
 syntax on
 syntax enable
-" set nu
 set rnu
 set is
 set ruler
@@ -68,11 +64,9 @@ nmap <C-Down> <C-W>j
 nmap <C-Up> <C-W>k
 nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
-nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
-nmap QQ :q<CR><C-W><C-P>
+nmap <Leader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste! rnu!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-" nmap <LocalLeader>w :w<CR>
 nmap s :w<CR>
 nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
@@ -275,6 +269,7 @@ let g:NERDTreeHighlightCursorline = 1
 let g:NERDTreeMapHelp = '<F1>'
 let g:NERDTreeMapJumpNextSibling = '<C-n>'
 let g:NERDTreeMapJumpPrevSibling = '<C-p>'
+let g:NERDTreeBookmarksFile = expand('$HOME/.vim/NERDTreeBookmarks')
 map <F2> :NERDTreeToggle<CR>
 map <F3> :NERDTreeFind<CR>
 
@@ -290,7 +285,7 @@ map <F8> :TagbarToggle<CR>
 " For close-buffers
 " -----------------
 
-nnoremap <silent> <LocalLeader>Q :Bdelete hidden<CR>
+nnoremap <silent> <Leader>Q :Bdelete hidden<CR>
 
 " -------
 " For fzf
@@ -328,7 +323,7 @@ command! -bang -nargs=* -complete=dir FzfMyRg
     \ 0)
 
 nnoremap <Leader>ss :FzfMyRg! "" -w<Left><Left><Left><Left>
-autocmd FileType python nnoremap <LocalLeader>ss :FzfMyRg! -t python "" -w<Left><Left><Left><Left>
+autocmd FileType python nnoremap <LocalLeader>ss :FzfMyRg! -t py "" -w<Left><Left><Left><Left>
 autocmd FileType c  nnoremap <LocalLeader>ss :FzfMyRg! -t c "" -w<Left><Left><Left><Left>
 autocmd FileType cpp  nnoremap <LocalLeader>ss :FzfMyRg! -t cpp "" -w<Left><Left><Left><Left>
 autocmd FileType ocaml  nnoremap <LocalLeader>ss :FzfMyRg! -t ocaml "" -w<Left><Left><Left><Left>
@@ -344,7 +339,6 @@ nnoremap <Leader>sm :FzfMyRg! -t markdown "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sj :FzfMyRg! -t java "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sa :FzfMyRg! -t js "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sk :FzfMyRg! -t make "" -w<Left><Left><Left><Left>
-nnoremap <Leader>rp :!realpath --relative-to=%:h $($HOME/.vim/plugged/fzf/bin/fzf --height 40\%)
 
 " ------------
 " For supertab
@@ -372,15 +366,6 @@ nnoremap <Leader>gg :Git<Space>
 " SPECIFIC PLUGINS & SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" ---------
-" Taskpaper
-" ---------
-autocmd FileType taskpaper setlocal bri
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>t <Plug>TaskPaperToggleTodo
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>s <Plug>TaskPaperToggleStart
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>d <Plug>TaskPaperToggleDone
-autocmd FileType taskpaper nmap <buffer> <LocalLeader>c <Plug>TaskPaperToggleCancelled
-
 " -------
 " C & C++
 " -------
@@ -399,16 +384,6 @@ autocmd FileType java setlocal ts=4 sts=4 et sw=4
 
 autocmd FileType python setlocal ts=4 sts=4 et sw=4
 
-" -----
-" OCaml
-" -----
-
-" " For ocaml
-" let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-" execute "set rtp+=" . g:opamshare . "/merlin/vim"
-" autocmd FileType ocaml nmap <leader>gd :MerlinLocate<CR>
-" autocmd FileType ocaml map <F3> :MerlinOutline<CR>
-
 " ---------------
 " Markdown.pandoc
 " ---------------
@@ -426,8 +401,3 @@ autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Hom
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=2 sts=2 et sw=2
-
-" --------
-" Plantuml
-" --------
-let g:plantuml_executable_script = 0

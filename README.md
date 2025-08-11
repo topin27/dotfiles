@@ -53,7 +53,19 @@ curl -fkLo $HOME/.vim/autoload/plug.vim --create-dirs \
 
 ## node
 
-主要 vim 中的 coc 使用，官网下载，解压后放到 `~/bins/node` 目录下。
+主要 vim 中的 coc 使用，官网下载最新的版本，解压后放到 `~/bins/node` 目录下。
+
+如果需要在一个比较老的系统上编译，可能
+
+如果需要从源码进行编译，尽量选用官方支持的平台，如果在一些老的平台上编译，可能会遇到一些问题，比如：
+
+1. 编译中需要使用 `sys/random.h` 头文件，但是当前老系统中的编译环境没有这个头文件，因此导致无法编译，
+   可以参考 [GitHub 上的一个 fix][1]，undefine 掉 `HAVE_GETRANDOM` 和 `HAVE_SYS_RANDOM_H`；
+2. 编译的过程中出现了 `gen-regexp-special-case` 运行结果出现段错误的现象，可以参考
+   [GitHub 上的另一个 fix][2]，修改 `configure.py` 并重新编译解决。
+
+[1]: https://github.com/nodejs/node/issues/52223
+[2]: https://github.com/nodejs/node/issues/30180
 
 ## ripgrep
 

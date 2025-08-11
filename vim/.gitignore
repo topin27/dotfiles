@@ -2,3 +2,4 @@ autoload
 coc
 plugged
 viminfo
+clipboard.txt

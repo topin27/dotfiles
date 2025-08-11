@@ -1,6 +1,5 @@
 syntax on
 syntax enable
-" set nu
 set rnu
 set is
 set ruler
@@ -42,11 +41,9 @@ nmap <C-Down> <C-W>j
 nmap <C-Up> <C-W>k
 nmap <C-Left> <C-W>h
 nmap <C-Right> <C-W>l
-nmap <LocalLeader>q :b#<bar>bd#<CR><C-W><C-P>
-nmap QQ :q<CR><C-W><C-P>
+nmap <Leader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste! rnu!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-" nmap <LocalLeader>w :w<CR>
 nmap s :w<CR>
 nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
