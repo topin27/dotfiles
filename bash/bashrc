@@ -22,7 +22,7 @@ function my-addpath {
 			# In linux, we can just use `realpath` command to get the absolute path
 			# of a file, but this command is not exist on Mac OS X, so use the python
 			# version instead.
-			local candidate_path=`python -c "import os; print(os.path.realpath('$i'))"`
+			local candidate_path=`python3 -c "import os; print(os.path.realpath('$i'))"`
 			if [ ! -d $candidate_path ]; then
 				echo "Error: \"$i\" seems not a valid path"
 				return 1
@@ -30,7 +30,7 @@ function my-addpath {
 		done
 
 		for i in $@; do
-			local candidate_path=`python -c "import os; print(os.path.realpath('$i'))"`
+			local candidate_path=`python3 -c "import os; print(os.path.realpath('$i'))"`
 			export PATH=$candidate_path:$PATH
 			echo "Added \"$candidate_path\" to \$PATH"
 		done
