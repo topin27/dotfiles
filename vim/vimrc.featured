@@ -12,6 +12,7 @@ Plug 'mkitt/tabline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Asheq/close-buffers.vim'
 Plug 'antiagainst/vim-tablegen'
+Plug 'github/copilot.vim'
 call plug#end()
 
 
@@ -103,7 +104,6 @@ let g:coc_data_home = $HOME . '/.vim/coc/'
 let g:coc_global_extensions = [
 	\ 'coc-json',
 	\ 'coc-tsserver',
-	\ 'coc-java',
 	\ 'coc-pyright',
 	\ 'coc-snippets',
 	\ ]
@@ -401,3 +401,9 @@ autocmd FileType markdown.pandoc nmap <LocalLeader>dh :s/^##\([# ]\+\)/#\1/c<Hom
 " JavaScript
 " ----------
 autocmd FileType javascript setlocal ts=2 sts=2 et sw=2
+
+" -------
+" Copilot
+" -------
+let g:copilot_enabled = v:false
+imap <C-\> <Plug>(copilot-suggest)"
