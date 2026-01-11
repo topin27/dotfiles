@@ -44,7 +44,7 @@ nmap <C-Right> <C-W>l
 nmap <Leader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste! rnu!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-nmap s :w<CR>
+nmap S :w<CR>
 nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
 nmap <Leader>pr :r ~/.vim/clipboard.txt

@@ -1,16 +1,42 @@
 # for color
 export CLICOLOR=1
 export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \w\$\[\033[00m\] '
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
 
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
-alias vi='vim -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal)'
-# 如果使用 neovim，则需要将 -u 参数修改为：`<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat ~/.vim/vimrc.featured)`
-alias nvim='PATH=~/bins/node/bin:$PATH vim -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured)'
+
+function my-vim {
+	local subcommand=$1
+	shift
+
+	case $subcommand in
+		"default")
+			vim "$@"
+			;;
+		"mini")
+			vim -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
+			;;
+		"featured")
+			( # 新开一个子 bash，避免下面的 export 影响当前 bash。
+			export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+			export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
+			export PATH=~/bins/node/bin:$PATH
+			# 如果使用 neovim，则需要将 -u 参数修改为：
+			# `<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat ~/.vim/vimrc.featured)`
+			vim -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured) "$@"
+			)
+			;;
+		*)
+			echo "Unknown subcommand: \"$subcommand\"!"
+			echo "Usage: my-vim <default|mini|featured> [ARGS...]"
+			return 1
+			;;
+	esac
+}
+alias vi='my-vim mini'
+alias nvim='my-vim featured'
 
 function my-addpath {
 	if [ $# -eq 0 ]; then

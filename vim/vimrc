@@ -12,10 +12,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'aklt/plantuml-syntax'
 Plug 'mkitt/tabline.vim'
 Plug 'Asheq/close-buffers.vim'
-Plug 'antiagainst/vim-tablegen'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 
@@ -71,7 +70,7 @@ nmap <C-Right> <C-W>l
 nmap <Leader>q :b#<bar>bd#<CR><C-W><C-P>
 nmap <Leader>tp :setlocal paste! rnu!<cr>
 nmap <Leader>tc :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=2"<CR>
-nmap s :w<CR>
+nmap S :w<CR>
 nmap <F5> :w<CR> :!<Up><CR>
 vmap <Leader>pw :w! ~/.vim/clipboard.txt
 nmap <Leader>pr :r ~/.vim/clipboard.txt
@@ -170,7 +169,7 @@ autocmd FileType java  nnoremap <LocalLeader>ss :FzfMyRg! -t java "" -w<Left><Le
 autocmd FileType javascript  nnoremap <LocalLeader>ss :FzfMyRg! -t js "" -w<Left><Left><Left><Left>
 autocmd FileType makefile nnoremap <LocalLeader>ss :FzfMyRg! -t make "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sp :FzfMyRg! -t python "" -w<Left><Left><Left><Left>
-nnoremap <Leader>sc :FzfMyRg! -t cc "" -w<Left><Left><Left><Left>
+nnoremap <Leader>sc :FzfMyRg! -t c "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sz :FzfMyRg! -t cpp "" -w<Left><Left><Left><Left>
 nnoremap <Leader>so :FzfMyRg! -t ocaml "" -w<Left><Left><Left><Left>
 nnoremap <Leader>sm :FzfMyRg! -t markdown "" -w<Left><Left><Left><Left>
@@ -212,6 +211,18 @@ nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gg :Git<Space>
+
+" --------------
+" For EasyMotion
+" -------------
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-bd-f2)
+vmap s <Plug>(easymotion-bd-f2)
+" Turn off case-insensitive feature
+let g:EasyMotion_smartcase = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
