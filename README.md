@@ -30,8 +30,8 @@ ln -s $(realpath tmux.conf) $HOME/.tmux.conf
 如果仓库中的版本大于 9.0，可以直接 `apt-get install vim`，否则需要编译安装：
 
 ```bash
-./configure --with-features=huge --disable-gui --enable-python3interp --enable-multibyte \
-    --prefix=$(VIM_DIR)
+./configure --with-features=huge --disable-gui --without-x \
+    --enable-python3interp --enable-multibyte --prefix=$(VIM_DIR)
 make -j4 && make install
 ```
 
