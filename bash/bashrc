@@ -12,13 +12,13 @@ function my-vim {
 	shift
 
 	case $subcommand in
-		"default")
+		default)
 			vim "$@"
 			;;
-		"mini")
+		mini)
 			vim -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
 			;;
-		"featured")
+		featured)
 			( # 新开一个子 bash，避免下面的 export 影响当前 bash。
 			export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 			export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
@@ -38,40 +38,62 @@ function my-vim {
 alias vi='my-vim mini'
 alias nvim='my-vim featured'
 
-function my-addpath {
-	if [ $# -eq 0 ]; then
-		export PATH=`pwd`:$PATH
-		echo "Added \"`pwd`\" to \$PATH"
-	else
-		# do validation on arguments
-		for i in $@; do
-			# In linux, we can just use `realpath` command to get the absolute path
-			# of a file, but this command is not exist on Mac OS X, so use the python
-			# version instead.
-			local candidate_path=`python3 -c "import os; print(os.path.realpath('$i'))"`
-			if [ ! -d $candidate_path ]; then
-				echo "Error: \"$i\" seems not a valid path"
-				return 1
-			fi
-		done
+function my-path {
+	local subcommand=$1
+	shift
 
-		for i in $@; do
-			local candidate_path=`python3 -c "import os; print(os.path.realpath('$i'))"`
-			export PATH=$candidate_path:$PATH
-			echo "Added \"$candidate_path\" to \$PATH"
-		done
-	fi
-	return 0
+	case $subcommand in
+		list|l)
+			echo $PATH | tr ':' '\n'
+			;;
+		add|a)
+			for i in "$@"; do
+				local real_path=$(realpath "$i")
+				if [[ -d "$real_path" ]]; then
+					echo "Adding \"$real_path\" ..."
+					export PATH="$real_path":$PATH
+				else
+					echo "Not a valid directory: \"$real_path\""
+					return 1
+				fi
+			done
+			;;
+		del|d)
+			for i in "$@"; do
+				local real_path=$(realpath "$i")
+				if [[ -d "$real_path" ]]; then
+					echo "Deleting \"$real_path\" ..."
+					export PATH=$(echo $PATH | tr ':' '\n' | grep -v "$real_path" | xargs | tr ' ' ':')
+				else
+					echo "Not a valid directory: \"$real_path\""
+					return 1
+				fi
+			done
+			;;
+		*)
+			echo "Unknown subcommand: \"$subcommand\"!"
+			echo "Usage: my-path <list|add|del> [PATH...]"
+			return 2
+			;;
+	esac
 }
 
-my-proxy-on() {
-	export http_proxy=http://127.0.0.1:7890
-	export https_proxy=http://127.0.0.1:7890
-}
-
-my-proxy-off() {
-	unset http_proxy
-	unset https_proxy
+function my-proxy {
+	case $1 in
+		on)
+			export http_proxy=http://127.0.0.1:7890
+			export https_proxy=http://127.0.0.1:7890
+			;;
+		off)
+			unset http_proxy
+			unset https_proxy
+			;;
+		*)
+			echo "Unknown subcommand: \"$subcommand\"!"
+			echo "Usage: my-proxy <on|off>"
+			return 1
+			;;
+	esac
 }
 
 export EDITOR=vim
