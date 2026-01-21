@@ -142,6 +142,26 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
+" g:fzf_colors 这个参数定制了选择框的颜色，其中的参数使用 vim 自带的一些颜色，使用
+" `:h hl-DiffChange` 查看相应的设置，以便在 vim 切换不同的 theme 时不会出现颜色上的冲突。fzf
+" 中完整的设置如下：
+" let g:fzf_colors = {
+"   \   'fg':      ['fg', 'Normal'],
+"   \   'bg':      ['bg', 'Clear'],
+"   \   'hl':      ['fg', 'Comment'],
+"   \   'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \   'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \   'hl+':     ['fg', 'Statement'],
+"   \   'info':    ['fg', 'PreProc'],
+"   \   'prompt':  ['fg', 'Conditional'],
+"   \   'pointer': ['fg', 'Exception'],
+"   \   'marker':  ['fg', 'Keyword'],
+"   \   'spinner': ['fg', 'Label'],
+"   \   'header':  ['fg', 'Comment'],
+"   \ }
+" let g:fzf_colors = {
+"   \   'bg+': ['bg', 'DiffChange'],
+"   \ }
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
