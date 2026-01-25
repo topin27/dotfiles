@@ -1,3 +1,7 @@
+#!/bin/bash
+
+source $(dirname "${BASH_SOURCE[0]}")/functions
+
 # for color
 export CLICOLOR=1
 export PS1='\[\033[01;33m\]\u@\h\[\033[01;31m\] \w\$\[\033[00m\] '
@@ -7,98 +11,20 @@ alias ll='ls -lh'
 alias la='ls -ah'
 alias lla='ls -lah'
 
-function my-vim {
-	local subcommand=$1
-	shift
-
-	case $subcommand in
-		default)
-			vim "$@"
-			;;
-		mini)
-			vim -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
-			;;
-		featured)
-			( # 新开一个子 bash，避免下面的 export 影响当前 bash。
-			export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-			export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
-			export PATH=~/bins/node/bin:$PATH
-			# 如果使用 neovim，则需要将 -u 参数修改为：
-			# `<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat ~/.vim/vimrc.featured)`
-			vim -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured) "$@"
-			)
-			;;
-		*)
-			echo "Unknown subcommand: \"$subcommand\"!"
-			echo "Usage: my-vim <default|mini|featured> [ARGS...]"
-			return 1
-			;;
-	esac
-}
 alias vi='my-vim mini'
 alias nvim='my-vim featured'
-
-function my-path {
-	local subcommand=$1
-	shift
-
-	case $subcommand in
-		list|l)
-			echo $PATH | tr ':' '\n'
-			;;
-		add|a)
-			for i in "$@"; do
-				local real_path=$(realpath "$i")
-				if [[ -d "$real_path" ]]; then
-					echo "Adding \"$real_path\" ..."
-					export PATH="$real_path":$PATH
-				else
-					echo "Not a valid directory: \"$real_path\""
-					return 1
-				fi
-			done
-			;;
-		del|d)
-			for i in "$@"; do
-				local real_path=$(realpath "$i")
-				if [[ -d "$real_path" ]]; then
-					echo "Deleting \"$real_path\" ..."
-					export PATH=$(echo $PATH | tr ':' '\n' | grep -v "$real_path" | xargs | tr ' ' ':')
-				else
-					echo "Not a valid directory: \"$real_path\""
-					return 1
-				fi
-			done
-			;;
-		*)
-			echo "Unknown subcommand: \"$subcommand\"!"
-			echo "Usage: my-path <list|add|del> [PATH...]"
-			return 2
-			;;
-	esac
-}
-
-function my-proxy {
-	case $1 in
-		on)
-			export http_proxy=http://127.0.0.1:7890
-			export https_proxy=http://127.0.0.1:7890
-			;;
-		off)
-			unset http_proxy
-			unset https_proxy
-			;;
-		*)
-			echo "Unknown subcommand: \"$subcommand\"!"
-			echo "Usage: my-proxy <on|off>"
-			return 1
-			;;
-	esac
-}
+alias view='my-vim default -R'
+alias vim='my-vim default'
 
 export EDITOR=vim
 # export PATH=~/bins/default/bin/:$PATH
 case ":$PATH:" in
-	*":$HOME/bins/default/bin/:"*) :;; # already there
-	*) PATH="$HOME/bins/default/bin/:$PATH";; # or PATH="$PATH:$new_entry"
+  *":$HOME/bins/default/bin/:"*) :;; # already there
+  *) PATH="$HOME/bins/default/bin/:$PATH";; # or PATH="$PATH:$new_entry"
 esac
+
+if [[ -d $HOME/bins/scripts/ ]]; then
+  export PATH=$HOME/bins/scripts/:$PATH
+fi
+
+# vim: ts=2 sts=2 et sw=2

@@ -1,0 +1,100 @@
+#!/bin/bash
+
+function my-vim {
+  local subcommand=$1
+  local vim_bin=/usr/bin/vim  # MODIFY ME IF NEEDED!
+  local node_dir=~/bins/node/bin
+  shift
+
+  case $subcommand in
+    default)
+      ( # 新开一个子 bash，避免下面的 export 影响当前 bash。
+      export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+      export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
+      $vim_bin "$@"
+      )
+      ;;
+    mini)
+      $vim_bin -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
+      ;;
+    featured)
+      ( # 新开一个子 bash，避免下面的 export 影响当前 bash。
+      export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+      export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
+      export PATH=$node_dir:$PATH
+      # 如果使用 neovim，则需要将 -u 参数修改为：
+      # `<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat ~/.vim/vimrc.featured)`
+      $vim_bin -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured) "$@"
+      )
+      ;;
+    *)
+      echo "Unknown subcommand: \"$subcommand\"!"
+      echo "Usage: my-vim <default|mini|featured> [ARGS...]"
+      return 1
+      ;;
+  esac
+}
+
+function my-path {
+  local subcommand=$1
+  shift
+
+  case $subcommand in
+    list|l)
+      echo $PATH | tr ':' '\n'
+      ;;
+    add|a)
+      for i in "$@"; do
+        local real_path=$(realpath "$i")
+        if [[ -d "$real_path" ]]; then
+          echo "Adding \"$real_path\" ..."
+          export PATH="$real_path":$PATH
+        else
+          echo "Not a valid directory: \"$real_path\""
+          return 1
+        fi
+      done
+      ;;
+    del|d)
+      for i in "$@"; do
+        local real_path=$(realpath "$i")
+        if [[ -d "$real_path" ]]; then
+          echo "Deleting \"$real_path\" ..."
+          export PATH=$(echo $PATH | tr ':' '\n' | grep -v "$real_path" | xargs | tr ' ' ':')
+        else
+          echo "Not a valid directory: \"$real_path\""
+          return 1
+        fi
+      done
+      ;;
+    *)
+      echo "Unknown subcommand: \"$subcommand\"!"
+      echo "Usage: my-path <list|add|del> [PATH...]"
+      return 2
+      ;;
+  esac
+}
+
+function my-proxy {
+  local subcommand=$1
+  local env_path=~/.config/bash/env
+
+  case $subcommand in
+    on)
+      proxy_addr=$(grep PROXY $env_path | cut -d' ' -f2)
+      export http_proxy=$proxy_addr
+      export https_proxy=$proxy_addr
+      ;;
+    off)
+      unset http_proxy
+      unset https_proxy
+      ;;
+    *)
+      echo "Unknown subcommand: \"$subcommand\"!"
+      echo "Usage: my-proxy <on|off>"
+      return 1
+      ;;
+  esac
+}
+
+# vim: ts=2 sts=2 et sw=2

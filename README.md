@@ -13,7 +13,17 @@ title: 个人环境配置
 
 ## bash
 
-相应修改 `bash/bashrc` 中的配置，然后在 `~/.bashrc` 中增加 source 指向 `./bash/bashrc`
+```bash
+ln -sfi $(realpath bash) ~/.config/bash
+```
+
+然后编辑 `~/.bashrc`：
+
+```bash
+if [[ -f ~/.config/bash/bashrc ]]; then
+    source ~/.config/bash/bashrc
+fi
+```
 
 ## tmux
 
