@@ -45,19 +45,28 @@ function my-path {
       ;;
     add|a)
       for i in "$@"; do
-        local real_path=$(realpath "$i")
-        if [[ -d "$real_path" ]]; then
+        # 将相对路径转换为绝对路径，但保留软链接结构
+        local target_path
+        if [[ "$i" == /* ]]; then
+          # 已经是绝对路径
+          target_path="$i"
+        else
+          # 转换为绝对路径
+          target_path="$(cd "$(dirname "$i")" && pwd)/$(basename "$i")"
+        fi
+
+        if [[ -d "$target_path" ]]; then
           case ":$PATH:" in
-            *:"$real_path":*)
-              echo "Path \"$real_path\" already exists in PATH, skipping..."
+            *:"$target_path":*)
+              echo "Path \"$target_path\" already exists in PATH, skipping..."
               ;;
             *)
-              echo "Adding \"$real_path\" ..."
-              export PATH="$real_path":$PATH
+              echo "Adding \"$target_path\" ..."
+              export PATH="$target_path":$PATH
               ;;
           esac
         else
-          echo "Not a valid directory: \"$real_path\""
+          echo "Not a valid directory: \"$target_path\""
           return 1
         fi
       done
