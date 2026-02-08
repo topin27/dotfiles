@@ -17,14 +17,8 @@ alias view='my-vim default -R'
 alias vim='my-vim default'
 
 export EDITOR=vim
-# export PATH=~/bins/default/bin/:$PATH
-case ":$PATH:" in
-  *":$HOME/bins/default/bin/:"*) :;; # already there
-  *) PATH="$HOME/bins/default/bin/:$PATH";; # or PATH="$PATH:$new_entry"
-esac
 
-if [[ -d $HOME/bins/scripts/ ]]; then
-  export PATH=$HOME/bins/scripts/:$PATH
-fi
+my-path add ~/bins/default/bin/
+my-path add ~/bins/scripts/
 
 # vim: ts=2 sts=2 et sw=2

@@ -11,11 +11,11 @@ function my-vim {
       ( # 新开一个子 bash，避免下面的 export 影响当前 bash。
       export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
       export FZF_DEFAULT_OPTS='--bind alt-up:preview-up,alt-down:preview-down,alt-k:page-up,alt-j:page-down,alt-left:preview-page-up,alt-right:preview-page-down'
-      $vim_bin "$@"
+      exec $vim_bin "$@"
       )
       ;;
     mini)
-      $vim_bin -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
+      exec $vim_bin -u <(echo source /etc/vim/vimrc.tiny; cat ~/.vim/vimrc.minimal) "$@"
       ;;
     featured)
       ( # 新开一个子 bash，避免下面的 export 影响当前 bash。
@@ -24,7 +24,7 @@ function my-vim {
       export PATH=$node_dir:$PATH
       # 如果使用 neovim，则需要将 -u 参数修改为：
       # `<(echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after"; cat ~/.vim/vimrc.featured)`
-      $vim_bin -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured) "$@"
+      exec $vim_bin -u <(echo source /etc/vim/vimrc; cat ~/.vim/vimrc.featured) "$@"
       )
       ;;
     *)
@@ -47,8 +47,15 @@ function my-path {
       for i in "$@"; do
         local real_path=$(realpath "$i")
         if [[ -d "$real_path" ]]; then
-          echo "Adding \"$real_path\" ..."
-          export PATH="$real_path":$PATH
+          case ":$PATH:" in
+            *:"$real_path":*)
+              echo "Path \"$real_path\" already exists in PATH, skipping..."
+              ;;
+            *)
+              echo "Adding \"$real_path\" ..."
+              export PATH="$real_path":$PATH
+              ;;
+          esac
         else
           echo "Not a valid directory: \"$real_path\""
           return 1
@@ -57,12 +64,30 @@ function my-path {
       ;;
     del|d)
       for i in "$@"; do
-        local real_path=$(realpath "$i")
-        if [[ -d "$real_path" ]]; then
-          echo "Deleting \"$real_path\" ..."
-          export PATH=$(echo $PATH | tr ':' '\n' | grep -v "$real_path" | xargs | tr ' ' ':')
+        # 将相对路径转换为绝对路径，但保留软链接结构
+        local target_path
+        if [[ "$i" == /* ]]; then
+          # 已经是绝对路径
+          target_path="$i"
         else
-          echo "Not a valid directory: \"$real_path\""
+          # 转换为绝对路径
+          target_path="$(cd "$(dirname "$i")" && pwd)/$(basename "$i")"
+        fi
+
+        # 检查路径是否存在（无论是否为软链接）
+        if [[ -e "$target_path" || -L "$target_path" ]]; then
+          echo "Deleting \"$target_path\" ..."
+          # 处理 PATH 中的路径删除
+          local path_array=()
+          IFS=':' read -ra existing_paths <<< "$PATH"
+          for path in "${existing_paths[@]}"; do
+            if [[ "$path" != "$target_path" ]]; then
+              path_array+=("$path")
+            fi
+          done
+          export PATH=$(IFS=':'; echo "${path_array[*]}")
+        else
+          echo "Path does not exist: \"$target_path\""
           return 1
         fi
       done
@@ -81,7 +106,7 @@ function my-proxy {
 
   case $subcommand in
     on)
-      proxy_addr=$(grep PROXY $env_path | cut -d' ' -f2)
+      proxy_addr=$(grep PROXY $env_path | cut -d'=' -f2)
       export http_proxy=$proxy_addr
       export https_proxy=$proxy_addr
       ;;
