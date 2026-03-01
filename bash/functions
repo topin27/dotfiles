@@ -113,6 +113,21 @@ function my-proxy {
   local subcommand=$1
   local env_path=~/.config/bash/env
 
+  # 没有参数时，输出当前 proxy 设置状态
+  if [[ -z $subcommand ]]; then
+    if [[ -n $http_proxy ]]; then
+      echo "http_proxy: $http_proxy"
+    else
+      echo "http_proxy: not set"
+    fi
+    if [[ -n $https_proxy ]]; then
+      echo "https_proxy: $https_proxy"
+    else
+      echo "https_proxy: not set"
+    fi
+    return 0
+  fi
+
   case $subcommand in
     on)
       proxy_addr=$(grep PROXY $env_path | cut -d'=' -f2)
